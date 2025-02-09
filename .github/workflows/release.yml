@@ -33,6 +33,8 @@ jobs:
 
       - name: Singing release
         uses: r0adkll/sign-android-release@v1
+        # ID used to access action output
+        id: sign_app
         with:
           releaseDirectory: app/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE }}
@@ -42,7 +44,7 @@ jobs:
 
       # Example use of `signedReleaseFile` output -- not needed
       - name: Uploading build
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Signed app bundle
-          path: app/build/outputs/apk/release
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
