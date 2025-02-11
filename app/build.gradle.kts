@@ -7,6 +7,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
     id("org.jlleitschuh.gradle.ktlint") version "12.1.2"
+    id("io.gitlab.arturbosch.detekt") version "1.23.7"
 }
 
 android {
@@ -43,13 +44,13 @@ android {
     buildFeatures {
         viewBinding = true
     }
+}
 
-    ktlint {
-        android = true
-        ignoreFailures = false
-        reporters {
-            reporter(ReporterType.CHECKSTYLE)
-        }
+ktlint {
+    android = true
+    ignoreFailures = false
+    reporters {
+        reporter(ReporterType.CHECKSTYLE)
     }
 }
 
@@ -83,4 +84,7 @@ dependencies {
 
     // ML Kit
     implementation("com.google.mlkit:translate:17.0.3")
+
+    // detekt
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.7")
 }

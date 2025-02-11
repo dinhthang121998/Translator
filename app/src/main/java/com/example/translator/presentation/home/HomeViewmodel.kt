@@ -36,9 +36,11 @@ class HomeViewmodel
                     is UiState.Error -> {
                         Log.d("AAAA", "error = ${it.message}")
                     }
+
                     is UiState.Loading -> {
                         Log.d("AAAA", "loading")
                     }
+
                     is UiState.Success -> {
                         Log.d("AAAA", "success")
                     }

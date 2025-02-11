@@ -13,6 +13,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     companion object {
-        private val TAG = "HomeFragment"
+        private const val TAG = "HomeFragment"
     }
 }

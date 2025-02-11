@@ -1,5 +1,6 @@
 package com.example.translator.domain.usecase
 
+import LanguageUtils
 import android.util.Log
 import com.example.translator.common.UiState
 import com.example.translator.domain.model.Downloadable
@@ -7,7 +8,6 @@ import com.example.translator.domain.model.SearchLanguageItem
 import com.google.mlkit.common.model.RemoteModelManager
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.TranslateRemoteModel
-import convertLanguageCodeToName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -31,14 +31,13 @@ class SearchLanguageUseCase {
 
                         listLanguageItem.add(
                             SearchLanguageItem.LanguageItem(
-                                languageCode.convertLanguageCodeToName(),
+                                LanguageUtils.convertLanguageCodeToName(languageCode),
                                 downloadable,
                             ),
                         )
                     }
                     trySend(UiState.Success(data = listLanguageItem))
-                }
-                .addOnFailureListener { exception ->
+                }.addOnFailureListener { exception ->
                     trySend(UiState.Error(message = exception.message.toString()))
                     Log.d("AAAA", "Error fetching downloaded models: ${exception.message}")
                 }
@@ -51,13 +50,12 @@ class SearchLanguageUseCase {
     ): Flow<MutableList<SearchLanguageItem.LanguageItem>> =
         flow {
             val filter =
-                listAllSearchLanguageItem
-                    .filter { searchLanguageItem ->
-                        searchLanguageItem.languageName.startsWith(
-                            textFilter,
-                            true,
-                        )
-                    }.toMutableList()
+                listAllSearchLanguageItem.filter { searchLanguageItem ->
+                    searchLanguageItem.languageName.startsWith(
+                        textFilter,
+                        true,
+                    )
+                }.toMutableList()
             emit(filter)
         }
 }

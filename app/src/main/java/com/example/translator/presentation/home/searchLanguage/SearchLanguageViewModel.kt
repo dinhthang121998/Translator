@@ -16,8 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchLanguageViewModel
     @Inject
-    constructor(private val searchLanguageUseCase: SearchLanguageUseCase) :
-    BaseViewmodel() {
+    constructor(private val searchLanguageUseCase: SearchLanguageUseCase) : BaseViewmodel() {
         private val _listAllLanguages =
             MutableStateFlow(mutableListOf<SearchLanguageItem.LanguageItem>())
         val listAllLanguages = _listAllLanguages
@@ -42,8 +41,9 @@ class SearchLanguageViewModel
         }
 
         fun filterLanguage(textFilter: String) {
-            searchLanguageUseCase.filterLanguage(textFilter, _listAllLanguages.value).onEach { filterList ->
-                _listFilterLanguages.value = filterList
-            }.flowOn(Dispatchers.IO)
+            searchLanguageUseCase.filterLanguage(textFilter, _listAllLanguages.value)
+                .onEach { filterList ->
+                    _listFilterLanguages.value = filterList
+                }.flowOn(Dispatchers.IO)
         }
     }
