@@ -1,10 +1,13 @@
 package com.example.translator.common
 
 sealed class UiState<T>(
-    data: T? = null,
-    message: String = ""
+    val data: T?,
+    val message: String = "",
 ) {
-    class Loading<T>(): UiState<T>()
-    class Success<T>(val data: T?): UiState<T>(data = data)
-    class Error<T>(val message: String): UiState<T>(message = message)
+    class Loading<T>(data: T? = null) : UiState<T>(data = data)
+
+    class Success<T>(data: T?) : UiState<T>(data = data)
+
+    class Error<T>(data: T? = null, message: String) :
+        UiState<T>(data = data, message = message)
 }

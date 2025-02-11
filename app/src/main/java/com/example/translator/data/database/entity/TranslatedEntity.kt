@@ -9,5 +9,5 @@ data class TranslatedEntity(
     val translatedWord: String = "",
     val isFavourite: Boolean = false,
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0
+    val id: Int = 0,
 )

@@ -13,27 +13,36 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewmodel @Inject constructor(private val homeUseCase: HomeUseCase) : BaseViewmodel() {
+class HomeViewmodel
+    @Inject
+    constructor(private val homeUseCase: HomeUseCase) : BaseViewmodel() {
+        private val _listTranslatedWord = MutableStateFlow(TranslatedWord())
+        val listTranslatedWord = _listTranslatedWord
 
-    private val _listTranslatedWord = MutableStateFlow(TranslatedWord())
-    val listTranslatedWord = _listTranslatedWord
+        private val _listAllLanguages = MutableStateFlow(mutableListOf<String>())
+        val listAllLanguages = _listAllLanguages
 
-    fun addTranslatedWord(originalWord: String, translatedWord: String){
-        val translated = TranslatedWord(originalWord, translatedWord, false)
+        var translateFrom: String = ""
+        var translateTo: String = ""
 
-        homeUseCase.addTranslatedWord(translated).onEach {
-            when (it) {
-                is UiState.Error -> {
-                    Log.d("AAAA", "error = ${it.message}")
+        fun addTranslatedWord(
+            originalWord: String,
+            translatedWord: String,
+        ) {
+            val translated = TranslatedWord(originalWord, translatedWord, false)
+
+            homeUseCase.addTranslatedWord(translated).onEach {
+                when (it) {
+                    is UiState.Error -> {
+                        Log.d("AAAA", "error = ${it.message}")
+                    }
+                    is UiState.Loading -> {
+                        Log.d("AAAA", "loading")
+                    }
+                    is UiState.Success -> {
+                        Log.d("AAAA", "success")
+                    }
                 }
-                is UiState.Loading -> {
-                    Log.d("AAAA", "loading")
-                }
-                is UiState.Success -> {
-                    Log.d("AAAA", "success")
-                }
-            }
-        }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
+        }
     }
-
-}

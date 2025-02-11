@@ -20,6 +20,9 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
+      - name: Run ktLint
+        run: ./gradlew ktLintCheck
+
       - name: Run unit tests
         run: ./gradlew clean testDebug
 

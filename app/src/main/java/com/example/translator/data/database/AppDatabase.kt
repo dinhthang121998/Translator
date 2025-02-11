@@ -7,8 +7,8 @@ import com.example.translator.data.database.entity.TranslatedEntity
 
 @Database(
     entities = [TranslatedEntity::class],
-    version = 1
+    version = 1,
 )
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     abstract val translatedDao: TranslatedDao
 }
