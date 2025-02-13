@@ -1,3 +1,4 @@
+import com.google.protobuf.gradle.id
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
@@ -8,6 +9,8 @@ plugins {
     id("com.google.devtools.ksp")
     id("org.jlleitschuh.gradle.ktlint") version "12.1.2"
     id("io.gitlab.arturbosch.detekt") version "1.23.7"
+    kotlin("plugin.serialization") version "2.1.10"
+    id("com.google.protobuf") version "0.9.3"
 }
 
 android {
@@ -54,6 +57,22 @@ ktlint {
     }
 }
 
+// 👇 Add the ProtoBuf plugin configuration
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.25.5"
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                id("java") {
+                    option("lite") // Ensures javalite-compatible code generation
+                }
+            }
+        }
+    }
+}
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.15.0")
@@ -85,6 +104,13 @@ dependencies {
     // ML Kit
     implementation("com.google.mlkit:translate:17.0.3")
 
-    // detekt
+    // Detekt
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.7")
+
+    // Proto - DataStore with javalite
+    implementation("androidx.datastore:datastore:1.1.2")
+    implementation("com.google.protobuf:protobuf-javalite:3.25.5") // Ensure this is consistent
+
+    // Serializable
+//    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 }

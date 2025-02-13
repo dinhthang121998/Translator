@@ -80,7 +80,7 @@ class SearchLanguageAdapter(
         override fun bind(item: SearchLanguageItem) {
             val language = item as SearchLanguageItem.LanguageItem
             viewBinding.tvLanguage.text = language.languageName
-            when (language.isDownload) {
+            when (language.downloadable) {
                 Downloadable.IS_DOWNLOADED -> viewBinding.ivDownload.setImageResource(R.drawable.ic_downloaded)
                 Downloadable.NEED_DOWNLOAD -> viewBinding.ivDownload.setImageResource(R.drawable.ic_download)
                 Downloadable.NO_NEED_DOWNLOAD -> viewBinding.ivDownload.visibility = View.GONE

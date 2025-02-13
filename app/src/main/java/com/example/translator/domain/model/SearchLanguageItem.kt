@@ -3,7 +3,8 @@ package com.example.translator.domain.model
 sealed class SearchLanguageItem {
     data class LanguageItem(
         val languageName: String = "",
-        val isDownload: Downloadable = Downloadable.NO_NEED_DOWNLOAD,
+        val languageCode: String = "",
+        val downloadable: Downloadable = Downloadable.NO_NEED_DOWNLOAD,
     ) : SearchLanguageItem()
 
     data class TitleItem(
@@ -11,8 +12,14 @@ sealed class SearchLanguageItem {
     ) : SearchLanguageItem()
 }
 
-enum class Downloadable {
-    IS_DOWNLOADED,
-    NEED_DOWNLOAD,
-    NO_NEED_DOWNLOAD,
+enum class Downloadable(val id: Int) {
+    IS_DOWNLOADED(1),
+    NEED_DOWNLOAD(2),
+    NO_NEED_DOWNLOAD(3);
+
+    companion object {
+        fun fromId(id: Int): Downloadable? {
+            return entries.firstOrNull { it.id == id }
+        }
+    }
 }

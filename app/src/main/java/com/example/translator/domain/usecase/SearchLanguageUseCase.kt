@@ -32,6 +32,7 @@ class SearchLanguageUseCase {
                         listLanguageItem.add(
                             SearchLanguageItem.LanguageItem(
                                 LanguageUtils.convertLanguageCodeToName(languageCode),
+                                languageCode,
                                 downloadable,
                             ),
                         )
