@@ -8,5 +8,5 @@ import com.example.translator.data.datastore.serializer.PairLanguageItemStoreSer
 
 val Context.pairLanguageItemStore: DataStore<PairLanguageStore> by dataStore(
     fileName = "pair_language_item_store.pb",
-    serializer = PairLanguageItemStoreSerializer
+    serializer = PairLanguageItemStoreSerializer,
 )

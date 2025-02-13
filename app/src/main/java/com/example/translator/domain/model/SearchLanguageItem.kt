@@ -15,7 +15,8 @@ sealed class SearchLanguageItem {
 enum class Downloadable(val id: Int) {
     IS_DOWNLOADED(1),
     NEED_DOWNLOAD(2),
-    NO_NEED_DOWNLOAD(3);
+    NO_NEED_DOWNLOAD(3),
+    ;
 
     companion object {
         fun fromId(id: Int): Downloadable? {

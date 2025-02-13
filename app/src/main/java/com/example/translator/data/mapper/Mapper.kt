@@ -18,8 +18,9 @@ fun LanguageItemStore.toLanguageItem() =
     Downloadable.fromId(this.downloaded)
         ?.let { SearchLanguageItem.LanguageItem(this.languageName, this.languageCode, it) }
 
-fun SearchLanguageItem.LanguageItem.toLanguageItemStore() = LanguageItemStore.newBuilder().apply {
-    setLanguageName(this@toLanguageItemStore.languageName)
-    setLanguageCode(this@toLanguageItemStore.languageCode)
-    setDownloaded(this@toLanguageItemStore.downloadable.id)
-}
+fun SearchLanguageItem.LanguageItem.toLanguageItemStore() =
+    LanguageItemStore.newBuilder().apply {
+        setLanguageName(this@toLanguageItemStore.languageName)
+        setLanguageCode(this@toLanguageItemStore.languageCode)
+        setDownloaded(this@toLanguageItemStore.downloadable.id)
+    }

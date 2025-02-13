@@ -7,7 +7,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
-object PairLanguageItemStoreSerializer: Serializer<PairLanguageStore> {
+object PairLanguageItemStoreSerializer : Serializer<PairLanguageStore> {
     override val defaultValue: PairLanguageStore
         get() = PairLanguageStore.getDefaultInstance()
 
@@ -19,8 +19,10 @@ object PairLanguageItemStoreSerializer: Serializer<PairLanguageStore> {
         }
     }
 
-    override suspend fun writeTo(t: PairLanguageStore, output: OutputStream) {
+    override suspend fun writeTo(
+        t: PairLanguageStore,
+        output: OutputStream,
+    ) {
         t.writeTo(output)
     }
-
 }

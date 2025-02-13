@@ -12,11 +12,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class DataStoreModule {
-
     @Provides
     @Singleton
-    fun provideProtoPreferenceManager(@ApplicationContext context: Context): ProtoPreferenceManager {
+    fun provideProtoPreferenceManager(
+        @ApplicationContext context: Context,
+    ): ProtoPreferenceManager {
         return ProtoPreferenceManager(context)
     }
-
 }
