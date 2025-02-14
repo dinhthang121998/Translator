@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="@dimen/size_12"
     android:paddingVertical="@dimen/size_8">
 
     <TextView
@@ -13,6 +13,7 @@
         android:gravity="center"
         android:text="@string/language"
         android:textSize="@dimen/text_16"
+        android:paddingHorizontal="@dimen/size_12"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,9 +23,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_download"
+        android:paddingHorizontal="@dimen/size_12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <View
+        style="@style/Divider.Horizontal"
+        android:layout_marginTop="@dimen/size_8"
+        app:layout_constraintTop_toBottomOf="@+id/tvLanguage"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

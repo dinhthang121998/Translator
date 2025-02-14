@@ -11,6 +11,8 @@
     <dimen name="text_21">21sp</dimen>
     <dimen name="text_24">24sp</dimen>
 
+    <dimen name="size_1">1dp</dimen>
+    <dimen name="size_2">2dp</dimen>
     <dimen name="size_8">8dp</dimen>
     <dimen name="size_12">12dp</dimen>
     <dimen name="size_16">16dp</dimen>

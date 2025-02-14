@@ -13,15 +13,15 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 class RoomModule {
-
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
+    fun provideDatabase(
+        @ApplicationContext context: Context,
+    ): AppDatabase {
         return Room.databaseBuilder(context, AppDatabase::class.java, "app_database.db").build()
     }
 
     @Provides
-    fun provideTranslatedDao(appDatabase: AppDatabase): TranslatedDao{
+    fun provideTranslatedDao(appDatabase: AppDatabase): TranslatedDao {
         return appDatabase.translatedDao
     }
-
 }
