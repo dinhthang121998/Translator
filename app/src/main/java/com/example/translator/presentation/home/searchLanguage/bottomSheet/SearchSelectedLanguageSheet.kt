@@ -9,10 +9,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.translator.R
 import com.example.translator.databinding.SearchSelectedLanguageBinding
+import com.example.translator.domain.model.Downloadable
 import com.example.translator.domain.model.SearchLanguageItem
 import com.example.translator.presentation.BaseBottomSheetFragment
 import com.example.translator.presentation.home.searchLanguage.SearchLanguageViewModel
 import com.example.translator.presentation.home.searchLanguage.adapter.SearchLanguageAdapter
+import com.example.translator.util.AlertDialogUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -42,6 +44,7 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getSearchLanguageItems()
+        initRecyclerView(listOf())
 
         lifecycleScope.launch {
             launch {
@@ -49,16 +52,26 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
                     val listSearchLanguageItem = mutableListOf<SearchLanguageItem>()
                     listSearchLanguageItem.addTitle(getString(R.string.all_language))
                     listSearchLanguageItem.addAll(listLanguageItem)
-                    initRecyclerView(listSearchLanguageItem)
+                    updateLanguage(listSearchLanguageItem)
                 }
             }
 
             launch {
-                viewModel.listFilterLanguages.collect { listSearchLanguageFilter ->
-                    val listSearchLanguageItem = mutableListOf<SearchLanguageItem>()
-                    listSearchLanguageItem.addTitle("")
-                    listSearchLanguageItem.addAll(listSearchLanguageFilter)
-                    updateLanguage(listSearchLanguageItem)
+                viewModel.listFilterLanguages.collect { listLanguageItemFilter ->
+                    val listSearchLanguageItemFilter = mutableListOf<SearchLanguageItem>()
+                    if (listLanguageItemFilter.size != viewModel.listAllLanguages.value.size) {
+                        listSearchLanguageItemFilter.addTitle("")
+                    } else {
+                        listSearchLanguageItemFilter.addTitle(getString(R.string.all_language))
+                    }
+                    listSearchLanguageItemFilter.addAll(listLanguageItemFilter)
+                    updateLanguage(listSearchLanguageItemFilter)
+                }
+            }
+
+            launch {
+                viewModel.downloadLanguageItem.collect { downloadedLanguageItem ->
+                    viewModel.updateAllLanguages(downloadedLanguageItem)
                 }
             }
         }
@@ -68,15 +81,7 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
         }
 
         viewBinding.edtSearchLanguage.addTextChangedListener { text: Editable? ->
-            val textFilter = text.toString()
-            if (textFilter.isNotEmpty()) {
-                viewModel.filterLanguage(textFilter)
-            } else {
-                val listSearchLanguageItem = mutableListOf<SearchLanguageItem>()
-                listSearchLanguageItem.addTitle(getString(R.string.all_language))
-                listSearchLanguageItem.addAll(viewModel.listAllLanguages.value)
-                updateLanguage(listSearchLanguageItem)
-            }
+            viewModel.filterLanguage(text.toString())
         }
     }
 
@@ -91,8 +96,22 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
 
     private fun initRecyclerView(listSearchLanguageItem: List<SearchLanguageItem>) {
         languageAdapter =
-            SearchLanguageAdapter(listSearchLanguageItem) { searchLanguageItem ->
-                clickItemButton?.invoke(searchLanguageItem)
+            SearchLanguageAdapter(listSearchLanguageItem) { languageItem ->
+                if (languageItem.downloadable == Downloadable.NEED_DOWNLOAD) {
+                    AlertDialogUtils.showAlertDialog(
+                        requireContext(),
+                        getString(R.string.download_language),
+                        getString(R.string.download_language_message),
+                        positiveText = getString(R.string.download),
+                        onPositiveClick = {
+                            viewModel.downloadLanguage(languageItem)
+                        }, onNegativeClick = { dialog ->
+                            dialog.dismiss()
+                        },
+                    )
+                } else {
+                    clickItemButton?.invoke(languageItem)
+                }
             }
 
         viewBinding.rcvLanguage.apply {

@@ -86,8 +86,6 @@ dependencies {
     // hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
-    // hilt for navigation compose
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // viewmodel for Fragment
     implementation("androidx.fragment:fragment-ktx:1.8.5")
@@ -111,6 +109,10 @@ dependencies {
     implementation("androidx.datastore:datastore:1.1.2")
     implementation("com.google.protobuf:protobuf-javalite:3.25.5") // Ensure this is consistent
 
-    // Serializable
-//    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    // Lottie
+    implementation("com.airbnb.android:lottie:6.6.2")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
