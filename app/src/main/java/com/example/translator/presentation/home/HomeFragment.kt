@@ -1,6 +1,5 @@
 package com.example.translator.presentation.home
 
-import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
@@ -13,7 +12,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.translator.LanguageItem
 import com.example.translator.R
 import com.example.translator.databinding.FragmentHomeBinding
 import com.example.translator.domain.model.SearchLanguageItem
@@ -48,16 +46,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         setupOriginalView()
         setupTranslatedView()
 
-        speechResultLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == RESULT_OK && result.data != null) {
-                val results = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                results?.firstOrNull()?.let {
-                    Log.d("SpeechToText", "Recognized Text: $it")
+        speechResultLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult(),
+            ) { result ->
+                if (result.resultCode == RESULT_OK && result.data != null) {
+                    val results = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                    results?.firstOrNull()?.let {
+                        Log.d("SpeechToText", "Recognized Text: $it")
+                    }
                 }
             }
-        }
 
         lifecycleScope.launch {
             launch {
@@ -147,14 +146,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         binding.original.showMic(true)
         binding.original.onClickMic = {
             // TODO Implements Mic
-            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                putExtra(
-                    RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                    RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-                )
-                putExtra(RecognizerIntent.EXTRA_LANGUAGE, viewModel.fromLanguageItem.languageCode) // Set the language
-                putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
-            }
+            val intent =
+                Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                    putExtra(
+                        RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM,
+                    )
+                    putExtra(RecognizerIntent.EXTRA_LANGUAGE, viewModel.fromLanguageItem.languageCode) // Set the language
+                    putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
+                }
 
             speechResultLauncher.launch(intent)
 

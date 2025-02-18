@@ -16,6 +16,5 @@ class SpeechToTextUtils
         val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
 
         init {
-
         }
     }
