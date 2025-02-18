@@ -7,6 +7,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 abstract class BaseViewmodel : ViewModel() {
+    // failure here
+    // loading here
+
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { context, exception ->
             // Handle error here

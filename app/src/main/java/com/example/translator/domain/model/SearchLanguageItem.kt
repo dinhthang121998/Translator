@@ -19,8 +19,8 @@ enum class Downloadable(val id: Int) {
     ;
 
     companion object {
-        fun fromId(id: Int): Downloadable? {
-            return entries.firstOrNull { it.id == id }
+        fun fromId(id: Int): Downloadable {
+            return entries.first { it.id == id }
         }
     }
 }

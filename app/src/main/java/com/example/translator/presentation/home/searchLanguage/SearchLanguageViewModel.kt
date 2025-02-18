@@ -1,49 +1,57 @@
 package com.example.translator.presentation.home.searchLanguage
 
 import androidx.lifecycle.viewModelScope
-import com.example.translator.common.UiState
 import com.example.translator.domain.model.SearchLanguageItem
-import com.example.translator.domain.usecase.SearchLanguageUseCase
 import com.example.translator.presentation.BaseViewmodel
+import com.example.translator.util.TranslationUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchLanguageViewModel
     @Inject
-    constructor(private val searchLanguageUseCase: SearchLanguageUseCase) : BaseViewmodel() {
+    constructor(
+        private val translationUtils: TranslationUtils,
+    ) : BaseViewmodel() {
         private val _listAllLanguages =
-            MutableStateFlow(mutableListOf<SearchLanguageItem.LanguageItem>())
+            MutableStateFlow(listOf<SearchLanguageItem.LanguageItem>())
         val listAllLanguages = _listAllLanguages
 
         private val _listFilterLanguages =
-            MutableStateFlow(mutableListOf<SearchLanguageItem.LanguageItem>())
+            MutableStateFlow(listOf<SearchLanguageItem.LanguageItem>())
         val listFilterLanguages = _listFilterLanguages
 
-        fun getSearchLanguageItems() {
-            searchLanguageUseCase.getSearchLanguageItems().onEach {
-                when (it) {
-                    is UiState.Error -> {}
-                    is UiState.Loading -> {}
+        private val _downloadLanguageItem =
+            MutableStateFlow(SearchLanguageItem.LanguageItem())
+        val downloadLanguageItem = _downloadLanguageItem
 
-                    is UiState.Success -> {
-                        it.data?.let { listLanguageItem ->
-                            _listAllLanguages.value = listLanguageItem
-                        }
-                    }
-                }
-            }.launchIn(viewModelScope)
+        // TODO Handle error
+        fun getSearchLanguageItems() {
+            viewModelScope.launch {
+                _listAllLanguages.value = translationUtils.getAllLanguageItems()
+            }
         }
 
-        fun filterLanguage(textFilter: String) {
-            searchLanguageUseCase.filterLanguage(textFilter, _listAllLanguages.value)
-                .onEach { filterList ->
-                    _listFilterLanguages.value = filterList
-                }.flowOn(Dispatchers.IO)
+        fun filterLanguageItem(textFilter: String) {
+            viewModelScope.launch {
+                val listFilter = translationUtils.filterLanguageItems(textFilter, _listAllLanguages.value)
+                _listFilterLanguages.value = listFilter
+            }
+        }
+
+        fun updateAllLanguages(downloadedLanguageItem: SearchLanguageItem.LanguageItem) {
+            viewModelScope.launch {
+                val updatedListLanguageItem = translationUtils.updateDownloadedLanguage(downloadedLanguageItem, _listAllLanguages.value)
+                _listAllLanguages.value = updatedListLanguageItem
+            }
+        }
+
+        // TODO Implement loading when downloading language. Handle error
+        fun downloadLanguage(languageItem: SearchLanguageItem.LanguageItem) {
+            viewModelScope.launch {
+                _downloadLanguageItem.value = translationUtils.downloadLanguageModel(languageItem)
+            }
         }
     }

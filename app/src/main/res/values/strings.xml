@@ -5,4 +5,11 @@
     <string name="search">Search</string>
     <string name="search_title">Search Title</string>
     <string name="all_language">All language</string>
+    <string name="hint">Hint</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="download">Download</string>
+    <string name="download_language">Download Language</string>
+    <string name="download_language_message">This language requires downloading a model for translation. Do you allow us to download it?</string>
+    <string name="phonetic">Phonetic</string>
 </resources>
