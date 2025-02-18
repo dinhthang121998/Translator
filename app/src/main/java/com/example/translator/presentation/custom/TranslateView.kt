@@ -5,7 +5,6 @@ import android.text.Editable
 import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.FrameLayout
 import androidx.core.widget.addTextChangedListener
 import com.example.translator.R

@@ -13,7 +13,10 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 class RepositoryModule {
     @Provides
-    fun provideHomeRepository(translatedDao: TranslatedDao, apiService: ApiService): HomeRepository {
+    fun provideHomeRepository(
+        translatedDao: TranslatedDao,
+        apiService: ApiService,
+    ): HomeRepository {
         return HomeRepositoryImpl(translatedDao, apiService)
     }
 }

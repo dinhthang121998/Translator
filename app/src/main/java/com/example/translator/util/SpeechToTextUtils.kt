@@ -7,12 +7,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SpeechToTextUtils @Inject constructor(@ApplicationContext private val context: Context) {
+class SpeechToTextUtils
+    @Inject
+    constructor(
+        @ApplicationContext private val context: Context,
+    ) {
+        val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
 
-    val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
-
-    init {
-
+        init {
+        }
     }
-
-}

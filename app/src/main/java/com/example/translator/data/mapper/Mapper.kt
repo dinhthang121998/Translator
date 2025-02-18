@@ -21,8 +21,11 @@ fun TranslatedWord.toTranslatedEntity(): TranslatedEntity {
 }
 
 fun LanguageItemStore.toLanguageItem() =
-    Downloadable.fromId(this.downloaded)
-        ?.let { SearchLanguageItem.LanguageItem(this.languageName, this.languageCode, it) }
+    SearchLanguageItem.LanguageItem(
+        this.languageName,
+        this.languageCode,
+        Downloadable.fromId(this.downloaded),
+    )
 
 fun SearchLanguageItem.LanguageItem.toLanguageItemStore() =
     LanguageItemStore.newBuilder().apply {
@@ -43,8 +46,9 @@ fun ArrayList<MeaningsDto>.toMeanings(): ArrayList<Meanings> {
     } as ArrayList<Meanings>
 }
 
-fun WordInformationDto.toWordInformation() = WordInformation(
-    word = this.word,
-    phonetic = this.phonetic,
-    meaning = this.meanings.toMeanings()
-)
+fun WordInformationDto.toWordInformation() =
+    WordInformation(
+        word = this.word,
+        phonetic = this.phonetic,
+        meaning = this.meanings.toMeanings(),
+    )

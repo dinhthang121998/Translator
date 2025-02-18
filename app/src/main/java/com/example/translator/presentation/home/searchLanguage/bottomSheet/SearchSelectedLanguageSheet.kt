@@ -2,6 +2,7 @@ package com.example.translator.presentation.home.searchLanguage.bottomSheet
 
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -49,6 +50,7 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
         lifecycleScope.launch {
             launch {
                 viewModel.listAllLanguages.collect { listLanguageItem ->
+                    Log.d("AAAA", "Update all = $listLanguageItem")
                     val listSearchLanguageItem = mutableListOf<SearchLanguageItem>()
                     listSearchLanguageItem.addTitle(getString(R.string.all_language))
                     listSearchLanguageItem.addAll(listLanguageItem)
@@ -81,7 +83,7 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
         }
 
         viewBinding.edtSearchLanguage.addTextChangedListener { text: Editable? ->
-            viewModel.filterLanguage(text.toString())
+            viewModel.filterLanguageItem(text.toString())
         }
     }
 

@@ -7,5 +7,5 @@ data class WordInformationDto(
     @SerializedName("phonetic") var phonetic: String? = null,
     @SerializedName("phonetics") var phonetics: ArrayList<PhoneticsDto> = arrayListOf(),
     @SerializedName("origin") var origin: String? = null,
-    @SerializedName("meanings") var meanings: ArrayList<MeaningsDto> = arrayListOf()
+    @SerializedName("meanings") var meanings: ArrayList<MeaningsDto> = arrayListOf(),
 )

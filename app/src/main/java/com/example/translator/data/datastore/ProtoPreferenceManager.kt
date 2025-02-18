@@ -14,22 +14,7 @@ class ProtoPreferenceManager
     constructor(
         @ApplicationContext private val context: Context,
     ) {
-        suspend fun saveLanguageItem(
-            isFromLanguageItem: Boolean,
-            languageItem: SearchLanguageItem.LanguageItem,
-        ) {
-            context.pairLanguageItemStore.updateData { pairLanguageItemStore ->
-                val languageItemStore = languageItem.toLanguageItemStore()
-                if (isFromLanguageItem) {
-                    pairLanguageItemStore.toBuilder().setFromLanguageItemStore(languageItemStore)
-                        .build()
-                } else {
-                    pairLanguageItemStore.toBuilder().setToLanguageItemStore(languageItemStore).build()
-                }
-            }
-        }
-
-        suspend fun saveSwapLanguageItem(pair: Pair<SearchLanguageItem.LanguageItem, SearchLanguageItem.LanguageItem>) {
+        suspend fun savePairLanguageItem(pair: Pair<SearchLanguageItem.LanguageItem, SearchLanguageItem.LanguageItem>) {
             context.pairLanguageItemStore.updateData { pairLanguageItemStore ->
                 pairLanguageItemStore.toBuilder()
                     .setFromLanguageItemStore(pair.first.toLanguageItemStore())

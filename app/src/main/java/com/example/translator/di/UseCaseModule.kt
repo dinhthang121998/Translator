@@ -2,12 +2,10 @@ package com.example.translator.di
 
 import com.example.translator.data.datastore.ProtoPreferenceManager
 import com.example.translator.domain.repository.HomeRepository
-import com.example.translator.domain.usecase.DataStoreUseCase
-import com.example.translator.domain.usecase.HomeUseCase
-import com.example.translator.domain.usecase.LanguageUseCase
-import com.example.translator.domain.usecase.SpeakingUseCase
-import com.example.translator.domain.usecase.TranslationUseCase
-import com.example.translator.util.TextToSpeechUtils
+import com.example.translator.domain.usecase.AddTranslatedWordUseCase
+import com.example.translator.domain.usecase.GetPairLanguageUseCase
+import com.example.translator.domain.usecase.GetWordInformationUseCase
+import com.example.translator.domain.usecase.StorePairLanguageUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,33 +17,25 @@ import javax.inject.Singleton
 class UseCaseModule {
     @Provides
     @Singleton
-    fun provideHomeUseCase(homeRepository: HomeRepository): HomeUseCase {
-        return HomeUseCase(homeRepository)
+    fun provideGetPairLanguageUseCase(protoPreferenceManager: ProtoPreferenceManager): GetPairLanguageUseCase {
+        return GetPairLanguageUseCase(protoPreferenceManager)
     }
 
     @Provides
     @Singleton
-    fun provideLanguageUseCase(): LanguageUseCase {
-        return LanguageUseCase()
+    fun provideStorePairLanguageUseCase(protoPreferenceManager: ProtoPreferenceManager): StorePairLanguageUseCase {
+        return StorePairLanguageUseCase(protoPreferenceManager)
     }
 
     @Provides
     @Singleton
-    fun provideTranslationUseCase(): TranslationUseCase {
-        return TranslationUseCase()
+    fun provideAddTranslatedWordUseCase(homeRepository: HomeRepository): AddTranslatedWordUseCase {
+        return AddTranslatedWordUseCase(homeRepository)
     }
 
     @Provides
     @Singleton
-    fun provideDataStoreUseCase(protoPreferenceManager: ProtoPreferenceManager): DataStoreUseCase {
-        return DataStoreUseCase(protoPreferenceManager)
+    fun provideGetWordInformationUseCase(homeRepository: HomeRepository): GetWordInformationUseCase {
+        return GetWordInformationUseCase(homeRepository)
     }
-
-    @Provides
-    @Singleton
-    fun provideSpeakingUseCase(textToSpeechUtils: TextToSpeechUtils): SpeakingUseCase {
-        return SpeakingUseCase(textToSpeechUtils)
-    }
-
-
 }

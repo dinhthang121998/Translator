@@ -8,14 +8,14 @@ import com.example.translator.domain.repository.HomeRepository
 import javax.inject.Inject
 
 class HomeRepositoryImpl
-@Inject
-constructor(private val translatedDao: TranslatedDao, private val apiService: ApiService) :
+    @Inject
+    constructor(private val translatedDao: TranslatedDao, private val apiService: ApiService) :
     HomeRepository {
-    override suspend fun addTranslatedWord(translatedEntity: TranslatedEntity) {
-        translatedDao.insertTranslatedWord(translatedEntity)
-    }
+        override suspend fun addTranslatedWord(translatedEntity: TranslatedEntity) {
+            translatedDao.insertTranslatedWord(translatedEntity)
+        }
 
-    override suspend fun getWordInformation(word: String): List<WordInformationDto> {
-        return apiService.getWordInformation(word)
+        override suspend fun getWordInformation(word: String): List<WordInformationDto> {
+            return apiService.getWordInformation(word)
+        }
     }
-}
