@@ -6,6 +6,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+// TODO: CustomView for SpeechRecognizer
 @Singleton
 class SpeechToTextUtils
     @Inject
@@ -15,5 +16,6 @@ class SpeechToTextUtils
         val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
 
         init {
+
         }
     }
