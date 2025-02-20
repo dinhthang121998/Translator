@@ -3,7 +3,9 @@ package com.example.translator.data.database.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.Query
 import com.example.translator.data.database.entity.TranslatedEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TranslatedDao {
@@ -12,4 +14,19 @@ interface TranslatedDao {
 
     @Delete
     suspend fun deleteTranslatedWord(translatedEntity: TranslatedEntity)
+
+    @Query("SELECT * FROM translatedEntity ORDER BY id DESC")
+    fun getAllTranslatedWord(): Flow<List<TranslatedEntity>>
+
+    @Query("UPDATE translatedentity SET isFavourite = :isFavorite WHERE id = :id")
+    suspend fun updateTranslatedWordFavorite(
+        id: Int,
+        isFavorite: Boolean,
+    )
+
+    @Query("SELECT * FROM translatedEntity ORDER BY id DESC")
+    fun a(): Flow<List<TranslatedEntity>>
+
+    @Insert
+    suspend fun b(translatedEntity: TranslatedEntity)
 }

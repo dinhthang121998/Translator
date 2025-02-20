@@ -12,11 +12,16 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.translator.R
 import com.example.translator.databinding.FragmentHomeBinding
+import com.example.translator.domain.model.MeaningItem
 import com.example.translator.domain.model.SearchLanguageItem
+import com.example.translator.domain.model.TranslatedWord
 import com.example.translator.presentation.BaseFragment
+import com.example.translator.presentation.home.meaning.MeaningsAdapter
 import com.example.translator.presentation.home.searchLanguage.bottomSheet.SearchSelectedLanguageSheet
+import com.example.translator.presentation.home.translatedWord.TranslatedWordAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -34,6 +39,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
 
     // Declare an ActivityResultLauncher
     private lateinit var speechResultLauncher: ActivityResultLauncher<Intent>
+    private var meaningsAdapter: MeaningsAdapter? = null
+    private var translatedWordAdapter: TranslatedWordAdapter? = null
 
     override fun onViewCreated(
         view: View,
@@ -41,17 +48,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.observePairLanguageItemChange()
+        viewModel.getTranslatedWords()
 
         setupOnClickView()
         setupOriginalView()
         setupTranslatedView()
+        setupMeaningAdapter(listOf())
+        setupTranslatedWordAdapter(listOf())
 
         speechResultLauncher =
             registerForActivityResult(
                 ActivityResultContracts.StartActivityForResult(),
             ) { result ->
                 if (result.resultCode == RESULT_OK && result.data != null) {
-                    val results = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                    val results =
+                        result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                     results?.firstOrNull()?.let {
                         Log.d("SpeechToText", "Recognized Text: $it")
                     }
@@ -60,7 +71,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
 
         lifecycleScope.launch {
             launch {
-                viewModel.pairLanguage.collect { (fromLanguageItem, toLanguageItem) ->
+                viewModel.pairLanguageFlow.collect { (fromLanguageItem, toLanguageItem) ->
                     if (fromLanguageItem.languageName.isEmpty()) {
                         binding.tvFromLanguage.text = getString(R.string.search)
                     } else {
@@ -88,13 +99,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
             }
 
             launch {
-                viewModel.translatedTextState.collect { translatedText ->
+                viewModel.translatedTextFlow.collect { translatedText ->
                     binding.translated.setText(translatedText)
                 }
             }
 
             launch {
-                viewModel.textDefinitionState.collect { wordDefinition ->
+                viewModel.textDefinitionFlow.collect { wordDefinition ->
                     wordDefinition.phonetic?.let { phonetic ->
                         binding.original.showPhonetic(true)
                         binding.original.setPhonetic(phonetic)
@@ -112,6 +123,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
                 }
             }
 
+            launch {
+                viewModel.getTranslatedWordsFlow.collect { translatedWords ->
+                    Log.d("AAAA", "translatedWords = $translatedWords")
+                    translatedWordAdapter?.updateTranslatedWords(translatedWords)
+                }
+            }
+
 //            launch {
 //                viewModel.swapTextState.collect { (fromText, toText) ->
 //                    viewModel.originalText = fromText
@@ -120,6 +138,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
 //                    binding.translated.setText(toText)
 //                }
 //            }
+        }
+    }
+
+    private fun setupTranslatedWordAdapter(translatedWords: List<TranslatedWord>) {
+        translatedWordAdapter =
+            TranslatedWordAdapter(translatedWords, onClickFavorite = { translatedItem ->
+                viewModel.updateTranslatedFavorite(translatedItem)
+            }, onClickItem = {})
+        binding.rcvTranslatedWord.apply {
+            layoutManager = LinearLayoutManager(this@HomeFragment.requireContext())
+            adapter = translatedWordAdapter
+        }
+    }
+
+    private fun setupMeaningAdapter(meaningsItem: List<MeaningItem>) {
+        meaningsAdapter = MeaningsAdapter(meaningsItem)
+        binding.rcvMeaning.apply {
+            layoutManager = LinearLayoutManager(this@HomeFragment.requireContext())
+            adapter = meaningsAdapter
         }
     }
 
@@ -152,7 +189,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
                         RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                         RecognizerIntent.LANGUAGE_MODEL_FREE_FORM,
                     )
-                    putExtra(RecognizerIntent.EXTRA_LANGUAGE, viewModel.fromLanguageItem.languageCode) // Set the language
+                    putExtra(
+                        RecognizerIntent.EXTRA_LANGUAGE,
+                        viewModel.fromLanguageItem.languageCode,
+                    ) // Set the language
                     putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
                 }
 
