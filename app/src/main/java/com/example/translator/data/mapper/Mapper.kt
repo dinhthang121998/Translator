@@ -52,3 +52,5 @@ fun WordInformationDto.toWordInformation() =
         phonetic = this.phonetic,
         meaning = this.meanings.toMeanings(),
     )
+
+fun TranslatedEntity.toTranslatedWord() = TranslatedWord(this.id, this.originalWord, this.translatedWord, this.isFavourite)
