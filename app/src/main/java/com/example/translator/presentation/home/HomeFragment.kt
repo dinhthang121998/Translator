@@ -22,6 +22,7 @@ import com.example.translator.presentation.BaseFragment
 import com.example.translator.presentation.home.meaning.MeaningsAdapter
 import com.example.translator.presentation.home.searchLanguage.bottomSheet.SearchSelectedLanguageSheet
 import com.example.translator.presentation.home.translatedWord.TranslatedWordAdapter
+import com.example.translator.presentation.translateImage.TranslateImageActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -114,18 +115,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
                     }
 
                     val isShowSpeak = wordDefinition.word != null
-                    Log.d("AAAA", "isShowSpeak = $isShowSpeak")
                     binding.original.showSpeak(isShowSpeak)
 
                     val isShowSpeakTranslated = viewModel.translatedText.isNotEmpty()
-                    Log.d("AAAA", "isShowSpeakTranslated = $isShowSpeakTranslated")
                     binding.translated.showSpeak(isShowSpeakTranslated)
                 }
             }
 
             launch {
                 viewModel.getTranslatedWordsFlow.collect { translatedWords ->
-                    Log.d("AAAA", "translatedWords = $translatedWords")
                     translatedWordAdapter?.updateTranslatedWords(translatedWords)
                 }
             }
@@ -272,6 +270,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
 
         binding.ivSwitch.setOnClickListener {
             viewModel.swapLanguageItem(viewModel.fromLanguageItem, viewModel.toLanguageItem)
+        }
+
+        binding.ivImage.setOnClickListener {
+            val intent = Intent(context, TranslateImageActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.ivCamera.setOnClickListener {
+
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.translator.di
 
 import android.content.Context
+import com.example.translator.util.TextRecognitionUtils
 import com.example.translator.util.TextToSpeechUtils
 import com.example.translator.util.TranslationUtils
 import dagger.Module
@@ -27,5 +28,11 @@ class UtilsModule {
         @ApplicationContext context: Context,
     ): TranslationUtils {
         return TranslationUtils()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTextRecognitionUtils(@ApplicationContext context: Context): TextRecognitionUtils {
+        return TextRecognitionUtils(context)
     }
 }

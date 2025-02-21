@@ -79,7 +79,6 @@ class HomeViewmodel
                         languageItem,
                     )
                 }
-            Log.d("AAAA", "store")
 
             // Use launchIn(viewModelScope) instead of viewModelScope.launch { your code } to complete the flow
             // or viewModelScope.launch { useCaseFlow.invoke().collect { empty here for Unit }}

@@ -50,7 +50,6 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
         lifecycleScope.launch {
             launch {
                 viewModel.listAllLanguages.collect { listLanguageItem ->
-                    Log.d("AAAA", "Update all = $listLanguageItem")
                     val listSearchLanguageItem = mutableListOf<SearchLanguageItem>()
                     listSearchLanguageItem.addTitle(getString(R.string.all_language))
                     listSearchLanguageItem.addAll(listLanguageItem)
