@@ -3,7 +3,6 @@ package com.example.translator.presentation.translateImage
 import android.graphics.Matrix
 import android.net.Uri
 import android.util.Log
-import android.widget.ImageView
 import androidx.lifecycle.viewModelScope
 import com.example.translator.domain.model.TextDrawing
 import com.example.translator.presentation.BaseViewmodel
@@ -17,29 +16,32 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TranslateImageViewmodel @Inject constructor(
-    private val textRecognitionUtils: TextRecognitionUtils,
-    private val translationUtils: TranslationUtils
-) :
+class TranslateImageViewmodel
+    @Inject
+    constructor(
+        private val textRecognitionUtils: TextRecognitionUtils,
+        private val translationUtils: TranslationUtils,
+    ) :
     BaseViewmodel() {
+        private val _listTextDrawing = MutableStateFlow<List<TextDrawing>>(listOf())
+        val listTextDrawing: StateFlow<List<TextDrawing>> = _listTextDrawing
 
-    private val _listTextDrawing = MutableStateFlow<List<TextDrawing>>(listOf())
-    val listTextDrawing: StateFlow<List<TextDrawing>> = _listTextDrawing
-
-    fun textRecognition(uri: Uri, matrix: Matrix) {
-        viewModelScope.launch {
-            textRecognitionUtils.initRecognition("en")
-            val result = textRecognitionUtils.recognizer(uri).map {
-                it.copy(textLine = translationUtils.translate(it.textLine, "en", "vi"), rect = it.rect?.mapBoundingBox(matrix))
+        fun textRecognition(
+            uri: Uri,
+            matrix: Matrix,
+        ) {
+            viewModelScope.launch {
+                textRecognitionUtils.initRecognition("en")
+                val result =
+                    textRecognitionUtils.recognizer(uri).map {
+                        it.copy(textLine = translationUtils.translate(it.textLine, "en", "vi"), rect = it.rect?.mapBoundingBox(matrix))
+                    }
+                _listTextDrawing.value = result
+                Log.d(
+                    "AAAA",
+                    "Input image: height = ${textRecognitionUtils.inputImage?.height}, width = ${textRecognitionUtils.inputImage?.width}",
+                )
+                Log.d("AAAA", "result = $result")
             }
-            _listTextDrawing.value = result
-            Log.d(
-                "AAAA",
-                "Input image: height = ${textRecognitionUtils.inputImage?.height}, width = ${textRecognitionUtils.inputImage?.width}"
-            )
-            Log.d("AAAA", "result = $result")
         }
     }
-
-
-}

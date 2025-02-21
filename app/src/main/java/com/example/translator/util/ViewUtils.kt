@@ -8,9 +8,7 @@ fun View.showOrGone(isShowed: Boolean) {
     this.visibility = if (isShowed) View.VISIBLE else View.GONE
 }
 
-fun Rect.mapBoundingBox(
-    matrix: Matrix
-): Rect {
+fun Rect.mapBoundingBox(matrix: Matrix): Rect {
     val values = FloatArray(9)
     matrix.getValues(values)
 

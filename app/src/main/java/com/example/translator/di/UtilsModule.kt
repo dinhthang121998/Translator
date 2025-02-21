@@ -32,7 +32,9 @@ class UtilsModule {
 
     @Provides
     @Singleton
-    fun provideTextRecognitionUtils(@ApplicationContext context: Context): TextRecognitionUtils {
+    fun provideTextRecognitionUtils(
+        @ApplicationContext context: Context,
+    ): TextRecognitionUtils {
         return TextRecognitionUtils(context)
     }
 }

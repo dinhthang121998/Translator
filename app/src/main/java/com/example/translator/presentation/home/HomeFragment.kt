@@ -278,7 +278,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         }
 
         binding.ivCamera.setOnClickListener {
-
         }
     }
 

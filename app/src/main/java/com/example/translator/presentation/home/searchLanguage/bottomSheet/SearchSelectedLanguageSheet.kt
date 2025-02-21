@@ -2,7 +2,6 @@ package com.example.translator.presentation.home.searchLanguage.bottomSheet
 
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels

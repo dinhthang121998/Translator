@@ -1,6 +1,5 @@
 package com.example.translator.presentation.home
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.translator.common.UiState
 import com.example.translator.domain.model.SearchLanguageItem
