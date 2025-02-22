@@ -1,6 +1,5 @@
 package com.example.translator.presentation.home
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.translator.common.UiState
 import com.example.translator.domain.model.SearchLanguageItem
@@ -37,13 +36,6 @@ class HomeViewmodel
     ) :
     BaseViewmodel() {
         // MutableStateFlow does not update the same address??
-        private val _listTranslatedWord = MutableStateFlow(TranslatedWord())
-        val listTranslatedWord = _listTranslatedWord
-
-        private val _listAllLanguagesFlow =
-            MutableStateFlow(mutableListOf<SearchLanguageItem.LanguageItem>())
-        val listAllLanguagesFlow = _listAllLanguagesFlow
-
         private val _pairLanguageFlow =
             MutableStateFlow(Pair(SearchLanguageItem.LanguageItem(), SearchLanguageItem.LanguageItem()))
         val pairLanguageFlow = _pairLanguageFlow
@@ -79,7 +71,6 @@ class HomeViewmodel
                         languageItem,
                     )
                 }
-            Log.d("AAAA", "store")
 
             // Use launchIn(viewModelScope) instead of viewModelScope.launch { your code } to complete the flow
             // or viewModelScope.launch { useCaseFlow.invoke().collect { empty here for Unit }}

@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
+import com.example.translator.domain.model.SearchLanguageItem
+import com.example.translator.presentation.home.searchLanguage.bottomSheet.SearchSelectedLanguageSheet
 
 abstract class BaseFragment<V : ViewBinding, M : ViewModel> : Fragment() {
     private var _binding: V? = null
@@ -33,5 +35,20 @@ abstract class BaseFragment<V : ViewBinding, M : ViewModel> : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun showSearchBottomSheet(clickItem: ((SearchLanguageItem) -> Unit)? = null) {
+        val bottomSheetLanguage =
+            SearchSelectedLanguageSheet.newInstance().apply {
+                clickCloseButton = {
+                    this.dismiss()
+                }
+                clickItemButton = { searchLanguageItem: SearchLanguageItem ->
+                    val languageItem = searchLanguageItem as SearchLanguageItem.LanguageItem
+                    clickItem?.invoke(languageItem)
+                    this.dismiss()
+                }
+            }
+        bottomSheetLanguage.show(childFragmentManager, SearchSelectedLanguageSheet.TAG)
     }
 }

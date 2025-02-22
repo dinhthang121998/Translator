@@ -29,26 +29,27 @@ class TranslateView(context: Context, attributes: AttributeSet) : FrameLayout(co
 
         try {
             binding.editText.hint = typedArray.getString(R.styleable.TranslateView_hint)
-            binding.editText.setOnFocusChangeListener { v, hasFocus ->
-                onFocusListener?.invoke(hasFocus)
-            }
-            binding.editText.addTextChangedListener { text: Editable? ->
-                onTextChanged?.invoke(text.toString())
-            }
-            binding.ivClearText.setOnClickListener {
-                onClickClose?.invoke()
-            }
-            binding.ivTranslate.setOnClickListener {
-                onClickTranslation?.invoke()
-            }
-            binding.ivSpeak.setOnClickListener {
-                onClickSpeak?.invoke(binding.editText.text.toString())
-            }
-            binding.ivMic.setOnClickListener {
-                onClickMic?.invoke()
-            }
         } finally {
             typedArray.recycle()
+        }
+
+        binding.editText.setOnFocusChangeListener { v, hasFocus ->
+            onFocusListener?.invoke(hasFocus)
+        }
+        binding.editText.addTextChangedListener { text: Editable? ->
+            onTextChanged?.invoke(text.toString())
+        }
+        binding.ivClearText.setOnClickListener {
+            onClickClose?.invoke()
+        }
+        binding.ivTranslate.setOnClickListener {
+            onClickTranslation?.invoke()
+        }
+        binding.ivSpeak.setOnClickListener {
+            onClickSpeak?.invoke(binding.editText.text.toString())
+        }
+        binding.ivMic.setOnClickListener {
+            onClickMic?.invoke()
         }
     }
 
