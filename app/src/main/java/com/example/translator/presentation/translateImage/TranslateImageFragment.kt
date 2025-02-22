@@ -9,7 +9,9 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.translator.R
 import com.example.translator.databinding.FragmentTranslateImageBinding
+import com.example.translator.domain.model.SearchLanguageItem
 import com.example.translator.presentation.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -25,10 +27,11 @@ class TranslateImageFragment :
             uri?.let {
                 Log.d("PhotoPicker", "Selected URI: $uri")
                 binding.ivSelectedImage.setImageURI(uri)
-                viewModel.textRecognition(uri, binding.ivSelectedImage.imageMatrix)
-                Log.d(
-                    "AAAA",
-                    "imageView height = ${binding.ivSelectedImage.height}, width = ${binding.ivSelectedImage.width}",
+                viewModel.textRecognition(
+                    uri,
+                    binding.ivSelectedImage.imageMatrix,
+                    viewModel.fromLanguageItem.languageCode,
+                    viewModel.toLanguageItem.languageCode,
                 )
             } ?: run {
                 Log.d("PhotoPicker", "No media selected")
@@ -52,10 +55,71 @@ class TranslateImageFragment :
         super.onViewCreated(view, savedInstanceState)
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 
+        viewModel.observePairLanguageItemChange()
+        setUpOnClick()
+        setUpMediaChooseLanguageView()
+
         lifecycleScope.launch {
             launch {
                 viewModel.listTextDrawing.collect { listTextDrawing ->
                     binding.overlayView.updateTextDrawing(listTextDrawing)
+                }
+            }
+
+            launch {
+                viewModel.pairLanguageFlow.collect { (fromLanguageItem, toLanguageItem) ->
+                    if (fromLanguageItem.languageName.isEmpty()) {
+                        binding.imageChooseLanguageView.setFromLanguage(getString(R.string.search))
+                    } else {
+                        viewModel.fromLanguageItem = fromLanguageItem
+                        binding.imageChooseLanguageView.setFromLanguage(fromLanguageItem.languageName)
+                    }
+
+                    if (fromLanguageItem.languageName.isEmpty()) {
+                        binding.imageChooseLanguageView.setToLanguage(getString(R.string.search))
+                    } else {
+                        viewModel.toLanguageItem = toLanguageItem
+                        binding.imageChooseLanguageView.setToLanguage(toLanguageItem.languageName)
+                    }
+
+                    if (viewModel.fromLanguageItem.languageCode.isNotEmpty() &&
+                        viewModel.toLanguageItem.languageCode.isNotEmpty()
+                    ) {
+                        viewModel.uri?.let { uri ->
+                            viewModel.textRecognition(
+                                uri,
+                                binding.ivSelectedImage.imageMatrix,
+                                viewModel.fromLanguageItem.languageCode,
+                                viewModel.toLanguageItem.languageCode,
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setUpOnClick() {
+        binding.ivBack.setOnClickListener {
+            requireActivity().finish()
+        }
+    }
+
+    private fun setUpMediaChooseLanguageView() {
+        binding.imageChooseLanguageView.apply {
+            onClickFromLanguage = {
+                showSearchBottomSheet { searchLanguageItem ->
+                    val languageItem = searchLanguageItem as SearchLanguageItem.LanguageItem
+                    setFromLanguage(languageItem.languageName)
+                    viewModel.storeLanguageItem(true, languageItem)
+                }
+            }
+
+            onClickToLanguage = {
+                showSearchBottomSheet { searchLanguageItem ->
+                    val languageItem = searchLanguageItem as SearchLanguageItem.LanguageItem
+                    setToLanguage(languageItem.languageName)
+                    viewModel.storeLanguageItem(false, languageItem)
                 }
             }
         }

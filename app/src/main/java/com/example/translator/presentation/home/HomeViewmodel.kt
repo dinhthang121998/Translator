@@ -36,13 +36,6 @@ class HomeViewmodel
     ) :
     BaseViewmodel() {
         // MutableStateFlow does not update the same address??
-        private val _listTranslatedWord = MutableStateFlow(TranslatedWord())
-        val listTranslatedWord = _listTranslatedWord
-
-        private val _listAllLanguagesFlow =
-            MutableStateFlow(mutableListOf<SearchLanguageItem.LanguageItem>())
-        val listAllLanguagesFlow = _listAllLanguagesFlow
-
         private val _pairLanguageFlow =
             MutableStateFlow(Pair(SearchLanguageItem.LanguageItem(), SearchLanguageItem.LanguageItem()))
         val pairLanguageFlow = _pairLanguageFlow

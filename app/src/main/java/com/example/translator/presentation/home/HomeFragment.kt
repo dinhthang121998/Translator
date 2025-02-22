@@ -20,7 +20,6 @@ import com.example.translator.domain.model.SearchLanguageItem
 import com.example.translator.domain.model.TranslatedWord
 import com.example.translator.presentation.BaseFragment
 import com.example.translator.presentation.home.meaning.MeaningsAdapter
-import com.example.translator.presentation.home.searchLanguage.bottomSheet.SearchSelectedLanguageSheet
 import com.example.translator.presentation.home.translatedWord.TranslatedWordAdapter
 import com.example.translator.presentation.translateImage.TranslateImageActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,6 +51,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         viewModel.getTranslatedWords()
 
         setupOnClickView()
+        setUpHomeChooseLanguageView()
         setupOriginalView()
         setupTranslatedView()
         setupMeaningAdapter(listOf())
@@ -74,17 +74,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
             launch {
                 viewModel.pairLanguageFlow.collect { (fromLanguageItem, toLanguageItem) ->
                     if (fromLanguageItem.languageName.isEmpty()) {
-                        binding.tvFromLanguage.text = getString(R.string.search)
+                        binding.homeSelectLanguage.setFromLanguage(getString(R.string.search))
                     } else {
                         viewModel.fromLanguageItem = fromLanguageItem
-                        binding.tvFromLanguage.text = fromLanguageItem.languageName
+                        binding.homeSelectLanguage.setFromLanguage(fromLanguageItem.languageName)
                     }
 
                     if (fromLanguageItem.languageName.isEmpty()) {
-                        binding.tvToLanguage.text = getString(R.string.search)
+                        binding.homeSelectLanguage.setToLanguage(getString(R.string.search))
                     } else {
                         viewModel.toLanguageItem = toLanguageItem
-                        binding.tvToLanguage.text = toLanguageItem.languageName
+                        binding.homeSelectLanguage.setToLanguage(toLanguageItem.languageName)
                     }
 
                     if (viewModel.originalText.isNotEmpty() && viewModel.fromLanguageItem.languageCode.isNotEmpty() &&
@@ -136,6 +136,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
 //                    binding.translated.setText(toText)
 //                }
 //            }
+        }
+    }
+
+    private fun setUpHomeChooseLanguageView() {
+        binding.homeSelectLanguage.apply {
+            onClickFromLanguage = {
+                showSearchBottomSheet { searchLanguageItem ->
+                    val languageItem = searchLanguageItem as SearchLanguageItem.LanguageItem
+                    setFromLanguage(languageItem.languageName)
+                    viewModel.storeLanguageItem(true, languageItem)
+                }
+            }
+
+            onClickToLanguage = {
+                showSearchBottomSheet { searchLanguageItem ->
+                    val languageItem = searchLanguageItem as SearchLanguageItem.LanguageItem
+                    setToLanguage(languageItem.languageName)
+                    viewModel.storeLanguageItem(false, languageItem)
+                }
+            }
+
+            onClickSwitch = {
+//                binding.ivSwitch.setOnClickListener {
+//                    viewModel.swapLanguageItem(viewModel.fromLanguageItem, viewModel.toLanguageItem)
+//                }
+            }
         }
     }
 
@@ -252,26 +278,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
     }
 
     private fun setupOnClickView() {
-        binding.tvFromLanguage.setOnClickListener {
-            showSearchBottomSheet { searchLanguageItem ->
-                val languageItem = searchLanguageItem as SearchLanguageItem.LanguageItem
-                binding.tvFromLanguage.text = languageItem.languageName
-                viewModel.storeLanguageItem(true, languageItem)
-            }
-        }
-
-        binding.tvToLanguage.setOnClickListener {
-            showSearchBottomSheet { searchLanguageItem ->
-                val languageItem = searchLanguageItem as SearchLanguageItem.LanguageItem
-                binding.tvToLanguage.text = languageItem.languageName
-                viewModel.storeLanguageItem(false, languageItem)
-            }
-        }
-
-        binding.ivSwitch.setOnClickListener {
-            viewModel.swapLanguageItem(viewModel.fromLanguageItem, viewModel.toLanguageItem)
-        }
-
         binding.ivImage.setOnClickListener {
             val intent = Intent(context, TranslateImageActivity::class.java)
             startActivity(intent)
@@ -279,21 +285,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
 
         binding.ivCamera.setOnClickListener {
         }
-    }
-
-    private fun showSearchBottomSheet(clickItem: ((SearchLanguageItem) -> Unit)? = null) {
-        val bottomSheetLanguage =
-            SearchSelectedLanguageSheet.newInstance().apply {
-                clickCloseButton = {
-                    this.dismiss()
-                }
-                clickItemButton = { searchLanguageItem: SearchLanguageItem ->
-                    val languageItem = searchLanguageItem as SearchLanguageItem.LanguageItem
-                    clickItem?.invoke(languageItem)
-                    this.dismiss()
-                }
-            }
-        bottomSheetLanguage.show(childFragmentManager, SearchSelectedLanguageSheet.TAG)
     }
 
     companion object {

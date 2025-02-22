@@ -5,4 +5,10 @@
         <attr name="hint" format="string"/>
     </declare-styleable>
 
+    <declare-styleable name="ChooseLanguageView">
+        <attr name="fromLanguageText" format="string"/>
+        <attr name="toLanguageText" format="string"/>
+        <attr name="middleDrawable" format="reference"/>
+    </declare-styleable>
+
 </resources>

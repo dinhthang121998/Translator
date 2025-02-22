@@ -2,9 +2,12 @@ package com.example.translator.presentation.translateImage
 
 import android.graphics.Matrix
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.example.translator.common.UiState
+import com.example.translator.domain.model.SearchLanguageItem
 import com.example.translator.domain.model.TextDrawing
+import com.example.translator.domain.usecase.GetPairLanguageUseCase
+import com.example.translator.domain.usecase.StorePairLanguageUseCase
 import com.example.translator.presentation.BaseViewmodel
 import com.example.translator.util.TextRecognitionUtils
 import com.example.translator.util.TranslationUtils
@@ -12,6 +15,8 @@ import com.example.translator.util.mapBoundingBox
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,6 +24,8 @@ import javax.inject.Inject
 class TranslateImageViewmodel
     @Inject
     constructor(
+        private val storePairLanguageUseCase: StorePairLanguageUseCase,
+        private val getPairLanguageUseCase: GetPairLanguageUseCase,
         private val textRecognitionUtils: TextRecognitionUtils,
         private val translationUtils: TranslationUtils,
     ) :
@@ -26,22 +33,68 @@ class TranslateImageViewmodel
         private val _listTextDrawing = MutableStateFlow<List<TextDrawing>>(listOf())
         val listTextDrawing: StateFlow<List<TextDrawing>> = _listTextDrawing
 
+        private val _pairLanguageFlow =
+            MutableStateFlow(Pair(SearchLanguageItem.LanguageItem(), SearchLanguageItem.LanguageItem()))
+        val pairLanguageFlow = _pairLanguageFlow
+
+        var uri: Uri? = null
+
+        var fromLanguageItem = SearchLanguageItem.LanguageItem()
+        var toLanguageItem = SearchLanguageItem.LanguageItem()
+
+        // TODO add languageIdentify option
         fun textRecognition(
             uri: Uri,
             matrix: Matrix,
+            fromLanguageCode: String,
+            toLanguageCode: String,
         ) {
             viewModelScope.launch {
-                textRecognitionUtils.initRecognition("en")
+                this@TranslateImageViewmodel.uri = uri
+                textRecognitionUtils.initRecognition(fromLanguageCode)
                 val result =
                     textRecognitionUtils.recognizer(uri).map {
-                        it.copy(textLine = translationUtils.translate(it.textLine, "en", "vi"), rect = it.rect?.mapBoundingBox(matrix))
+                        it.copy(
+                            textLine = translationUtils.translate(it.textLine, fromLanguageCode, toLanguageCode),
+                            rect = it.rect?.mapBoundingBox(matrix),
+                        )
                     }
                 _listTextDrawing.value = result
-                Log.d(
-                    "AAAA",
-                    "Input image: height = ${textRecognitionUtils.inputImage?.height}, width = ${textRecognitionUtils.inputImage?.width}",
-                )
-                Log.d("AAAA", "result = $result")
             }
+        }
+
+        fun storeLanguageItem(
+            isFromLanguageItem: Boolean,
+            languageItem: SearchLanguageItem.LanguageItem,
+        ) {
+            val pairLanguage =
+                if (isFromLanguageItem) {
+                    Pair(languageItem, _pairLanguageFlow.value.second)
+                } else {
+                    Pair(
+                        _pairLanguageFlow.value.first,
+                        languageItem,
+                    )
+                }
+
+            // Use launchIn(viewModelScope) instead of viewModelScope.launch { your code } to complete the flow
+            // or viewModelScope.launch { useCaseFlow.invoke().collect { empty here for Unit }}
+            storePairLanguageUseCase.invoke(pairLanguage)
+                .launchIn(viewModelScope)
+        }
+
+        // every time data store is updated, you can observe the data changes
+        fun observePairLanguageItemChange() {
+            getPairLanguageUseCase.invoke(Unit).onEach { result ->
+                when (result) {
+                    is UiState.Error -> TODO()
+                    is UiState.Loading -> TODO()
+                    is UiState.Success -> {
+                        result.data?.let { pairLanguage ->
+                            _pairLanguageFlow.value = pairLanguage
+                        }
+                    }
+                }
+            }.launchIn(viewModelScope)
         }
     }
