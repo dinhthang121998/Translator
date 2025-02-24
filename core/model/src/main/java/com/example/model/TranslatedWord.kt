@@ -1,0 +1,8 @@
+package com.example.model
+
+data class TranslatedWord(
+    val id: Int = 0,
+    val originalWord: String = "",
+    val translatedWord: String = "",
+    val isFavourite: Boolean = false,
+)
