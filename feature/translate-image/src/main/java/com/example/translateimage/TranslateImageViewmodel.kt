@@ -1,7 +1,6 @@
 package com.example.translateimage
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.common.UiState
 import com.example.domain.GetPairLanguageUseCase
@@ -44,7 +43,7 @@ class TranslateImageViewmodel
         var fromLanguageItem = SearchLanguageItem.LanguageItem()
         var toLanguageItem = SearchLanguageItem.LanguageItem()
 
-    // TODO add languageIdentify option
+        // TODO add languageIdentify option
         fun processImage(
             inputImage: InputImage,
             type: TextRecognition,
