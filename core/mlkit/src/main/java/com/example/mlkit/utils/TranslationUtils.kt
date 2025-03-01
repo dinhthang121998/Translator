@@ -1,4 +1,4 @@
-package com.example.mlkit
+package com.example.mlkit.utils
 
 import com.example.common.LanguageUtils
 import com.example.model.Downloadable

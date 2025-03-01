@@ -1,7 +1,7 @@
 package com.example.ui.bottomSheet.searchSelectedLanguage
 
 import androidx.lifecycle.viewModelScope
-import com.example.mlkit.TranslationUtils
+import com.example.mlkit.utils.TranslationUtils
 import com.example.ui.base.BaseViewmodel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
