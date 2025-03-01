@@ -1,9 +1,9 @@
 import com.google.protobuf.gradle.id
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.protobuf") version "0.9.3"
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.protobuf)
 }
 
 android {
@@ -63,6 +63,5 @@ protobuf {
 }
 
 dependencies {
-    implementation("com.google.protobuf:protobuf-javalite:3.25.5") // Ensure this is consistent
-    implementation("com.google.protobuf:protobuf-kotlin-lite:3.25.5")
+    implementation(libs.protobuf.kotlin)
 }

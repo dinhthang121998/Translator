@@ -1,8 +1,8 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -38,33 +38,16 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:common"))
 
-    implementation("androidx.core:core-ktx:1.15.0")
-    testImplementation("junit:junit:4.13.2")
+    implementation(libs.core.ktx)
+    implementation(libs.guava)
+    implementation(libs.bundles.text.recognition)
+    implementation(libs.translation)
 
-    // To recognize Latin script
-    implementation("com.google.mlkit:text-recognition:16.0.1")
-    // To recognize Chinese script
-    implementation("com.google.mlkit:text-recognition-chinese:16.0.1")
-    // To recognize Devanagari script
-    implementation("com.google.mlkit:text-recognition-devanagari:16.0.1")
-    // To recognize Japanese script
-    implementation("com.google.mlkit:text-recognition-japanese:16.0.1")
-    // To recognize Korean script
-    implementation("com.google.mlkit:text-recognition-korean:16.0.1")
-
-    // ML Kit
-    implementation("com.google.mlkit:translate:17.0.3")
+    implementation(libs.camera.core)
 
     // hilt
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-    implementation("com.google.guava:guava:33.3.1-android")
-
-    implementation("androidx.camera:camera-core:1.4.1")
-    implementation("androidx.camera:camera-camera2:1.4.1")
-    implementation("androidx.camera:camera-lifecycle:1.4.1")
-    implementation("androidx.camera:camera-video:1.4.1")
-    implementation("androidx.camera:camera-view:1.4.1")
-    implementation("androidx.camera:camera-extensions:1.4.1")
+    testImplementation(libs.junit)
 }

@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.core.widget.addTextChangedListener
-import com.example.common.R
 import com.example.ui.databinding.TranslateViewBinding
 import com.example.ui.util.showOrGone
 

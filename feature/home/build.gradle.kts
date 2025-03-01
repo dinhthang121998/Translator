@@ -1,8 +1,8 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -49,19 +49,19 @@ dependencies {
     implementation(project(":feature:translate-image"))
     implementation(project(":feature:translate-camerax"))
 
-    implementation("androidx.core:core-ktx:1.15.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.activity:activity:1.10.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-
-    // hilt
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    implementation(libs.core.ktx)
+    implementation(libs.android.appcompat)
+    implementation(libs.android.material)
+    implementation(libs.constraintlayout)
+    implementation(libs.activity)
 
     // viewmodel for Fragment
-    implementation("androidx.fragment:fragment-ktx:1.8.5")
+    implementation(libs.fragment.ktx)
+
+    // hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.bundles.test.android)
 }

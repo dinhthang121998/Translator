@@ -54,7 +54,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
     // Lottie
-    implementation("com.airbnb.android:lottie:6.6.2")
+    implementation(libs.lottie)
 
     // hilt
     implementation("com.google.dagger:hilt-android:2.51.1")

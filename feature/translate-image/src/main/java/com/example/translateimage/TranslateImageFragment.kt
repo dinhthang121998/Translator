@@ -12,12 +12,12 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.common.R
 import com.example.mlkit.TextRecognition
 import com.example.mlkit.overlay.TextGraphic
 import com.example.mlkit.utils.BitmapUtils
 import com.example.model.SearchLanguageItem
 import com.example.translateimage.databinding.FragmentTranslateImageBinding
+import com.example.ui.R
 import com.example.ui.base.BaseFragment
 import com.google.mlkit.vision.common.InputImage
 import dagger.hilt.android.AndroidEntryPoint
