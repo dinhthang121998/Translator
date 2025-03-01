@@ -25,10 +25,15 @@ class GetPairLanguageUseCase
                 UiState.Success(data = pairLanguage)
             }.flowOn(Dispatchers.IO)
 
-        fun LanguageItemStore.toLanguageItem() =
-            SearchLanguageItem.LanguageItem(
-                this.languageName,
-                this.languageCode,
-                Downloadable.fromId(this.downloaded),
-            )
+        fun LanguageItemStore.toLanguageItem(): SearchLanguageItem.LanguageItem {
+            return Downloadable.fromId(this.downloaded)?.let {
+                SearchLanguageItem.LanguageItem(
+                    this.languageName,
+                    this.languageCode,
+                    it,
+                )
+            } ?: run {
+                SearchLanguageItem.LanguageItem()
+            }
+        }
     }

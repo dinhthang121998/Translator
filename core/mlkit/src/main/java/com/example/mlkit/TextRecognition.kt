@@ -1,0 +1,9 @@
+package com.example.mlkit
+
+enum class TextRecognition {
+    LATIN_RECOGNITION,
+    JAPANESE_RECOGNITION,
+    CHINESE_RECOGNITION,
+    KOREAN_RECOGNITION,
+    DEVANAGARI_RECOGNITION,
+}

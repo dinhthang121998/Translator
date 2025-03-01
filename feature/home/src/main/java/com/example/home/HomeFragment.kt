@@ -14,9 +14,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.common.R
+import com.example.common.navigateToActivity
 import com.example.home.databinding.FragmentHomeBinding
 import com.example.home.meaning.MeaningsAdapter
 import com.example.home.translatedWord.TranslatedWordAdapter
+import com.example.translatecamerax.TranslateCameraXActivity
 import com.example.translateimage.TranslateImageActivity
 import com.example.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -276,11 +278,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
 
     private fun setupOnClickView() {
         binding.ivImage.setOnClickListener {
-            val intent = Intent(context, TranslateImageActivity::class.java)
-            startActivity(intent)
+            navigateToActivity(TranslateImageActivity::class.java)
         }
 
         binding.ivCamera.setOnClickListener {
+            navigateToActivity(TranslateCameraXActivity::class.java)
         }
     }
 

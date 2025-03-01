@@ -8,7 +8,7 @@ import com.example.domain.GetTranslatedWordUseCase
 import com.example.domain.GetWordInformationUseCase
 import com.example.domain.StorePairLanguageUseCase
 import com.example.domain.UpdateTranslatedFavoriteUseCase
-import com.example.mlkit.TranslationUtils
+import com.example.mlkit.utils.TranslationUtils
 import com.example.ui.base.BaseViewmodel
 import com.example.voice.TextToSpeechUtils
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,17 +1,19 @@
 package com.example.translateimage
 
-import android.graphics.Matrix
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.common.UiState
 import com.example.domain.GetPairLanguageUseCase
 import com.example.domain.StorePairLanguageUseCase
-import com.example.mlkit.TextRecognitionUtils
-import com.example.mlkit.TranslationUtils
+import com.example.mlkit.ImageProcessor
+import com.example.mlkit.TextRecognition
+import com.example.mlkit.utils.TranslationUtils
 import com.example.model.SearchLanguageItem
 import com.example.model.TextDrawing
 import com.example.ui.base.BaseViewmodel
-import com.example.ui.util.mapBoundingBox
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.Text
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,8 +28,8 @@ class TranslateImageViewmodel
     constructor(
         private val storePairLanguageUseCase: StorePairLanguageUseCase,
         private val getPairLanguageUseCase: GetPairLanguageUseCase,
-        private val textRecognitionUtils: TextRecognitionUtils,
         private val translationUtils: TranslationUtils,
+        private val processorMap: Map<TextRecognition, @JvmSuppressWildcards ImageProcessor>,
     ) :
     BaseViewmodel() {
         private val _listTextDrawing = MutableStateFlow<List<TextDrawing>>(listOf())
@@ -42,24 +44,34 @@ class TranslateImageViewmodel
         var fromLanguageItem = SearchLanguageItem.LanguageItem()
         var toLanguageItem = SearchLanguageItem.LanguageItem()
 
-        // TODO add languageIdentify option
-        fun textRecognition(
-            uri: Uri,
-            matrix: Matrix,
-            fromLanguageCode: String,
-            toLanguageCode: String,
+    // TODO add languageIdentify option
+        fun processImage(
+            inputImage: InputImage,
+            type: TextRecognition,
         ) {
             viewModelScope.launch {
-                this@TranslateImageViewmodel.uri = uri
-                textRecognitionUtils.initRecognition(fromLanguageCode)
-                val result =
-                    textRecognitionUtils.recognizer(uri).map {
-                        it.copy(
-                            textLine = translationUtils.translate(it.textLine, fromLanguageCode, toLanguageCode),
-                            rect = it.rect?.mapBoundingBox(matrix),
-                        )
+                val processor = processorMap[type]
+                (processor?.processImage(inputImage) as? Text)?.let {
+                    val listTextDrawing = mutableListOf<TextDrawing>()
+
+                    for (block in it.textBlocks) {
+                        for (line in block.lines) {
+                            val lineText = line.text
+                            val lineFrame = line.boundingBox
+                            val textDrawing =
+                                TextDrawing(
+                                    translationUtils.translate(
+                                        lineText,
+                                        fromLanguageItem.languageCode,
+                                        toLanguageItem.languageCode,
+                                    ),
+                                    lineFrame,
+                                )
+                            listTextDrawing.add(textDrawing)
+                        }
                     }
-                _listTextDrawing.value = result
+                    _listTextDrawing.value = listTextDrawing
+                }
             }
         }
 
