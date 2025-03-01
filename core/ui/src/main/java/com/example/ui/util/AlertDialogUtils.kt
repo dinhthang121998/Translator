@@ -3,7 +3,7 @@ package com.example.ui.util
 import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
-import com.example.common.R
+import com.example.ui.R
 
 object AlertDialogUtils {
     private var alertDialog: AlertDialog? = null

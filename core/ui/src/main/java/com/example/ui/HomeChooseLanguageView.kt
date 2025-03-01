@@ -3,7 +3,6 @@ package com.example.ui
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import com.example.common.R
 import com.example.ui.databinding.HomeChooseLanguageViewBinding
 
 class HomeChooseLanguageView(context: Context, attributeSet: AttributeSet) :

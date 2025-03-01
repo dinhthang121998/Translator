@@ -1,6 +1,7 @@
 package com.example.data.di
 
 import com.example.data.repository.HomeRepository
+import com.example.data.repository.HomeRepositoryImpl
 import com.example.database.dao.TranslatedDao
 import com.example.network.ApiService
 import dagger.Module
@@ -18,6 +19,6 @@ class RepositoryModule {
         translatedDao: TranslatedDao,
         apiService: ApiService,
     ): HomeRepository {
-        return com.example.data.repository.HomeRepositoryImpl(translatedDao, apiService)
+        return HomeRepositoryImpl(translatedDao, apiService)
     }
 }

@@ -7,8 +7,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.common.R
 import com.example.model.Downloadable
+import com.example.ui.R
 import com.example.ui.base.BaseBottomSheetFragment
 import com.example.ui.databinding.SearchSelectedLanguageBinding
 import com.example.ui.util.AlertDialogUtils
