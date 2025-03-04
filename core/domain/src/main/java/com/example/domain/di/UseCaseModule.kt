@@ -1,7 +1,6 @@
 package com.example.domain.di
 
 import com.example.data.repository.HomeRepository
-import com.example.datastore.ProtoPreferenceManager
 import com.example.domain.AddTranslatedWordUseCase
 import com.example.domain.GetPairLanguageUseCase
 import com.example.domain.GetTranslatedWordUseCase
@@ -19,13 +18,13 @@ import javax.inject.Singleton
 class UseCaseModule {
     @Provides
     @Singleton
-    fun provideGetPairLanguageUseCase(protoPreferenceManager: com.example.datastore.ProtoPreferenceManager): GetPairLanguageUseCase {
+    fun provideGetPairLanguageUseCase(protoPreferenceManager: com.example.datastore.DatastoreProtoManager): GetPairLanguageUseCase {
         return GetPairLanguageUseCase(protoPreferenceManager)
     }
 
     @Provides
     @Singleton
-    fun provideStorePairLanguageUseCase(protoPreferenceManager: com.example.datastore.ProtoPreferenceManager): StorePairLanguageUseCase {
+    fun provideStorePairLanguageUseCase(protoPreferenceManager: com.example.datastore.DatastoreProtoManager): StorePairLanguageUseCase {
         return StorePairLanguageUseCase(protoPreferenceManager)
     }
 

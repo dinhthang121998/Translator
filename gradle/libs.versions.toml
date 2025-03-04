@@ -1,11 +1,13 @@
 [versions]
 # libraries
+android-database-sqlcipher = "4.5.4"
 core-ktx = "1.15.0"
 appcompat = "1.7.0"
 material = "1.12.0"
 comstraintlayout = "2.2.0"
 activity = "1.8.0"
 junit = "4.13.2"
+sqlite = "2.4.0"
 test-junit = "1.2.1"
 espresso-core = "3.6.1"
 hilt = "2.51.1"
@@ -19,6 +21,7 @@ guava = "33.3.1-android"
 camerax = "1.4.1"
 retrofit = "2.9.0"
 fragment-ktx = "1.8.5"
+datastore = "1.1.2"
 
 # plugins
 android-application = "8.2.1"
@@ -28,7 +31,6 @@ ksp = "1.9.22-1.0.17"
 android-library = "8.2.1"
 modulegraph = "0.12.0"
 ktlint = "12.1.2"
-datastore = "1.1.2"
 protobuf-plugin = "0.9.3"
 
 [libraries]
@@ -53,11 +55,15 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 room-kotlin = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 # optional - Paging 3 Integration
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
+android-database-sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "android-database-sqlcipher" }
+sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
 
 # datastore
 datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
 # protobug
 protobuf-kotlin = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf-kotlin" }
+# datastore pref
+datastore-pref = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
 # ml kit
 # Latin script
