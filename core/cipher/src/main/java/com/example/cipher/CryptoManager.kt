@@ -53,7 +53,7 @@ class CryptoManager
             keyGenerator.generateKey()
         }
 
-        fun getSecretKey(): SecretKey {
+        private fun getSecretKey(): SecretKey {
             return keyStore.getKey(KEY_ALIAS, null) as SecretKey
         }
 
