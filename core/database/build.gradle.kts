@@ -37,6 +37,8 @@ android {
 
 dependencies {
 
+    implementation(project(":core:datastore"))
+
     implementation(libs.core.ktx)
 
     // hilt
@@ -48,4 +50,7 @@ dependencies {
     ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
+
+    implementation(libs.android.database.sqlcipher)
+    implementation(libs.sqlite)
 }

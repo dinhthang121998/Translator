@@ -1,7 +1,7 @@
 package com.example.domain
 
 import com.example.common.UiState
-import com.example.datastore.ProtoPreferenceManager
+import com.example.datastore.DatastoreProtoManager
 import com.example.datastore_proto.LanguageItemStore
 import com.example.model.Downloadable
 import com.example.model.SearchLanguageItem
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class GetPairLanguageUseCase
     @Inject
-    constructor(private val protoPreferenceManager: ProtoPreferenceManager) :
+    constructor(private val protoPreferenceManager: DatastoreProtoManager) :
     BaseUseCase<Unit, UiState<Pair<SearchLanguageItem.LanguageItem, SearchLanguageItem.LanguageItem>>> {
         override fun invoke(param: Unit): Flow<UiState<Pair<SearchLanguageItem.LanguageItem, SearchLanguageItem.LanguageItem>>> =
             protoPreferenceManager.pairLanguageItemData.map { pairLanguageItemStore ->

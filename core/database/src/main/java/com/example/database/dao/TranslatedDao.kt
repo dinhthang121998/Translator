@@ -23,10 +23,4 @@ interface TranslatedDao {
         id: Int,
         isFavorite: Boolean,
     )
-
-    @Query("SELECT * FROM translatedEntity ORDER BY id DESC")
-    fun a(): Flow<List<TranslatedEntity>>
-
-    @Insert
-    suspend fun b(translatedEntity: TranslatedEntity)
 }

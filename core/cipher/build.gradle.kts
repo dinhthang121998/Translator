@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.datastore"
+    namespace = "com.example.cipher"
     compileSdk = 35
 
     defaultConfig {
@@ -36,19 +36,11 @@ android {
 
 dependencies {
 
-    implementation(project(":core:cipher"))
-    implementation(project(":core:datastore-proto"))
-    implementation(project(":core:model"))
-
     implementation(libs.core.ktx)
 
     // hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-
-    implementation(libs.datastore)
-    implementation(libs.datastore.pref)
-    implementation(libs.protobuf.kotlin)
 
     testImplementation(libs.junit)
 }

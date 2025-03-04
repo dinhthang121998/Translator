@@ -9,6 +9,8 @@ import com.example.domain.GetWordInformationUseCase
 import com.example.domain.StorePairLanguageUseCase
 import com.example.domain.UpdateTranslatedFavoriteUseCase
 import com.example.mlkit.utils.TranslationUtils
+import com.example.model.SearchLanguageItem
+import com.example.model.TranslatedWord
 import com.example.ui.base.BaseViewmodel
 import com.example.voice.TextToSpeechUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +36,7 @@ class HomeViewmodel
     BaseViewmodel() {
         // MutableStateFlow does not update the same address??
         private val _pairLanguageFlow =
-            MutableStateFlow(Pair(com.example.model.SearchLanguageItem.LanguageItem(), com.example.model.SearchLanguageItem.LanguageItem()))
+            MutableStateFlow(Pair(SearchLanguageItem.LanguageItem(), SearchLanguageItem.LanguageItem()))
         val pairLanguageFlow = _pairLanguageFlow
 
         private val _translatedTextFlow = MutableStateFlow("")
@@ -46,18 +48,18 @@ class HomeViewmodel
         private val _textDefinitionFlow = MutableStateFlow(com.example.model.WordInformation())
         val textDefinitionFlow = _textDefinitionFlow
 
-        private val _getTranslatedWordsFlow = MutableStateFlow(listOf<com.example.model.TranslatedWord>())
+        private val _getTranslatedWordsFlow = MutableStateFlow(listOf<TranslatedWord>())
         val getTranslatedWordsFlow = _getTranslatedWordsFlow
 
-        var fromLanguageItem = com.example.model.SearchLanguageItem.LanguageItem()
-        var toLanguageItem = com.example.model.SearchLanguageItem.LanguageItem()
+        var fromLanguageItem = SearchLanguageItem.LanguageItem()
+        var toLanguageItem = SearchLanguageItem.LanguageItem()
 
         var originalText = ""
         var translatedText = ""
 
         fun storeLanguageItem(
             isFromLanguageItem: Boolean,
-            languageItem: com.example.model.SearchLanguageItem.LanguageItem,
+            languageItem: SearchLanguageItem.LanguageItem,
         ) {
             val pairLanguage =
                 if (isFromLanguageItem) {
@@ -76,8 +78,8 @@ class HomeViewmodel
         }
 
         fun swapLanguageItem(
-            fromLanguageItem: com.example.model.SearchLanguageItem.LanguageItem,
-            toLanguageItem: com.example.model.SearchLanguageItem.LanguageItem,
+            fromLanguageItem: SearchLanguageItem.LanguageItem,
+            toLanguageItem: SearchLanguageItem.LanguageItem,
         ) {
             val pairLanguage = Pair(toLanguageItem, fromLanguageItem)
             storePairLanguageUseCase.invoke(pairLanguage)
@@ -139,7 +141,7 @@ class HomeViewmodel
             translatedWord: String,
         ) {
             val translated =
-                com.example.model.TranslatedWord(
+                TranslatedWord(
                     originalWord = originalWord,
                     translatedWord = translatedWord,
                     isFavourite = false,
@@ -169,7 +171,7 @@ class HomeViewmodel
             }.launchIn(viewModelScope)
         }
 
-        fun updateTranslatedFavorite(translatedWord: com.example.model.TranslatedWord) {
+        fun updateTranslatedFavorite(translatedWord: TranslatedWord) {
             val updatedTranslatedWord = translatedWord.copy(isFavourite = !translatedWord.isFavourite)
             updateTranslatedFavoriteUseCase.invoke(updatedTranslatedWord).launchIn(viewModelScope)
         }

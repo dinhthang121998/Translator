@@ -1,7 +1,9 @@
 package com.example.datastore.di
 
 import android.content.Context
-import com.example.datastore.ProtoPreferenceManager
+import com.example.cipher.CryptoManager
+import com.example.datastore.DatastorePrefManager
+import com.example.datastore.DatastoreProtoManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,9 +16,18 @@ import javax.inject.Singleton
 class DataStoreModule {
     @Provides
     @Singleton
-    fun provideProtoPreferenceManager(
+    fun provideDatastoreProtoManager(
         @ApplicationContext context: Context,
-    ): ProtoPreferenceManager {
-        return ProtoPreferenceManager(context)
+    ): DatastoreProtoManager {
+        return DatastoreProtoManager(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDataStorePrefManager(
+        @ApplicationContext context: Context,
+        cryptoManager: CryptoManager,
+    ): DatastorePrefManager {
+        return DatastorePrefManager(context, cryptoManager)
     }
 }

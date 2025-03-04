@@ -8,7 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class ProtoPreferenceManager
+class DatastoreProtoManager
     @Inject
     constructor(
         @ApplicationContext private val context: Context,
