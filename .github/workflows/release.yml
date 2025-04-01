@@ -1,8 +1,9 @@
 name: Run release
 
 on:
-  pull_request:
-    branches: [main]
+  push:
+    tags:
+      - 'v*'
 
   workflow_dispatch:
 
@@ -20,15 +21,26 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
+      - name: Run ktLint
+        run: ./gradlew ktLintCheck
+
       - name: Run unit tests
         run: ./gradlew clean testDebug
+
+      - name: Get Tag from GITHUB_REF
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Print TAG_NAME
+        run: |
+          echo "Tag Name: $TAG_NAME"
+          echo "Version Code: ${{github.run_number}}"
 
       - name: Version bump
         uses: chkfung/android-version-actions@v1.2.3
         with:
           gradlePath: app/build.gradle.kts
           versionCode: ${{github.run_number}}
-          versionName: 1.0.0
+          versionName: ${{env.TAG_NAME}}
 
       - name: Generate APK
         run: ./gradlew assembleRelease

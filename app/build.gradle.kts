@@ -1,9 +1,10 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -25,7 +26,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -44,29 +45,23 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.15.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    implementation(project(":core:common"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:translate-image"))
 
-    //hilt
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
-    // hilt for navigation compose
-    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation(libs.core.ktx)
+    implementation(libs.android.appcompat)
+    implementation(libs.android.material)
+    implementation(libs.constraintlayout)
+    implementation(libs.activity)
 
-    // viewmodel for Fragment
-    implementation("androidx.fragment:fragment-ktx:1.8.5")
+    // hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-    // room
-    val room_version = "2.6.1"
-    implementation("androidx.room:room-runtime:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
-    // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$room_version")
-    // optional - Paging 3 Integration
-    implementation("androidx.room:room-paging:$room_version")
+    // Detekt
+    detektPlugins(libs.detekt.formatting)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.bundles.test.android)
 }

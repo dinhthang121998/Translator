@@ -1,0 +1,118 @@
+[versions]
+# libraries
+android-database-sqlcipher = "4.5.4"
+core-ktx = "1.15.0"
+appcompat = "1.7.0"
+material = "1.12.0"
+comstraintlayout = "2.2.0"
+activity = "1.8.0"
+junit = "4.13.2"
+sqlite = "2.4.0"
+test-junit = "1.2.1"
+espresso-core = "3.6.1"
+hilt = "2.51.1"
+detekt = "1.23.7"
+lottie = "6.6.2"
+room = "2.6.1"
+protobuf-kotlin = "3.25.5"
+text-recognition = "16.0.1"
+translation = "17.0.3"
+guava = "33.3.1-android"
+camerax = "1.4.1"
+retrofit = "2.9.0"
+fragment-ktx = "1.8.5"
+datastore = "1.1.2"
+
+# plugins
+android-application = "8.2.1"
+kotlin-android = "1.9.22"
+serialization = "2.1.10"
+ksp = "1.9.22-1.0.17"
+android-library = "8.2.1"
+modulegraph = "0.12.0"
+ktlint = "12.1.2"
+protobuf-plugin = "0.9.3"
+
+[libraries]
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+android-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "comstraintlayout" }
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
+lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
+guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
+fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment-ktx" }
+
+# hilt
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+
+# room
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+# optional - Kotlin Extensions and Coroutines support for Room
+room-kotlin = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+# optional - Paging 3 Integration
+room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
+android-database-sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "android-database-sqlcipher" }
+sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
+
+# datastore
+datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
+# protobug
+protobuf-kotlin = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf-kotlin" }
+# datastore pref
+datastore-pref = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+
+# ml kit
+# Latin script
+recognition-latin = { group = "com.google.mlkit", name = "text-recognition", version.ref = "text-recognition" }
+# Chinese script
+recognition-chinese = { group = "com.google.mlkit", name = "text-recognition-chinese", version.ref = "text-recognition" }
+# Devanagari script
+recognition-devanagari = { group = "com.google.mlkit", name = "text-recognition-devanagari", version.ref = "text-recognition" }
+# Japanese script
+recognition-japanese = { group = "com.google.mlkit", name = "text-recognition-japanese", version.ref = "text-recognition" }
+# Korean script
+recognition-korean = { group = "com.google.mlkit", name = "text-recognition-korean", version.ref = "text-recognition" }
+# translation
+translation = { group = "com.google.mlkit", name = "translate", version.ref = "translation" }
+
+# cameraX
+camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }
+camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camerax" }
+camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
+camera-video = { group = "androidx.camera", name = "camera-video", version.ref = "camerax" }
+camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax" }
+camera-extension = { group = "androidx.camera", name = "camera-extensions", version.ref = "camerax" }
+
+# retrofit2
+retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+converter-json = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+
+# test
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+# android test
+test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "test-junit" }
+espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+
+[bundles]
+test-android = ["test-junit", "espresso"]
+room = ["room-runtime", "room-kotlin", "room-paging"]
+text-recognition = ["recognition-latin", "recognition-chinese", "recognition-devanagari", "recognition-japanese", "recognition-korean"]
+retrofit2 = ["retrofit2", "converter-json"]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "android-application" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-android" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+android-library = { id = "com.android.library", version.ref = "android-library" }
+modulegraph = { id = "dev.iurysouza.modulegraph", version.ref = "modulegraph" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }

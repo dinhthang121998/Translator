@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TranslateView">
+        <attr name="hint" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="ChooseLanguageView">
+        <attr name="fromLanguageText" format="string"/>
+        <attr name="toLanguageText" format="string"/>
+        <attr name="middleDrawable" format="reference"/>
+    </declare-styleable>
+
+</resources>

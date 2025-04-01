@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Translator</string>
+    <string name="language">Language</string>
+    <string name="select">Select</string>
+    <string name="search">Search</string>
+    <string name="search_title">Search Title</string>
+    <string name="all_language">All language</string>
+    <string name="hint">Hint</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="download">Download</string>
+    <string name="download_language">Download Language</string>
+    <string name="download_language_message">This language requires downloading a model for translation. Do you allow us to download it?</string>
+    <string name="phonetic">Phonetic</string>
+    <string name="part_of_speech">Part of speech</string>
+    <string name="meaning">This is the meaning of the word</string>
+    <string name="example">This is the example of the word</string>
+    <string name="antonym_title">Antonyms</string>
+    <string name="antonyms">List of antonyms</string>
+    <string name="synonyms_title">Synonyms</string>
+    <string name="synonyms">List of synonyms</string>
+    <string name="original_word">Original word</string>
+    <string name="translated_word">Translated word</string>
+</resources>
