@@ -1,6 +1,5 @@
 package com.example.mlkit.utils
 
-import android.util.Log
 import com.example.common.LanguageUtils
 import com.example.model.Downloadable
 import com.example.model.SearchLanguageItem

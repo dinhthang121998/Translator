@@ -80,7 +80,7 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
         }
     }
 
-    private fun handleListFilterLanguageItem(listLanguageItemFilter: List<SearchLanguageItem. LanguageItem>) {
+    private fun handleListFilterLanguageItem(listLanguageItemFilter: List<SearchLanguageItem.LanguageItem>) {
         val listSearchLanguageItemFilter = mutableListOf<SearchLanguageItem>()
         if (listLanguageItemFilter.size != viewModel.listAllLanguages.value.size) {
             listSearchLanguageItemFilter.addTitle("")
@@ -91,13 +91,12 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
         updateLanguage(listSearchLanguageItemFilter)
     }
 
-    private fun handleListLanguageItem(listLanguageItem: List<SearchLanguageItem. LanguageItem>) {
+    private fun handleListLanguageItem(listLanguageItem: List<SearchLanguageItem.LanguageItem>) {
         val listSearchLanguageItem = mutableListOf<SearchLanguageItem>()
         listSearchLanguageItem.addTitle(getString(R.string.all_language))
         listSearchLanguageItem.addAll(listLanguageItem)
         updateLanguage(listSearchLanguageItem)
     }
-
 
     private fun MutableList<SearchLanguageItem>.addTitle(title: String): List<SearchLanguageItem> {
         this.add(0, SearchLanguageItem.TitleItem(title))

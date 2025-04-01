@@ -1,6 +1,5 @@
 package com.example.home.meaning
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +11,6 @@ import com.example.ui.util.showOrGone
 
 class MeaningsAdapter(private var listMeanings: List<MeaningItem>) :
     RecyclerView.Adapter<MeaningsAdapter.MeaningViewHolder>() {
-
     fun updateListMeanings(listMeanings: List<MeaningItem>) {
         this.listMeanings = listMeanings
         notifyDataSetChanged()

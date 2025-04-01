@@ -118,7 +118,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         }
     }
 
-    private fun handleWordDefinition(wordDefinition: WordInformation){
+    private fun handleWordDefinition(wordDefinition: WordInformation) {
         wordDefinition.phonetic?.let { phonetic ->
             binding.original.showPhonetic(true)
             binding.original.setPhonetic(phonetic)
@@ -131,7 +131,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
 
         val isShowSpeakTranslated = viewModel.translatedText.isNotEmpty()
         binding.translated.showSpeak(isShowSpeakTranslated)
-
 
         if (wordDefinition.word != null) {
             binding.rcvMeaning.showOrGone(true)
@@ -156,7 +155,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
 
     private fun handlePairLanguage(
         fromLanguageItem: SearchLanguageItem.LanguageItem,
-        toLanguageItem: SearchLanguageItem.LanguageItem
+        toLanguageItem: SearchLanguageItem.LanguageItem,
     ) {
         if (fromLanguageItem.languageName.isEmpty()) {
             binding.homeSelectLanguage.setFromLanguage(getString(R.string.search))
