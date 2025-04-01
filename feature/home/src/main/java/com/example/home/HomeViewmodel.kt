@@ -1,5 +1,6 @@
 package com.example.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.common.UiState
 import com.example.domain.AddTranslatedWordUseCase
@@ -11,6 +12,7 @@ import com.example.domain.UpdateTranslatedFavoriteUseCase
 import com.example.mlkit.utils.TranslationUtils
 import com.example.model.SearchLanguageItem
 import com.example.model.TranslatedWord
+import com.example.model.WordInformation
 import com.example.ui.base.BaseViewmodel
 import com.example.voice.TextToSpeechUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,7 +47,7 @@ class HomeViewmodel
         private val _swapTextFlow = MutableStateFlow(Pair("", ""))
         val swapTextFlow = _swapTextFlow
 
-        private val _textDefinitionFlow = MutableStateFlow(com.example.model.WordInformation())
+        private val _textDefinitionFlow = MutableStateFlow(WordInformation())
         val textDefinitionFlow = _textDefinitionFlow
 
         private val _getTranslatedWordsFlow = MutableStateFlow(listOf<TranslatedWord>())
@@ -123,14 +125,19 @@ class HomeViewmodel
         fun getWordDefinition(word: String) {
             getWordInformationUseCase.invoke(word).onEach { result ->
                 when (result) {
-                    is UiState.Error -> TODO()
+                    is UiState.Error -> {
+                        Log.d("AAAA", "error = ${result.message}")
+                        loadingFlow.value = false
+                    }
                     is UiState.Loading -> {
+                        loadingFlow.value = true
                     }
 
                     is UiState.Success -> {
                         result.data?.let { wordInformation ->
                             _textDefinitionFlow.value = wordInformation
                         }
+                        loadingFlow.value = false
                     }
                 }
             }.launchIn(viewModelScope)

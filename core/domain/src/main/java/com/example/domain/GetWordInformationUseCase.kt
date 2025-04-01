@@ -28,7 +28,7 @@ class GetWordInformationUseCase
                 }
             }.flowOn(Dispatchers.IO)
 
-        fun ArrayList<DefinitionsDto>.toDefinitions(): ArrayList<Definitions> {
+        private fun ArrayList<DefinitionsDto>.toDefinitions(): ArrayList<Definitions> {
             return this.map { definition ->
                 Definitions(
                     definition.definition,
@@ -39,13 +39,13 @@ class GetWordInformationUseCase
             } as ArrayList<Definitions>
         }
 
-        fun ArrayList<MeaningsDto>.toMeanings(): ArrayList<Meanings> {
+        private fun ArrayList<MeaningsDto>.toMeanings(): ArrayList<Meanings> {
             return this.map { meaning ->
                 Meanings(meaning.partOfSpeech, meaning.definitions.toDefinitions())
             } as ArrayList<Meanings>
         }
 
-        fun WordInformationDto.toWordInformation() =
+        private fun WordInformationDto.toWordInformation() =
             WordInformation(
                 word = this.word,
                 phonetic = this.phonetic,

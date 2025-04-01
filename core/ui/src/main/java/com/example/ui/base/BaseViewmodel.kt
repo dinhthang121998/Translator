@@ -4,11 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 abstract class BaseViewmodel : ViewModel() {
     // failure here
+
     // loading here
+    private val _loadingFlow = MutableStateFlow(false)
+    val loadingFlow = _loadingFlow
 
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { context, exception ->

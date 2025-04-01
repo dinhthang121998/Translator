@@ -28,9 +28,9 @@ class TranslationUtils {
                             languageCode,
                         )
                     ) {
-                        com.example.model.Downloadable.IS_DOWNLOADED
+                        Downloadable.IS_DOWNLOADED
                     } else {
-                        com.example.model.Downloadable.NEED_DOWNLOAD
+                        Downloadable.NEED_DOWNLOAD
                     }
 
                 SearchLanguageItem.LanguageItem(
@@ -54,8 +54,8 @@ class TranslationUtils {
 
     suspend fun filterLanguageItems(
         textFilter: String,
-        listAllSearchLanguageItem: List<com.example.model.SearchLanguageItem.LanguageItem>,
-    ): List<com.example.model.SearchLanguageItem.LanguageItem> =
+        listAllSearchLanguageItem: List<SearchLanguageItem.LanguageItem>,
+    ): List<SearchLanguageItem.LanguageItem> =
         withContext(Dispatchers.Default) {
             if (textFilter.isNotEmpty()) {
                 listAllSearchLanguageItem.filter { languageItem ->
@@ -85,7 +85,7 @@ class TranslationUtils {
             updateAllLanguageItem
         }
 
-    suspend fun downloadLanguageModel(languageItem: SearchLanguageItem.LanguageItem): com.example.model.SearchLanguageItem.LanguageItem =
+    suspend fun downloadLanguageModel(languageItem: SearchLanguageItem.LanguageItem): SearchLanguageItem.LanguageItem =
         withContext(Dispatchers.IO) {
             var updateLanguageItem = languageItem
             if (downloadModel(languageItem.languageCode)) {

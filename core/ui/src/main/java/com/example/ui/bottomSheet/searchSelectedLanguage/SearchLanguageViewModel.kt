@@ -1,7 +1,9 @@
 package com.example.ui.bottomSheet.searchSelectedLanguage
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.mlkit.utils.TranslationUtils
+import com.example.model.SearchLanguageItem
 import com.example.ui.base.BaseViewmodel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,15 +17,15 @@ class SearchLanguageViewModel
         private val translationUtils: TranslationUtils,
     ) : BaseViewmodel() {
         private val _listAllLanguages =
-            MutableStateFlow(listOf<com.example.model.SearchLanguageItem.LanguageItem>())
+            MutableStateFlow(listOf<SearchLanguageItem.LanguageItem>())
         val listAllLanguages = _listAllLanguages
 
         private val _listFilterLanguages =
-            MutableStateFlow(listOf<com.example.model.SearchLanguageItem.LanguageItem>())
+            MutableStateFlow(listOf<SearchLanguageItem.LanguageItem>())
         val listFilterLanguages = _listFilterLanguages
 
         private val _downloadLanguageItem =
-            MutableStateFlow(com.example.model.SearchLanguageItem.LanguageItem())
+            MutableStateFlow(SearchLanguageItem.LanguageItem())
         val downloadLanguageItem = _downloadLanguageItem
 
         // TODO Handle error
@@ -40,7 +42,7 @@ class SearchLanguageViewModel
             }
         }
 
-        fun updateAllLanguages(downloadedLanguageItem: com.example.model.SearchLanguageItem.LanguageItem) {
+        fun updateAllLanguages(downloadedLanguageItem: SearchLanguageItem.LanguageItem) {
             viewModelScope.launch {
                 val updatedListLanguageItem = translationUtils.updateDownloadedLanguage(downloadedLanguageItem, _listAllLanguages.value)
                 _listAllLanguages.value = updatedListLanguageItem
@@ -48,9 +50,13 @@ class SearchLanguageViewModel
         }
 
         // TODO Implement loading when downloading language. Handle error
-        fun downloadLanguage(languageItem: com.example.model.SearchLanguageItem.LanguageItem) {
+        fun downloadLanguage(languageItem: SearchLanguageItem.LanguageItem) {
             viewModelScope.launch {
+                Log.d("AAAA", "download model")
+                loadingFlow.value = true
                 _downloadLanguageItem.value = translationUtils.downloadLanguageModel(languageItem)
+                loadingFlow.value = false
+                Log.d("AAAA", "download done")
             }
         }
     }

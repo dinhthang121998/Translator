@@ -32,11 +32,6 @@ class TextToSpeechUtils
         ) {
             if (!isInitialized) return
 
-            val availableLocales = textToSpeech.availableLanguages
-            availableLocales?.forEach { locale ->
-                Log.d("AAAA", "Available locale: ${locale.displayName}")
-            }
-
             val locale = Locale(languageCode)
             val result = textToSpeech.setLanguage(locale)
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
