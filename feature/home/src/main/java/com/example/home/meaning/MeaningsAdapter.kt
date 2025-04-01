@@ -1,5 +1,6 @@
 package com.example.home.meaning
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,9 +8,11 @@ import androidx.viewbinding.ViewBinding
 import com.example.home.databinding.DefinitionItemBinding
 import com.example.home.databinding.PartOfSpeechItemBinding
 import com.example.model.MeaningItem
+import com.example.ui.util.showOrGone
 
 class MeaningsAdapter(private var listMeanings: List<MeaningItem>) :
     RecyclerView.Adapter<MeaningsAdapter.MeaningViewHolder>() {
+
     fun updateListMeanings(listMeanings: List<MeaningItem>) {
         this.listMeanings = listMeanings
         notifyDataSetChanged()
@@ -74,8 +77,30 @@ class MeaningsAdapter(private var listMeanings: List<MeaningItem>) :
         override fun bind(meaningItem: MeaningItem) {
             val definitionsItem = meaningItem as MeaningItem.DefinitionsItem
             viewBinding.tvDefinition.text = definitionsItem.definitions.definition
-            viewBinding.tvExample.text = definitionsItem.definitions.example
-            viewBinding.tvAntonym.text = definitionsItem.definitions.antonyms.joinToString(", ")
+
+            definitionsItem.definitions.example?.let {
+                viewBinding.tvExample.showOrGone(true)
+                viewBinding.tvExample.text = "\"$it\""
+            } ?: run {
+                viewBinding.tvExample.showOrGone(false)
+                viewBinding.tvExample.text = ""
+            }
+
+            if (definitionsItem.definitions.antonyms.size != 0) {
+                viewBinding.cAntonym.showOrGone(true)
+                viewBinding.tvAntonym.text = definitionsItem.definitions.antonyms.joinToString(", ")
+            } else {
+                viewBinding.cAntonym.showOrGone(false)
+                viewBinding.tvAntonym.text = ""
+            }
+
+            if (definitionsItem.definitions.synonyms.size != 0) {
+                viewBinding.cSynonym.showOrGone(true)
+                viewBinding.tvsynonyms.text = definitionsItem.definitions.synonyms.joinToString(", ")
+            } else {
+                viewBinding.cSynonym.showOrGone(false)
+                viewBinding.tvsynonyms.text = ""
+            }
         }
     }
 

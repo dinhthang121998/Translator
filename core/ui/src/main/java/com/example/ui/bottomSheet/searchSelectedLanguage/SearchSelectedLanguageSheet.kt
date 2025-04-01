@@ -8,10 +8,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.model.Downloadable
+import com.example.model.SearchLanguageItem
 import com.example.ui.R
 import com.example.ui.base.BaseBottomSheetFragment
 import com.example.ui.databinding.SearchSelectedLanguageBinding
 import com.example.ui.util.AlertDialogUtils
+import com.example.ui.util.showOrGone
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -30,7 +32,7 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
     private val viewModel: SearchLanguageViewModel by viewModels()
 
     var clickCloseButton: (() -> Unit)? = null
-    var clickItemButton: ((languageItem: com.example.model.SearchLanguageItem) -> Unit)? = null
+    var clickItemButton: ((languageItem: SearchLanguageItem) -> Unit)? = null
 
     private var languageAdapter: SearchLanguageAdapter? = null
 
@@ -46,29 +48,25 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
         lifecycleScope.launch {
             launch {
                 viewModel.listAllLanguages.collect { listLanguageItem ->
-                    val listSearchLanguageItem = mutableListOf<com.example.model.SearchLanguageItem>()
-                    listSearchLanguageItem.addTitle(getString(R.string.all_language))
-                    listSearchLanguageItem.addAll(listLanguageItem)
-                    updateLanguage(listSearchLanguageItem)
+                    handleListLanguageItem(listLanguageItem)
                 }
             }
 
             launch {
                 viewModel.listFilterLanguages.collect { listLanguageItemFilter ->
-                    val listSearchLanguageItemFilter = mutableListOf<com.example.model.SearchLanguageItem>()
-                    if (listLanguageItemFilter.size != viewModel.listAllLanguages.value.size) {
-                        listSearchLanguageItemFilter.addTitle("")
-                    } else {
-                        listSearchLanguageItemFilter.addTitle(getString(R.string.all_language))
-                    }
-                    listSearchLanguageItemFilter.addAll(listLanguageItemFilter)
-                    updateLanguage(listSearchLanguageItemFilter)
+                    handleListFilterLanguageItem(listLanguageItemFilter)
                 }
             }
 
             launch {
                 viewModel.downloadLanguageItem.collect { downloadedLanguageItem ->
                     viewModel.updateAllLanguages(downloadedLanguageItem)
+                }
+            }
+
+            launch {
+                viewModel.loadingFlow.collect { isLoading ->
+                    viewBinding.loadingOverlay.showOrGone(isLoading)
                 }
             }
         }
@@ -82,16 +80,35 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
         }
     }
 
-    private fun MutableList<com.example.model.SearchLanguageItem>.addTitle(title: String): List<com.example.model.SearchLanguageItem> {
-        this.add(0, com.example.model.SearchLanguageItem.TitleItem(title))
+    private fun handleListFilterLanguageItem(listLanguageItemFilter: List<SearchLanguageItem. LanguageItem>) {
+        val listSearchLanguageItemFilter = mutableListOf<SearchLanguageItem>()
+        if (listLanguageItemFilter.size != viewModel.listAllLanguages.value.size) {
+            listSearchLanguageItemFilter.addTitle("")
+        } else {
+            listSearchLanguageItemFilter.addTitle(getString(R.string.all_language))
+        }
+        listSearchLanguageItemFilter.addAll(listLanguageItemFilter)
+        updateLanguage(listSearchLanguageItemFilter)
+    }
+
+    private fun handleListLanguageItem(listLanguageItem: List<SearchLanguageItem. LanguageItem>) {
+        val listSearchLanguageItem = mutableListOf<SearchLanguageItem>()
+        listSearchLanguageItem.addTitle(getString(R.string.all_language))
+        listSearchLanguageItem.addAll(listLanguageItem)
+        updateLanguage(listSearchLanguageItem)
+    }
+
+
+    private fun MutableList<SearchLanguageItem>.addTitle(title: String): List<SearchLanguageItem> {
+        this.add(0, SearchLanguageItem.TitleItem(title))
         return this
     }
 
-    private fun updateLanguage(listLanguageFilter: List<com.example.model.SearchLanguageItem>) {
+    private fun updateLanguage(listLanguageFilter: List<SearchLanguageItem>) {
         languageAdapter?.updateListLanguage(listLanguageFilter)
     }
 
-    private fun initRecyclerView(listSearchLanguageItem: List<com.example.model.SearchLanguageItem>) {
+    private fun initRecyclerView(listSearchLanguageItem: List<SearchLanguageItem>) {
         languageAdapter =
             SearchLanguageAdapter(listSearchLanguageItem) { languageItem ->
                 if (languageItem.downloadable == Downloadable.NEED_DOWNLOAD) {

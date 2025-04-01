@@ -84,17 +84,17 @@ class TranslateCameraXFragment :
                 viewModel.textStateFlow.collect { listTextDrawing ->
 
                     binding.graphicOverlay.clear()
-                    // Why we need CameraImageGraphic ??
-                    imageProxy?.let { imageProxy ->
-                        BitmapUtils.getBitmap(imageProxy)?.let { bitmap ->
-                            binding.graphicOverlay.add(
-                                CameraImageGraphic(
-                                    binding.graphicOverlay,
-                                    bitmap,
-                                ),
-                            )
-                        }
-                    }
+////                     Why we need CameraImageGraphic ?? // darker background??
+//                    imageProxy?.let { imageProxy ->
+//                        BitmapUtils.getBitmap(imageProxy)?.let { bitmap ->
+//                            binding.graphicOverlay.add(
+//                                CameraImageGraphic(
+//                                    binding.graphicOverlay,
+//                                    bitmap,
+//                                ),
+//                            )
+//                        }
+//                    }
                     binding.graphicOverlay.add(
                         TextGraphic(
                             binding.graphicOverlay,
@@ -133,11 +133,14 @@ class TranslateCameraXFragment :
             // thus we can just runs the analyzer itself on main thread.
             ContextCompat.getMainExecutor(this.requireContext()),
             { imageProxy: ImageProxy ->
-                Log.d("AAAA", "Image proxy = $imageProxy")
+                // a proxy image refers to an intermediate image representation that
+                // allows efficient processing before saving or displaying the final image
                 this.imageProxy = imageProxy
                 if (needUpdateGraphicOverlayImageSourceInfo) {
                     val isImageFlipped = lensFacing == CameraSelector.LENS_FACING_FRONT
                     val rotationDegrees = imageProxy.imageInfo.rotationDegrees
+                    Log.d("AAAA", "rotationDegrees = $rotationDegrees")
+                    Log.d("AAAA", "imageProxy height = ${imageProxy.height}, width = ${imageProxy.width}")
                     if (rotationDegrees == 0 || rotationDegrees == 180) {
                         binding.graphicOverlay.setImageSourceInfo(
                             imageProxy.width,
@@ -263,6 +266,7 @@ class TranslateCameraXFragment :
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
+        Log.d("AAAA", "Destroy")
     }
 
     companion object {

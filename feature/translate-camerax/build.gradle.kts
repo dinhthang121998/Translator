@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.fragment.ktx)
 
     implementation(libs.bundles.text.recognition)
+    implementation(libs.camera2)
     implementation(libs.camera.core)
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
