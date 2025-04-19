@@ -2,6 +2,7 @@ package com.example.home.translatedWord
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.home.databinding.TranslatedWordItemBinding
 import com.example.model.TranslatedWord
@@ -13,8 +14,11 @@ class TranslatedWordAdapter(
 ) :
     RecyclerView.Adapter<TranslatedWordAdapter.TranslatedWordViewHolder>() {
     fun updateTranslatedWords(translatedWords: List<TranslatedWord>) {
+        val diffCallback = TranslatedWordDiff(this.translatedWords, translatedWords)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
         this.translatedWords = translatedWords
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(

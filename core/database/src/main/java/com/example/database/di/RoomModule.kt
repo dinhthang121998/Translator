@@ -3,6 +3,7 @@ package com.example.database.di
 import android.content.Context
 import androidx.room.Room
 import com.example.database.AppDatabase
+import com.example.database.BuildConfig
 import com.example.database.dao.TranslatedDao
 import com.example.database.util.SQLCipherUtils
 import com.example.datastore.DatastorePrefManager
@@ -42,6 +43,14 @@ class RoomModule {
         @ApplicationContext context: Context,
         passphrase: ByteArray,
     ): AppDatabase {
+        if (BuildConfig.DEBUG) {
+            return Room.databaseBuilder(
+                context,
+                AppDatabase::class.java,
+                "app_database.db",
+            ).build()
+        }
+
         val state = SQLCipherUtils.getDatabaseState(context, "app_database.db")
         if (state == SQLCipherUtils.State.UNENCRYPTED) {
             SQLCipherUtils.encrypt(

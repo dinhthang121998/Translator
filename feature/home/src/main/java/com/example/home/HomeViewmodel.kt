@@ -129,6 +129,7 @@ class HomeViewmodel
                         Log.d("AAAA", "error = ${result.message}")
                         loadingFlow.value = false
                     }
+
                     is UiState.Loading -> {
                         loadingFlow.value = true
                     }
@@ -147,12 +148,23 @@ class HomeViewmodel
             originalWord: String,
             translatedWord: String,
         ) {
+            val existedTranslatedWord =
+                _getTranslatedWordsFlow.value.find {
+                    it.originalWord == originalWord && it.translatedWord == translatedWord
+                }
+
+            Log.d("AAAA", "existedTranslatedWord = $existedTranslatedWord")
+
             val translated =
                 TranslatedWord(
+                    id = existedTranslatedWord?.id ?: 0,
                     originalWord = originalWord,
                     translatedWord = translatedWord,
-                    isFavourite = false,
+                    isFavourite = existedTranslatedWord?.isFavourite ?: false,
+                    createdAt = existedTranslatedWord?.createdAt ?: System.currentTimeMillis(),
                 )
+
+            Log.d("AAAA", "translated = $translated")
             addTranslatedWordUseCase.invoke(translated)
                 .launchIn(viewModelScope)
         }
