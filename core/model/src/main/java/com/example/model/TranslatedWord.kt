@@ -5,4 +5,6 @@ data class TranslatedWord(
     val originalWord: String = "",
     val translatedWord: String = "",
     val isFavourite: Boolean = false,
+    val createdAt: Long = System.currentTimeMillis(),
+    val updatedAt: Long = System.currentTimeMillis(),
 )

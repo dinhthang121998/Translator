@@ -76,6 +76,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
 
         lifecycleScope.launch {
             launch {
+                // save to proto datastore
                 viewModel.pairLanguageFlow.collect { (fromLanguageItem, toLanguageItem) ->
                     handlePairLanguage(fromLanguageItem, toLanguageItem)
                 }

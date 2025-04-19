@@ -15,5 +15,5 @@ class GetTranslatedWordUseCase
             homeRepository.getAllTranslatedWord()
                 .map { listEntity -> UiState.Success(listEntity.map { translatedEntity -> translatedEntity.toTranslatedWord() }) }
 
-        fun TranslatedEntity.toTranslatedWord() = TranslatedWord(this.id, this.originalWord, this.translatedWord, this.isFavourite)
+        private fun TranslatedEntity.toTranslatedWord() = TranslatedWord(this.id, this.originalWord, this.translatedWord, this.isFavourite, this.createdAt, this.updatedAt)
     }
