@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.common.UiState
 import com.example.domain.AddTranslatedWordUseCase
+import com.example.domain.DeleteTranslatedWordUseCase
 import com.example.domain.GetPairLanguageUseCase
 import com.example.domain.GetTranslatedWordUseCase
 import com.example.domain.GetWordInformationUseCase
@@ -29,6 +30,7 @@ class HomeViewmodel
         private val getPairLanguageUseCase: GetPairLanguageUseCase,
         private val storePairLanguageUseCase: StorePairLanguageUseCase,
         private val addTranslatedWordUseCase: AddTranslatedWordUseCase,
+        private val deleteTranslatedWordUseCase: DeleteTranslatedWordUseCase,
         private val getWordInformationUseCase: GetWordInformationUseCase,
         private val getTranslatedWordUseCase: GetTranslatedWordUseCase,
         private val updateTranslatedFavoriteUseCase: UpdateTranslatedFavoriteUseCase,
@@ -44,8 +46,8 @@ class HomeViewmodel
         private val _translatedTextFlow = MutableStateFlow("")
         val translatedTextFlow = _translatedTextFlow
 
-        private val _swapTextFlow = MutableStateFlow(Pair("", ""))
-        val swapTextFlow = _swapTextFlow
+//        private val _swapTextFlow = MutableStateFlow(Pair("", ""))
+//        val swapTextFlow = _swapTextFlow
 
         private val _textDefinitionFlow = MutableStateFlow(WordInformation())
         val textDefinitionFlow = _textDefinitionFlow
@@ -79,21 +81,21 @@ class HomeViewmodel
                 .launchIn(viewModelScope)
         }
 
-        fun swapLanguageItem(
-            fromLanguageItem: SearchLanguageItem.LanguageItem,
-            toLanguageItem: SearchLanguageItem.LanguageItem,
-        ) {
-            val pairLanguage = Pair(toLanguageItem, fromLanguageItem)
-            storePairLanguageUseCase.invoke(pairLanguage)
-                .launchIn(viewModelScope)
-        }
-
-        fun swapText(
-            fromText: String,
-            toText: String,
-        ) {
-            _swapTextFlow.value = translationUtils.swapText(fromText, toText)
-        }
+//        fun swapLanguageItem(
+//            fromLanguageItem: SearchLanguageItem.LanguageItem,
+//            toLanguageItem: SearchLanguageItem.LanguageItem,
+//        ) {
+//            val pairLanguage = Pair(toLanguageItem, fromLanguageItem)
+//            storePairLanguageUseCase.invoke(pairLanguage)
+//                .launchIn(viewModelScope)
+//        }
+//
+//        fun swapText(
+//            fromText: String,
+//            toText: String,
+//        ) {
+//            _swapTextFlow.value = translationUtils.swapText(fromText, toText)
+//        }
 
         // every time data store is updated, you can observe the data changes
         fun observePairLanguageItemChange() {
@@ -167,6 +169,10 @@ class HomeViewmodel
             Log.d("AAAA", "translated = $translated")
             addTranslatedWordUseCase.invoke(translated)
                 .launchIn(viewModelScope)
+        }
+
+        fun deleteTranslatedWord(translatedWord: TranslatedWord) {
+            deleteTranslatedWordUseCase.invoke(translatedWord).launchIn(viewModelScope)
         }
 
         fun speak(

@@ -21,6 +21,10 @@ class TranslatedWordAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
+    fun getItemAt(position: Int): TranslatedWord {
+        return translatedWords[position]
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,

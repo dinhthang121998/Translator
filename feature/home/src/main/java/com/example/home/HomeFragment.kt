@@ -12,7 +12,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.home.databinding.FragmentHomeBinding
 import com.example.home.meaning.MeaningsAdapter
 import com.example.home.translatedWord.TranslatedWordAdapter
@@ -28,6 +30,7 @@ import com.example.ui.base.BaseFragment
 import com.example.ui.util.navigateToActivity
 import com.example.ui.util.showOrGone
 import com.example.ui.util.speechIntent
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -247,6 +250,41 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         binding.rcvTranslatedWord.apply {
             layoutManager = LinearLayoutManager(this@HomeFragment.requireContext())
             adapter = translatedWordAdapter
+
+            // Add swipe-to-delete functionality
+            ItemTouchHelper(createTranslatedWordSwipeCallback()).attachToRecyclerView(this)
+        }
+    }
+
+    private fun createTranslatedWordSwipeCallback() = object : ItemTouchHelper.SimpleCallback(
+        0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+    ) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean = false
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val position = viewHolder.adapterPosition
+            val translatedWord = translatedWordAdapter?.getItemAt(position)
+
+            translatedWord?.let {
+                // Remove from database
+                viewModel.deleteTranslatedWord(it)
+
+                // Optional: Show undo snackbar
+                view?.let { view ->
+                    Snackbar.make(
+                        view,
+                        "Item is deleted",
+                        Snackbar.LENGTH_LONG
+                    ).setAction("Undo") {
+                        // Undo the deletion
+                        viewModel.addTranslatedWord(translatedWord.originalWord, translatedWord.translatedWord)
+                    }.show()
+                }
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.domain.di
 
 import com.example.data.repository.HomeRepository
 import com.example.domain.AddTranslatedWordUseCase
+import com.example.domain.DeleteTranslatedWordUseCase
 import com.example.domain.GetPairLanguageUseCase
 import com.example.domain.GetTranslatedWordUseCase
 import com.example.domain.GetWordInformationUseCase
@@ -50,5 +51,11 @@ class UseCaseModule {
     @Singleton
     fun provideUpdateTranslatedFavoriteUseCase(homeRepository: HomeRepository): UpdateTranslatedFavoriteUseCase {
         return UpdateTranslatedFavoriteUseCase(homeRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteTranslatedUseCase(homeRepository: HomeRepository): DeleteTranslatedWordUseCase {
+        return DeleteTranslatedWordUseCase(homeRepository)
     }
 }
