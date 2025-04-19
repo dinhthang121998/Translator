@@ -1,4 +1,4 @@
-package com.example.ui
+package com.example.ui.translate
 
 import android.content.Context
 import android.text.Editable
@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.core.widget.addTextChangedListener
+import com.example.ui.R
 import com.example.ui.databinding.TranslateViewBinding
 import com.example.ui.util.showOrGone
 
@@ -24,7 +25,13 @@ class TranslateView(context: Context, attributes: AttributeSet) : FrameLayout(co
 
     init {
         binding.lottieLoading.setAnimation(R.raw.loading)
-        val typedArray = context.theme.obtainStyledAttributes(attributes, R.styleable.TranslateView, 0, 0)
+        val typedArray =
+            context.theme.obtainStyledAttributes(
+                attributes,
+                R.styleable.TranslateView,
+                0,
+                0,
+            )
 
         try {
             binding.editText.hint = typedArray.getString(R.styleable.TranslateView_hint)

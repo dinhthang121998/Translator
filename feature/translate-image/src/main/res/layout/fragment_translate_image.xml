@@ -35,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="@+id/ivSelectedImage"
         app:layout_constraintBottom_toBottomOf="@+id/ivSelectedImage"/>
 
-    <com.example.ui.MediaChooseLanguageView
+    <com.example.ui.chooseLanguage.MediaChooseLanguageView
         android:id="@+id/imageChooseLanguageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

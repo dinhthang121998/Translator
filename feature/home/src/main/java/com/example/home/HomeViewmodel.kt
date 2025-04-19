@@ -24,173 +24,174 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewmodel
-@Inject
-constructor(
-    private val getPairLanguageUseCase: GetPairLanguageUseCase,
-    private val storePairLanguageUseCase: StorePairLanguageUseCase,
-    private val addTranslatedWordUseCase: AddTranslatedWordUseCase,
-    private val getWordInformationUseCase: GetWordInformationUseCase,
-    private val getTranslatedWordUseCase: GetTranslatedWordUseCase,
-    private val updateTranslatedFavoriteUseCase: UpdateTranslatedFavoriteUseCase,
-    private val textToSpeechUtils: TextToSpeechUtils,
-    private val translationUtils: TranslationUtils,
-) :
+    @Inject
+    constructor(
+        private val getPairLanguageUseCase: GetPairLanguageUseCase,
+        private val storePairLanguageUseCase: StorePairLanguageUseCase,
+        private val addTranslatedWordUseCase: AddTranslatedWordUseCase,
+        private val getWordInformationUseCase: GetWordInformationUseCase,
+        private val getTranslatedWordUseCase: GetTranslatedWordUseCase,
+        private val updateTranslatedFavoriteUseCase: UpdateTranslatedFavoriteUseCase,
+        private val textToSpeechUtils: TextToSpeechUtils,
+        private val translationUtils: TranslationUtils,
+    ) :
     BaseViewmodel() {
-    // MutableStateFlow does not update the same address??
-    private val _pairLanguageFlow =
-        MutableStateFlow(Pair(SearchLanguageItem.LanguageItem(), SearchLanguageItem.LanguageItem()))
-    val pairLanguageFlow = _pairLanguageFlow
+        // MutableStateFlow does not update the same address??
+        private val _pairLanguageFlow =
+            MutableStateFlow(Pair(SearchLanguageItem.LanguageItem(), SearchLanguageItem.LanguageItem()))
+        val pairLanguageFlow = _pairLanguageFlow
 
-    private val _translatedTextFlow = MutableStateFlow("")
-    val translatedTextFlow = _translatedTextFlow
+        private val _translatedTextFlow = MutableStateFlow("")
+        val translatedTextFlow = _translatedTextFlow
 
-    private val _swapTextFlow = MutableStateFlow(Pair("", ""))
-    val swapTextFlow = _swapTextFlow
+        private val _swapTextFlow = MutableStateFlow(Pair("", ""))
+        val swapTextFlow = _swapTextFlow
 
-    private val _textDefinitionFlow = MutableStateFlow(WordInformation())
-    val textDefinitionFlow = _textDefinitionFlow
+        private val _textDefinitionFlow = MutableStateFlow(WordInformation())
+        val textDefinitionFlow = _textDefinitionFlow
 
-    private val _getTranslatedWordsFlow = MutableStateFlow(listOf<TranslatedWord>())
-    val getTranslatedWordsFlow = _getTranslatedWordsFlow
+        private val _getTranslatedWordsFlow = MutableStateFlow(listOf<TranslatedWord>())
+        val getTranslatedWordsFlow = _getTranslatedWordsFlow
 
-    var fromLanguageItem = SearchLanguageItem.LanguageItem()
-    var toLanguageItem = SearchLanguageItem.LanguageItem()
+        var fromLanguageItem = SearchLanguageItem.LanguageItem()
+        var toLanguageItem = SearchLanguageItem.LanguageItem()
 
-    var originalText = ""
-    var translatedText = ""
+        var originalText = ""
+        var translatedText = ""
 
-    fun storeLanguageItem(
-        isFromLanguageItem: Boolean,
-        languageItem: SearchLanguageItem.LanguageItem,
-    ) {
-        val pairLanguage =
-            if (isFromLanguageItem) {
-                Pair(languageItem, _pairLanguageFlow.value.second)
-            } else {
-                Pair(
-                    _pairLanguageFlow.value.first,
-                    languageItem,
+        fun storeLanguageItem(
+            isFromLanguageItem: Boolean,
+            languageItem: SearchLanguageItem.LanguageItem,
+        ) {
+            val pairLanguage =
+                if (isFromLanguageItem) {
+                    Pair(languageItem, _pairLanguageFlow.value.second)
+                } else {
+                    Pair(
+                        _pairLanguageFlow.value.first,
+                        languageItem,
+                    )
+                }
+
+            // Use launchIn(viewModelScope) instead of viewModelScope.launch { your code } to complete the flow
+            // or viewModelScope.launch { useCaseFlow.invoke().collect { empty here for Unit }}
+            storePairLanguageUseCase.invoke(pairLanguage)
+                .launchIn(viewModelScope)
+        }
+
+        fun swapLanguageItem(
+            fromLanguageItem: SearchLanguageItem.LanguageItem,
+            toLanguageItem: SearchLanguageItem.LanguageItem,
+        ) {
+            val pairLanguage = Pair(toLanguageItem, fromLanguageItem)
+            storePairLanguageUseCase.invoke(pairLanguage)
+                .launchIn(viewModelScope)
+        }
+
+        fun swapText(
+            fromText: String,
+            toText: String,
+        ) {
+            _swapTextFlow.value = translationUtils.swapText(fromText, toText)
+        }
+
+        // every time data store is updated, you can observe the data changes
+        fun observePairLanguageItemChange() {
+            getPairLanguageUseCase.invoke(Unit).onEach { result ->
+                when (result) {
+                    is UiState.Error -> TODO()
+                    is UiState.Loading -> TODO()
+                    is UiState.Success -> {
+                        result.data?.let { pairLanguage ->
+                            _pairLanguageFlow.value = pairLanguage
+                        }
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+
+        // TODO: Handle error
+        fun translate(
+            originalText: String,
+            fromLanguageCode: String,
+            toLanguageCode: String,
+        ) {
+            viewModelScope.launch {
+                _translatedTextFlow.value =
+                    translationUtils.translate(originalText, fromLanguageCode, toLanguageCode)
+            }
+        }
+
+        fun getWordDefinition(word: String) {
+            getWordInformationUseCase.invoke(word).onEach { result ->
+                when (result) {
+                    is UiState.Error -> {
+                        Log.d("AAAA", "error = ${result.message}")
+                        loadingFlow.value = false
+                    }
+
+                    is UiState.Loading -> {
+                        loadingFlow.value = true
+                    }
+
+                    is UiState.Success -> {
+                        result.data?.let { wordInformation ->
+                            _textDefinitionFlow.value = wordInformation
+                        }
+                        loadingFlow.value = false
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+
+        fun addTranslatedWord(
+            originalWord: String,
+            translatedWord: String,
+        ) {
+            val existedTranslatedWord =
+                _getTranslatedWordsFlow.value.find {
+                    it.originalWord == originalWord && it.translatedWord == translatedWord
+                }
+
+            Log.d("AAAA", "existedTranslatedWord = $existedTranslatedWord")
+
+            val translated =
+                TranslatedWord(
+                    id = existedTranslatedWord?.id ?: 0,
+                    originalWord = originalWord,
+                    translatedWord = translatedWord,
+                    isFavourite = existedTranslatedWord?.isFavourite ?: false,
+                    createdAt = existedTranslatedWord?.createdAt ?: System.currentTimeMillis(),
                 )
-            }
 
-        // Use launchIn(viewModelScope) instead of viewModelScope.launch { your code } to complete the flow
-        // or viewModelScope.launch { useCaseFlow.invoke().collect { empty here for Unit }}
-        storePairLanguageUseCase.invoke(pairLanguage)
-            .launchIn(viewModelScope)
-    }
-
-    fun swapLanguageItem(
-        fromLanguageItem: SearchLanguageItem.LanguageItem,
-        toLanguageItem: SearchLanguageItem.LanguageItem,
-    ) {
-        val pairLanguage = Pair(toLanguageItem, fromLanguageItem)
-        storePairLanguageUseCase.invoke(pairLanguage)
-            .launchIn(viewModelScope)
-    }
-
-    fun swapText(
-        fromText: String,
-        toText: String,
-    ) {
-        _swapTextFlow.value = translationUtils.swapText(fromText, toText)
-    }
-
-    // every time data store is updated, you can observe the data changes
-    fun observePairLanguageItemChange() {
-        getPairLanguageUseCase.invoke(Unit).onEach { result ->
-            when (result) {
-                is UiState.Error -> TODO()
-                is UiState.Loading -> TODO()
-                is UiState.Success -> {
-                    result.data?.let { pairLanguage ->
-                        _pairLanguageFlow.value = pairLanguage
-                    }
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
-
-    // TODO: Handle error
-    fun translate(
-        originalText: String,
-        fromLanguageCode: String,
-        toLanguageCode: String,
-    ) {
-        viewModelScope.launch {
-            _translatedTextFlow.value =
-                translationUtils.translate(originalText, fromLanguageCode, toLanguageCode)
-        }
-    }
-
-    fun getWordDefinition(word: String) {
-        getWordInformationUseCase.invoke(word).onEach { result ->
-            when (result) {
-                is UiState.Error -> {
-                    Log.d("AAAA", "error = ${result.message}")
-                    loadingFlow.value = false
-                }
-
-                is UiState.Loading -> {
-                    loadingFlow.value = true
-                }
-
-                is UiState.Success -> {
-                    result.data?.let { wordInformation ->
-                        _textDefinitionFlow.value = wordInformation
-                    }
-                    loadingFlow.value = false
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
-
-    fun addTranslatedWord(
-        originalWord: String,
-        translatedWord: String,
-    ) {
-        val existedTranslatedWord = _getTranslatedWordsFlow.value.find {
-            it.originalWord == originalWord && it.translatedWord == translatedWord
+            Log.d("AAAA", "translated = $translated")
+            addTranslatedWordUseCase.invoke(translated)
+                .launchIn(viewModelScope)
         }
 
-        Log.d("AAAA", "existedTranslatedWord = $existedTranslatedWord")
+        fun speak(
+            text: String,
+            languageCode: String,
+        ) {
+            textToSpeechUtils.speak(text, languageCode)
+        }
 
-        val translated =
-            TranslatedWord(
-                id = existedTranslatedWord?.id ?: 0,
-                originalWord = originalWord,
-                translatedWord = translatedWord,
-                isFavourite = existedTranslatedWord?.isFavourite ?: false,
-                createdAt = existedTranslatedWord?.createdAt ?: System.currentTimeMillis()
-            )
-
-        Log.d("AAAA", "translated = $translated")
-        addTranslatedWordUseCase.invoke(translated)
-            .launchIn(viewModelScope)
-    }
-
-    fun speak(
-        text: String,
-        languageCode: String,
-    ) {
-        textToSpeechUtils.speak(text, languageCode)
-    }
-
-    fun getTranslatedWords() {
-        getTranslatedWordUseCase.invoke(Unit).onEach { result ->
-            when (result) {
-                is UiState.Error -> TODO()
-                is UiState.Loading -> TODO()
-                is UiState.Success -> {
-                    result.data?.let { translatedWords ->
-                        _getTranslatedWordsFlow.value = translatedWords
+        fun getTranslatedWords() {
+            getTranslatedWordUseCase.invoke(Unit).onEach { result ->
+                when (result) {
+                    is UiState.Error -> TODO()
+                    is UiState.Loading -> TODO()
+                    is UiState.Success -> {
+                        result.data?.let { translatedWords ->
+                            _getTranslatedWordsFlow.value = translatedWords
+                        }
                     }
                 }
-            }
-        }.launchIn(viewModelScope)
-    }
+            }.launchIn(viewModelScope)
+        }
 
-    fun updateTranslatedFavorite(translatedWord: TranslatedWord) {
-        val updatedTranslatedWord = translatedWord.copy(isFavourite = !translatedWord.isFavourite)
-        updateTranslatedFavoriteUseCase.invoke(updatedTranslatedWord).launchIn(viewModelScope)
+        fun updateTranslatedFavorite(translatedWord: TranslatedWord) {
+            val updatedTranslatedWord = translatedWord.copy(isFavourite = !translatedWord.isFavourite)
+            updateTranslatedFavoriteUseCase.invoke(updatedTranslatedWord).launchIn(viewModelScope)
+        }
     }
-}

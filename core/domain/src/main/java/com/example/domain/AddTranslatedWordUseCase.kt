@@ -24,7 +24,7 @@ class AddTranslatedWordUseCase
                 translatedWord = this.translatedWord,
                 isFavourite = this.isFavourite,
                 createdAt = this.createdAt,
-                updatedAt = this.updatedAt
+                updatedAt = this.updatedAt,
             )
         }
     }

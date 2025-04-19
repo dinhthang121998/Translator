@@ -39,7 +39,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.example.ui.HomeChooseLanguageView
+        <com.example.ui.chooseLanguage.HomeChooseLanguageView
             android:id="@+id/homeSelectLanguage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clSelectLanguageGroup">
 
-        <com.example.ui.TranslateView
+        <com.example.ui.translate.TranslateView
             android:id="@+id/original"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -94,7 +94,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.example.ui.TranslateView
+            <com.example.ui.translate.TranslateView
                 android:id="@+id/translated"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -161,6 +161,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
+        android:background="@color/white"
+        android:layout_margin="@dimen/size_8"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

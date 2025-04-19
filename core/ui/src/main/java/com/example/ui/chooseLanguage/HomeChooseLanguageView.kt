@@ -1,8 +1,9 @@
-package com.example.ui
+package com.example.ui.chooseLanguage
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import com.example.ui.R
 import com.example.ui.databinding.HomeChooseLanguageViewBinding
 
 class HomeChooseLanguageView(context: Context, attributeSet: AttributeSet) :
@@ -18,7 +19,13 @@ class HomeChooseLanguageView(context: Context, attributeSet: AttributeSet) :
     var onClickSwitch: (() -> Unit)? = null
 
     init {
-        val typedArray = context.theme.obtainStyledAttributes(attributeSet, R.styleable.ChooseLanguageView, 0, 0)
+        val typedArray =
+            context.theme.obtainStyledAttributes(
+                attributeSet,
+                R.styleable.ChooseLanguageView,
+                0,
+                0,
+            )
         try {
             viewBinding.tvFromLanguage.text = typedArray.getString(R.styleable.ChooseLanguageView_fromLanguageText)
             viewBinding.tvToLanguage.text = typedArray.getString(R.styleable.ChooseLanguageView_toLanguageText)

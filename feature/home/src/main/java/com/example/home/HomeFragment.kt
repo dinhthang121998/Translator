@@ -17,7 +17,9 @@ import com.example.home.databinding.FragmentHomeBinding
 import com.example.home.meaning.MeaningsAdapter
 import com.example.home.translatedWord.TranslatedWordAdapter
 import com.example.model.MeaningItem
+import com.example.model.Meanings
 import com.example.model.SearchLanguageItem
+import com.example.model.TranslatedWord
 import com.example.model.WordInformation
 import com.example.translatecamerax.TranslateCameraXActivity
 import com.example.translateimage.TranslateImageActivity
@@ -25,6 +27,7 @@ import com.example.ui.R
 import com.example.ui.base.BaseFragment
 import com.example.ui.util.navigateToActivity
 import com.example.ui.util.showOrGone
+import com.example.ui.util.speechIntent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -120,26 +123,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
     }
 
     private fun handleWordDefinition(wordDefinition: WordInformation) {
-        wordDefinition.phonetic?.let { phonetic ->
-            binding.original.showPhonetic(true)
-            binding.original.setPhonetic(phonetic)
-        } ?: run {
-            binding.original.showPhonetic(false)
-        }
+        handlePhoneticDisplay(wordDefinition.phonetic)
 
-        val isShowSpeak = wordDefinition.word != null
-        binding.original.showSpeak(isShowSpeak)
-
-        val isShowSpeakTranslated = viewModel.translatedText.isNotEmpty()
-        binding.translated.showSpeak(isShowSpeakTranslated)
+        handleSpeakOriginal(wordDefinition.word)
+        handleSpeakTranslated(viewModel.translatedText)
 
         if (wordDefinition.word != null) {
-            binding.rcvMeaning.showOrGone(true)
-            binding.rcvTranslatedWord.showOrGone(false)
+            isShowMeaning(true)
+            isShowTranslatedWord(false)
         }
 
+        handleMeaningDisplay(wordDefinition.meaning)
+    }
+
+    private fun handleMeaningDisplay(meanings: List<Meanings>) {
         val meaningItem = mutableListOf<MeaningItem>()
-        wordDefinition.meaning.forEach { meaning ->
+        meanings.forEach { meaning ->
             meaning.partOfSpeech?.let {
                 meaningItem.add(MeaningItem.PartOfSpeechItem(it))
             }
@@ -148,30 +147,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
                 meaningItem.add(MeaningItem.DefinitionsItem(it))
             }
         }
-
         meaningsAdapter?.updateListMeanings(meaningItem)
+    }
 
-        Log.d("AAAA", "wordDefinition = $wordDefinition ")
+    private fun handleSpeakTranslated(translatedText: String) {
+        val isShowSpeakTranslated = translatedText.isNotEmpty()
+        binding.translated.showSpeak(isShowSpeakTranslated)
+    }
+
+    private fun handleSpeakOriginal(word: String?) {
+        val isShowSpeak = word != null
+        binding.original.showSpeak(isShowSpeak)
+    }
+
+    private fun handlePhoneticDisplay(phonetic: String?) {
+        phonetic?.let {
+            binding.original.showPhonetic(true)
+            binding.original.setPhonetic(phonetic)
+        } ?: run {
+            binding.original.showPhonetic(false)
+        }
     }
 
     private fun handlePairLanguage(
         fromLanguageItem: SearchLanguageItem.LanguageItem,
         toLanguageItem: SearchLanguageItem.LanguageItem,
     ) {
-        if (fromLanguageItem.languageName.isEmpty()) {
-            binding.homeSelectLanguage.setFromLanguage(getString(R.string.search))
-        } else {
-            viewModel.fromLanguageItem = fromLanguageItem
-            binding.homeSelectLanguage.setFromLanguage(fromLanguageItem.languageName)
-        }
+        setFromLanguage(fromLanguageItem)
+        setToLanguage(toLanguageItem)
 
-        if (toLanguageItem.languageName.isEmpty()) {
-            binding.homeSelectLanguage.setToLanguage(getString(R.string.search))
-        } else {
-            viewModel.toLanguageItem = toLanguageItem
-            binding.homeSelectLanguage.setToLanguage(toLanguageItem.languageName)
-        }
+        translatedIfAvailable()
+    }
 
+    private fun translatedIfAvailable() {
         if (viewModel.originalText.isNotEmpty() && viewModel.fromLanguageItem.languageCode.isNotEmpty() &&
             viewModel.toLanguageItem.languageCode.isNotEmpty()
         ) {
@@ -181,6 +189,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
                 viewModel.toLanguageItem.languageCode,
             )
         }
+    }
+
+    private fun setToLanguage(toLanguageItem: SearchLanguageItem.LanguageItem) {
+        val toLanguage =
+            if (toLanguageItem.languageName.isEmpty()) {
+                getString(R.string.search)
+            } else {
+                viewModel.toLanguageItem = toLanguageItem
+                toLanguageItem.languageName
+            }
+        binding.homeSelectLanguage.setToLanguage(toLanguage)
+    }
+
+    private fun setFromLanguage(fromLanguageItem: SearchLanguageItem.LanguageItem) {
+        val fromLanguage =
+            if (fromLanguageItem.languageName.isEmpty()) {
+                getString(R.string.search)
+            } else {
+                viewModel.fromLanguageItem = fromLanguageItem
+                fromLanguageItem.languageName
+            }
+        binding.homeSelectLanguage.setFromLanguage(fromLanguage)
     }
 
     private fun setUpHomeChooseLanguageView() {
@@ -209,7 +239,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         }
     }
 
-    private fun setupTranslatedWordAdapter(translatedWords: List<com.example.model.TranslatedWord>) {
+    private fun setupTranslatedWordAdapter(translatedWords: List<TranslatedWord>) {
         translatedWordAdapter =
             TranslatedWordAdapter(translatedWords, onClickFavorite = { translatedItem ->
                 viewModel.updateTranslatedFavorite(translatedItem)
@@ -251,19 +281,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         binding.original.showMic(true)
         binding.original.onClickMic = {
             // TODO Implements Mic
-            val intent =
-                Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                    putExtra(
-                        RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM,
-                    )
-                    putExtra(
-                        RecognizerIntent.EXTRA_LANGUAGE,
-                        viewModel.fromLanguageItem.languageCode,
-                    ) // Set the language
-                    putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
-                }
-
+            val intent = speechIntent(viewModel.fromLanguageItem.languageCode)
             speechResultLauncher.launch(intent)
 
             // TODO: Not tested, will test later
@@ -313,10 +331,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         binding.translated.showSpeak(false)
     }
 
+    private fun isShowMeaning(isShow: Boolean) {
+        binding.rcvMeaning.showOrGone(isShow)
+    }
+
+    private fun isShowTranslatedWord(isShow: Boolean) {
+        binding.rcvTranslatedWord.showOrGone(isShow)
+    }
+
     private fun resetAll() {
         resetText()
         hidePhonetic()
         hideSpeak()
+        isShowMeaning(false)
+        isShowTranslatedWord(true)
 
         viewModel.originalText = ""
         viewModel.translatedText = ""

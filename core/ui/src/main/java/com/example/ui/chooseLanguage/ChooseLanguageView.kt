@@ -1,4 +1,4 @@
-package com.example.ui
+package com.example.ui.chooseLanguage
 
 import android.content.Context
 import android.util.AttributeSet
