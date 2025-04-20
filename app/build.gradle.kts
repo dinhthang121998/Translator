@@ -44,11 +44,9 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":core:ui"))
     implementation(project(":core:common"))
     implementation(project(":feature:home"))
-    implementation(project(":feature:translate-image"))
-    implementation(project(":feature:translate-camerax"))
 
     implementation(libs.core.ktx)
     implementation(libs.android.appcompat)

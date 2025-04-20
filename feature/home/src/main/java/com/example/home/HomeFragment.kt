@@ -102,7 +102,7 @@ class HomeFragment :
             launch {
                 viewModel.getTranslatedWordsFlow.collect { translatedWords ->
                     // local db response
-                    binding.historyTranslation.updateHistoryTranslation(translatedWords)
+                    binding.historyTranslation.updateTranslationHistory(translatedWords)
                 }
             }
 
@@ -356,6 +356,8 @@ class HomeFragment :
 
     companion object {
         fun newInstance() = HomeFragment()
+
+        const val TAG = "HomeFragment"
     }
 
     override fun onClickFavorite(translatedWord: TranslationHistory) {

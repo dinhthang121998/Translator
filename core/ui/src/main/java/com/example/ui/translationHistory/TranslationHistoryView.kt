@@ -15,19 +15,19 @@ class TranslationHistoryView(context: Context, attributes: AttributeSet) :
     private val binding =
         HistoryTranslationViewBinding.inflate(LayoutInflater.from(context), this, true)
 
-    private val historyTranslationAdapter = TranslationHistoryAdapter(listOf())
+    private val translationHistoryAdapter = TranslationHistoryAdapter(listOf())
 
     var iHistoryTranslationAdapter: TranslationHistoryAdapter.IHistoryTranslationAdapterListener? =
         null
         set(value) {
             field = value
-            historyTranslationAdapter.setListener(value) // Pass directly to adapter
+            translationHistoryAdapter.setListener(value) // Pass directly to adapter
         }
 
     init {
         binding.rcvHistoryTranslation.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = historyTranslationAdapter
+            adapter = translationHistoryAdapter
 
             // Add swipe-to-delete functionality
             ItemTouchHelper(createTranslatedWordSwipeCallback()).attachToRecyclerView(this)
@@ -50,7 +50,7 @@ class TranslationHistoryView(context: Context, attributes: AttributeSet) :
                 direction: Int,
             ) {
                 val position = viewHolder.adapterPosition
-                val translatedWord = historyTranslationAdapter.getItemAt(position)
+                val translatedWord = translationHistoryAdapter.getItemAt(position)
 
                 translatedWord.let {
                     iHistoryTranslationAdapter?.onDeleteHistoryItem(it)
@@ -58,7 +58,15 @@ class TranslationHistoryView(context: Context, attributes: AttributeSet) :
             }
         }
 
-    fun updateHistoryTranslation(translatedWords: List<TranslationHistory>) {
-        historyTranslationAdapter.updateHistoryTranslation(translatedWords)
+    fun updateTranslationHistory(translationHistory: List<TranslationHistory>) {
+        // Because using DiffUtil, when the new item is added, it not scroll to the new item
+        val isNeedScrollToTop = translationHistoryAdapter.itemCount < translationHistory.size
+
+        translationHistoryAdapter.updateTranslationHistory(translationHistory)
+
+        if (translationHistory.isNotEmpty() && isNeedScrollToTop) {
+            // Scroll to position 0 (the newest item) after update
+            binding.rcvHistoryTranslation.smoothScrollToPosition(0)
+        }
     }
 }
