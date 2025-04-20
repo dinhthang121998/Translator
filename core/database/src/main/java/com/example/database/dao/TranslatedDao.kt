@@ -5,22 +5,22 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.database.model.TranslatedEntity
+import com.example.database.model.TranslationHistoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TranslatedDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTranslatedWord(translatedEntity: TranslatedEntity)
+    suspend fun insertTranslationHistory(translationHistoryEntity: TranslationHistoryEntity)
 
     @Delete
-    suspend fun deleteTranslatedWord(translatedEntity: TranslatedEntity)
+    suspend fun deleteTranslationHistory(translationHistoryEntity: TranslationHistoryEntity)
 
-    @Query("SELECT * FROM translatedEntity ORDER BY updatedAt DESC")
-    fun getAllTranslatedWord(): Flow<List<TranslatedEntity>>
+    @Query("SELECT * FROM translationhistoryentity ORDER BY updatedAt DESC")
+    fun getAllTranslationHistory(): Flow<List<TranslationHistoryEntity>>
 
-    @Query("UPDATE translatedentity SET isFavourite = :isFavorite WHERE id = :id")
-    suspend fun updateTranslatedWordFavorite(
+    @Query("UPDATE translationhistoryentity SET isFavourite = :isFavorite WHERE id = :id")
+    suspend fun updateTranslationHistoryFavorite(
         id: Int,
         isFavorite: Boolean,
     )

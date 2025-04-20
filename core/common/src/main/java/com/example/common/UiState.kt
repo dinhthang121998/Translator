@@ -1,13 +1,9 @@
 package com.example.common
 
-sealed class UiState<T>(
-    val data: T?,
-    val message: String = "",
-) {
-    class Loading<T>(data: T? = null) : UiState<T>(data = data)
+sealed class UiState<out T> {
+    data class Success<T>(val data: T) : UiState<T>()
 
-    class Success<T>(data: T?) : UiState<T>(data = data)
+    data class Error(val error: Exception) : UiState<Nothing>()
 
-    class Error<T>(data: T? = null, message: String) :
-        UiState<T>(data = data, message = message)
+    data object Loading : UiState<Nothing>()
 }

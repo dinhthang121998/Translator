@@ -3,10 +3,10 @@ package com.example.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.database.dao.TranslatedDao
-import com.example.database.model.TranslatedEntity
+import com.example.database.model.TranslationHistoryEntity
 
 @Database(
-    entities = [TranslatedEntity::class],
+    entities = [TranslationHistoryEntity::class],
     version = 1,
     exportSchema = false,
 )
