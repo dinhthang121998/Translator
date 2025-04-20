@@ -136,7 +136,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
             isShowTranslatedWord(false)
         }
 
-        handleMeaningDisplay(wordDefinition.meaning)
+        handleMeaningDisplay(wordDefinition.meanings)
     }
 
     private fun handleMeaningDisplay(meanings: List<Meanings>) {
@@ -256,37 +256,42 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         }
     }
 
-    private fun createTranslatedWordSwipeCallback() = object : ItemTouchHelper.SimpleCallback(
-        0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-    ) {
-        override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder
-        ): Boolean = false
+    private fun createTranslatedWordSwipeCallback() =
+        object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder,
+            ): Boolean = false
 
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val position = viewHolder.adapterPosition
-            val translatedWord = translatedWordAdapter?.getItemAt(position)
+            override fun onSwiped(
+                viewHolder: RecyclerView.ViewHolder,
+                direction: Int,
+            ) {
+                val position = viewHolder.adapterPosition
+                val translatedWord = translatedWordAdapter?.getItemAt(position)
 
-            translatedWord?.let {
-                // Remove from database
-                viewModel.deleteTranslatedWord(it)
+                translatedWord?.let {
+                    // Remove from database
+                    viewModel.deleteTranslatedWord(it)
 
-                // Optional: Show undo snackbar
-                view?.let { view ->
-                    Snackbar.make(
-                        view,
-                        "Item is deleted",
-                        Snackbar.LENGTH_LONG
-                    ).setAction("Undo") {
-                        // Undo the deletion
-                        viewModel.addTranslatedWord(translatedWord.originalWord, translatedWord.translatedWord)
-                    }.show()
+                    // Optional: Show undo snackbar
+                    view?.let { view ->
+                        Snackbar.make(
+                            view,
+                            "Item is deleted",
+                            Snackbar.LENGTH_LONG,
+                        ).setAction("Undo") {
+                            // Undo the deletion
+                            viewModel.addTranslatedWord(translatedWord.originalWord, translatedWord.translatedWord)
+                        }.show()
+                    }
                 }
             }
         }
-    }
 
     private fun setupMeaningAdapter(meaningsItem: List<MeaningItem>) {
         meaningsAdapter = MeaningsAdapter(meaningsItem)

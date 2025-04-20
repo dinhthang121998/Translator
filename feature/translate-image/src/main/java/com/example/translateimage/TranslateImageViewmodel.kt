@@ -78,20 +78,18 @@ class TranslateImageViewmodel
             isFromLanguageItem: Boolean,
             languageItem: SearchLanguageItem.LanguageItem,
         ) {
-            val pairLanguage =
-                if (isFromLanguageItem) {
-                    Pair(languageItem, _pairLanguageFlow.value.second)
-                } else {
-                    Pair(
-                        _pairLanguageFlow.value.first,
-                        languageItem,
-                    )
-                }
-
-            // Use launchIn(viewModelScope) instead of viewModelScope.launch { your code } to complete the flow
-            // or viewModelScope.launch { useCaseFlow.invoke().collect { empty here for Unit }}
-            storePairLanguageUseCase.invoke(pairLanguage)
-                .launchIn(viewModelScope)
+            viewModelScope.launch {
+                val pairLanguage =
+                    if (isFromLanguageItem) {
+                        Pair(languageItem, _pairLanguageFlow.value.second)
+                    } else {
+                        Pair(
+                            _pairLanguageFlow.value.first,
+                            languageItem,
+                        )
+                    }
+                storePairLanguageUseCase.invoke(pairLanguage)
+            }
         }
 
         // every time data store is updated, you can observe the data changes
@@ -101,7 +99,7 @@ class TranslateImageViewmodel
                     is UiState.Error -> TODO()
                     is UiState.Loading -> TODO()
                     is UiState.Success -> {
-                        result.data?.let { pairLanguage ->
+                        result.data.let { pairLanguage ->
                             _pairLanguageFlow.value = pairLanguage
                         }
                     }

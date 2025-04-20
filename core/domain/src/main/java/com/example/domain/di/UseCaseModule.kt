@@ -1,6 +1,7 @@
 package com.example.domain.di
 
 import com.example.data.repository.HomeRepository
+import com.example.datastore.DatastoreProtoManager
 import com.example.domain.AddTranslatedWordUseCase
 import com.example.domain.DeleteTranslatedWordUseCase
 import com.example.domain.GetPairLanguageUseCase
@@ -12,6 +13,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
@@ -19,43 +21,64 @@ import javax.inject.Singleton
 class UseCaseModule {
     @Provides
     @Singleton
-    fun provideGetPairLanguageUseCase(protoPreferenceManager: com.example.datastore.DatastoreProtoManager): GetPairLanguageUseCase {
-        return GetPairLanguageUseCase(protoPreferenceManager)
+    fun provideGetPairLanguageUseCase(
+        protoPreferenceManager: DatastoreProtoManager,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): GetPairLanguageUseCase {
+        return GetPairLanguageUseCase(protoPreferenceManager, coroutineDispatcher)
     }
 
     @Provides
     @Singleton
-    fun provideStorePairLanguageUseCase(protoPreferenceManager: com.example.datastore.DatastoreProtoManager): StorePairLanguageUseCase {
-        return StorePairLanguageUseCase(protoPreferenceManager)
+    fun provideStorePairLanguageUseCase(
+        protoPreferenceManager: DatastoreProtoManager,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): StorePairLanguageUseCase {
+        return StorePairLanguageUseCase(protoPreferenceManager, coroutineDispatcher)
     }
 
     @Provides
     @Singleton
-    fun provideAddTranslatedWordUseCase(homeRepository: HomeRepository): AddTranslatedWordUseCase {
-        return AddTranslatedWordUseCase(homeRepository)
+    fun provideAddTranslatedWordUseCase(
+        homeRepository: HomeRepository,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): AddTranslatedWordUseCase {
+        return AddTranslatedWordUseCase(homeRepository, coroutineDispatcher)
     }
 
     @Provides
     @Singleton
-    fun provideGetWordInformationUseCase(homeRepository: HomeRepository): GetWordInformationUseCase {
-        return GetWordInformationUseCase(homeRepository)
+    fun provideGetWordInformationUseCase(
+        homeRepository: HomeRepository,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): GetWordInformationUseCase {
+        return GetWordInformationUseCase(homeRepository, coroutineDispatcher)
     }
 
     @Provides
     @Singleton
-    fun provideGetTranslatedWordUseCase(homeRepository: HomeRepository): GetTranslatedWordUseCase {
-        return GetTranslatedWordUseCase(homeRepository)
+    fun provideGetTranslatedWordUseCase(
+        homeRepository: HomeRepository,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): GetTranslatedWordUseCase {
+        return GetTranslatedWordUseCase(homeRepository, coroutineDispatcher)
     }
 
     @Provides
     @Singleton
-    fun provideUpdateTranslatedFavoriteUseCase(homeRepository: HomeRepository): UpdateTranslatedFavoriteUseCase {
-        return UpdateTranslatedFavoriteUseCase(homeRepository)
+    fun provideUpdateTranslatedFavoriteUseCase(
+        homeRepository: HomeRepository,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): UpdateTranslatedFavoriteUseCase {
+        return UpdateTranslatedFavoriteUseCase(homeRepository, coroutineDispatcher)
     }
 
     @Provides
     @Singleton
-    fun provideDeleteTranslatedUseCase(homeRepository: HomeRepository): DeleteTranslatedWordUseCase {
-        return DeleteTranslatedWordUseCase(homeRepository)
+    fun provideDeleteTranslatedUseCase(
+        homeRepository: HomeRepository,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): DeleteTranslatedWordUseCase {
+        return DeleteTranslatedWordUseCase(homeRepository, coroutineDispatcher)
     }
 }
