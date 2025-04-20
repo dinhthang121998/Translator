@@ -1,10 +1,10 @@
 package com.example.database.mapper
 
-import com.example.database.model.TranslatedEntity
-import com.example.model.TranslatedWord
+import com.example.database.model.TranslationHistoryEntity
+import com.example.model.TranslationHistory
 
-fun TranslatedEntity.toDomain(): TranslatedWord {
-    return TranslatedWord(
+fun TranslationHistoryEntity.toDomain(): TranslationHistory {
+    return TranslationHistory(
         id,
         originalWord,
         translatedWord,
@@ -14,8 +14,8 @@ fun TranslatedEntity.toDomain(): TranslatedWord {
     )
 }
 
-fun TranslatedWord.toEntity(): TranslatedEntity {
-    return TranslatedEntity(
+fun TranslationHistory.toEntity(): TranslationHistoryEntity {
+    return TranslationHistoryEntity(
         id = id,
         originalWord = originalWord,
         translatedWord = translatedWord,

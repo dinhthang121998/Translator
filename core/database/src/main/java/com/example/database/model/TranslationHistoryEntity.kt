@@ -1,10 +1,15 @@
-package com.example.model
+package com.example.database.model
 
-data class TranslatedWord(
-    val id: Int = 0,
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class TranslationHistoryEntity(
     val originalWord: String = "",
     val translatedWord: String = "",
     val isFavourite: Boolean = false,
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
 )

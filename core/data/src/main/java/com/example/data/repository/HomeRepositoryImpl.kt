@@ -3,7 +3,7 @@ package com.example.data.repository
 import com.example.database.dao.TranslatedDao
 import com.example.database.mapper.toDomain
 import com.example.database.mapper.toEntity
-import com.example.model.TranslatedWord
+import com.example.model.TranslationHistory
 import com.example.model.WordInformation
 import com.example.network.ApiService
 import com.example.network.mapper.toDomain
@@ -15,12 +15,12 @@ class HomeRepositoryImpl
     @Inject
     constructor(private val translatedDao: TranslatedDao, private val apiService: ApiService) :
     HomeRepository {
-        override suspend fun addTranslatedWord(translatedWord: TranslatedWord) {
-            translatedDao.insertTranslatedWord(translatedWord.toEntity())
+        override suspend fun addTranslatedWord(translatedWord: TranslationHistory) {
+            translatedDao.insertTranslationHistory(translatedWord.toEntity())
         }
 
-        override fun getAllTranslatedWord(): Flow<List<TranslatedWord>> {
-            return translatedDao.getAllTranslatedWord().map { it.map { it.toDomain() } }
+        override fun getAllTranslatedWord(): Flow<List<TranslationHistory>> {
+            return translatedDao.getAllTranslationHistory().map { it.map { it.toDomain() } }
         }
 
         override suspend fun getWordInformation(word: String): List<WordInformation> {
@@ -31,10 +31,10 @@ class HomeRepositoryImpl
             id: Int,
             isFavorite: Boolean,
         ) {
-            return translatedDao.updateTranslatedWordFavorite(id, isFavorite)
+            return translatedDao.updateTranslationHistoryFavorite(id, isFavorite)
         }
 
-        override suspend fun deleteTranslatedWord(translatedWord: TranslatedWord) {
-            translatedDao.deleteTranslatedWord(translatedWord.toEntity())
+        override suspend fun deleteTranslatedWord(translatedWord: TranslationHistory) {
+            translatedDao.deleteTranslationHistory(translatedWord.toEntity())
         }
     }

@@ -12,7 +12,7 @@ import com.example.domain.StorePairLanguageUseCase
 import com.example.domain.UpdateTranslatedFavoriteUseCase
 import com.example.mlkit.utils.TranslationUtils
 import com.example.model.SearchLanguageItem
-import com.example.model.TranslatedWord
+import com.example.model.TranslationHistory
 import com.example.model.WordInformation
 import com.example.ui.base.BaseViewmodel
 import com.example.voice.TextToSpeechUtils
@@ -52,7 +52,7 @@ class HomeViewmodel
         private val _textDefinitionFlow = MutableStateFlow(WordInformation())
         val textDefinitionFlow = _textDefinitionFlow
 
-        private val _getTranslatedWordsFlow = MutableStateFlow(listOf<TranslatedWord>())
+        private val _getTranslatedWordsFlow = MutableStateFlow(listOf<TranslationHistory>())
         val getTranslatedWordsFlow = _getTranslatedWordsFlow
 
         var fromLanguageItem = SearchLanguageItem.LanguageItem()
@@ -144,7 +144,7 @@ class HomeViewmodel
             }
         }
 
-        fun addTranslatedWord(
+        fun addTranslationHistory(
             originalWord: String,
             translatedWord: String,
         ) {
@@ -157,7 +157,7 @@ class HomeViewmodel
                 Log.d("AAAA", "existedTranslatedWord = $existedTranslatedWord")
 
                 val translated =
-                    TranslatedWord(
+                    TranslationHistory(
                         id = existedTranslatedWord?.id ?: 0,
                         originalWord = originalWord,
                         translatedWord = translatedWord,
@@ -170,9 +170,9 @@ class HomeViewmodel
             }
         }
 
-        fun deleteTranslatedWord(translatedWord: TranslatedWord) {
+        fun deleteTranslationHistory(translationHistory: TranslationHistory) {
             viewModelScope.launch {
-                deleteTranslatedWordUseCase.invoke(translatedWord)
+                deleteTranslatedWordUseCase.invoke(translationHistory)
             }
         }
 
@@ -197,7 +197,7 @@ class HomeViewmodel
             }.launchIn(viewModelScope)
         }
 
-        fun updateTranslatedFavorite(translatedWord: TranslatedWord) {
+        fun updateTranslatedFavorite(translatedWord: TranslationHistory) {
             viewModelScope.launch {
                 val updatedTranslatedWord = translatedWord.copy(isFavourite = !translatedWord.isFavourite)
                 updateTranslatedFavoriteUseCase.invoke(updatedTranslatedWord)

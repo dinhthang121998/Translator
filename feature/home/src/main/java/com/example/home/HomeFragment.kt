@@ -12,31 +12,30 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.home.databinding.FragmentHomeBinding
 import com.example.home.meaning.MeaningsAdapter
-import com.example.home.translatedWord.TranslatedWordAdapter
 import com.example.model.MeaningItem
 import com.example.model.Meanings
 import com.example.model.SearchLanguageItem
-import com.example.model.TranslatedWord
+import com.example.model.TranslationHistory
 import com.example.model.WordInformation
 import com.example.translatecamerax.TranslateCameraXActivity
 import com.example.translateimage.TranslateImageActivity
 import com.example.ui.R
 import com.example.ui.base.BaseFragment
+import com.example.ui.translationHistory.TranslationHistoryAdapter
 import com.example.ui.util.navigateToActivity
 import com.example.ui.util.showOrGone
 import com.example.ui.util.speechIntent
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
+class HomeFragment :
+    BaseFragment<FragmentHomeBinding, HomeViewmodel>(),
+    TranslationHistoryAdapter.IHistoryTranslationAdapterListener {
     override fun initBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,7 +49,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
     // Declare an ActivityResultLauncher
     private lateinit var speechResultLauncher: ActivityResultLauncher<Intent>
     private var meaningsAdapter: MeaningsAdapter? = null
-    private var translatedWordAdapter: TranslatedWordAdapter? = null
 
     override fun onViewCreated(
         view: View,
@@ -65,7 +63,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         setupOriginalView()
         setupTranslatedView()
         setupMeaningAdapter(listOf())
-        setupTranslatedWordAdapter(listOf())
+        setupHistoryTranslation()
 
         speechResultLauncher =
             registerForActivityResult(
@@ -104,7 +102,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
             launch {
                 viewModel.getTranslatedWordsFlow.collect { translatedWords ->
                     // local db response
-                    translatedWordAdapter?.updateTranslatedWords(translatedWords)
+                    binding.historyTranslation.updateHistoryTranslation(translatedWords)
                 }
             }
 
@@ -125,6 +123,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         }
     }
 
+    private fun setupHistoryTranslation() {
+        binding.historyTranslation.iHistoryTranslationAdapter = this
+    }
+
     private fun handleWordDefinition(wordDefinition: WordInformation) {
         handlePhoneticDisplay(wordDefinition.phonetic)
 
@@ -133,7 +135,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
 
         if (wordDefinition.word != null) {
             isShowMeaning(true)
-            isShowTranslatedWord(false)
+            isShowHistoryTranslation(false)
         }
 
         handleMeaningDisplay(wordDefinition.meanings)
@@ -242,57 +244,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         }
     }
 
-    private fun setupTranslatedWordAdapter(translatedWords: List<TranslatedWord>) {
-        translatedWordAdapter =
-            TranslatedWordAdapter(translatedWords, onClickFavorite = { translatedItem ->
-                viewModel.updateTranslatedFavorite(translatedItem)
-            }, onClickItem = {})
-        binding.rcvTranslatedWord.apply {
-            layoutManager = LinearLayoutManager(this@HomeFragment.requireContext())
-            adapter = translatedWordAdapter
-
-            // Add swipe-to-delete functionality
-            ItemTouchHelper(createTranslatedWordSwipeCallback()).attachToRecyclerView(this)
-        }
-    }
-
-    private fun createTranslatedWordSwipeCallback() =
-        object : ItemTouchHelper.SimpleCallback(
-            0,
-            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
-        ) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder,
-            ): Boolean = false
-
-            override fun onSwiped(
-                viewHolder: RecyclerView.ViewHolder,
-                direction: Int,
-            ) {
-                val position = viewHolder.adapterPosition
-                val translatedWord = translatedWordAdapter?.getItemAt(position)
-
-                translatedWord?.let {
-                    // Remove from database
-                    viewModel.deleteTranslatedWord(it)
-
-                    // Optional: Show undo snackbar
-                    view?.let { view ->
-                        Snackbar.make(
-                            view,
-                            "Item is deleted",
-                            Snackbar.LENGTH_LONG,
-                        ).setAction("Undo") {
-                            // Undo the deletion
-                            viewModel.addTranslatedWord(translatedWord.originalWord, translatedWord.translatedWord)
-                        }.show()
-                    }
-                }
-            }
-        }
-
     private fun setupMeaningAdapter(meaningsItem: List<MeaningItem>) {
         meaningsAdapter = MeaningsAdapter(meaningsItem)
         binding.rcvMeaning.apply {
@@ -313,7 +264,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
             if (viewModel.fromLanguageItem.languageCode == "en") {
                 viewModel.getWordDefinition(viewModel.originalText)
             }
-            viewModel.addTranslatedWord(viewModel.originalText, viewModel.translatedText)
+            viewModel.addTranslationHistory(viewModel.originalText, viewModel.translatedText)
         }
         binding.translated.onClickSpeak = { text ->
             viewModel.speak(text, viewModel.toLanguageItem.languageCode)
@@ -378,8 +329,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         binding.rcvMeaning.showOrGone(isShow)
     }
 
-    private fun isShowTranslatedWord(isShow: Boolean) {
-        binding.rcvTranslatedWord.showOrGone(isShow)
+    private fun isShowHistoryTranslation(isShow: Boolean) {
+        binding.historyTranslation.showOrGone(isShow)
     }
 
     private fun resetAll() {
@@ -387,7 +338,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
         hidePhonetic()
         hideSpeak()
         isShowMeaning(false)
-        isShowTranslatedWord(true)
+        isShowHistoryTranslation(true)
 
         viewModel.originalText = ""
         viewModel.translatedText = ""
@@ -405,5 +356,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewmodel>() {
 
     companion object {
         fun newInstance() = HomeFragment()
+    }
+
+    override fun onClickFavorite(translatedWord: TranslationHistory) {
+        viewModel.updateTranslatedFavorite(translatedWord)
+    }
+
+    override fun onClickItem(translatedWord: TranslationHistory) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDeleteHistoryItem(translatedWord: TranslationHistory) {
+        viewModel.deleteTranslationHistory(translatedWord)
+        // Optional: Show undo snackbar
+        view?.let { view ->
+            Snackbar.make(
+                view,
+                "Item is deleted",
+                Snackbar.LENGTH_LONG,
+            ).setAction("Undo") {
+                // Undo the deletion
+                viewModel.addTranslationHistory(
+                    translatedWord.originalWord,
+                    translatedWord.translatedWord,
+                )
+            }.show()
+        }
     }
 }

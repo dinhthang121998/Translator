@@ -1,7 +1,7 @@
-package com.example.home.translatedWord
+package com.example.ui.translationHistory
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.model.TranslatedWord
+import com.example.model.TranslationHistory
 
 /**
  * If areItemsTheSame() returns false, the items are completely different entities
@@ -13,9 +13,9 @@ import com.example.model.TranslatedWord
  * If both methods return true:
  *      The items are identical - no change needed
  */
-class TranslatedWordDiff(
-    private val oldList: List<TranslatedWord>,
-    private val newList: List<TranslatedWord>,
+class TranslationHistoryDiff(
+    private val oldList: List<TranslationHistory>,
+    private val newList: List<TranslationHistory>,
 ) : DiffUtil.Callback() {
     override fun getOldListSize() = oldList.size
 

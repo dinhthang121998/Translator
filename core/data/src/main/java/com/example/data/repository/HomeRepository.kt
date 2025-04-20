@@ -1,13 +1,13 @@
 package com.example.data.repository
 
-import com.example.model.TranslatedWord
+import com.example.model.TranslationHistory
 import com.example.model.WordInformation
 import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
-    suspend fun addTranslatedWord(translatedWord: TranslatedWord)
+    suspend fun addTranslatedWord(translatedWord: TranslationHistory)
 
-    fun getAllTranslatedWord(): Flow<List<TranslatedWord>>
+    fun getAllTranslatedWord(): Flow<List<TranslationHistory>>
 
     suspend fun getWordInformation(word: String): List<WordInformation>
 
@@ -16,5 +16,5 @@ interface HomeRepository {
         isFavorite: Boolean,
     )
 
-    suspend fun deleteTranslatedWord(translatedWord: TranslatedWord)
+    suspend fun deleteTranslatedWord(translatedWord: TranslationHistory)
 }
