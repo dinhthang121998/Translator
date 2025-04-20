@@ -13,7 +13,7 @@ class TranslationHistoryAdapter(
     RecyclerView.Adapter<TranslationHistoryAdapter.TranslatedWordViewHolder>() {
     var iHistoryTranslationAdapterListener: IHistoryTranslationAdapterListener? = null
 
-    fun updateHistoryTranslation(historyTranslation: List<TranslationHistory>) {
+    fun updateTranslationHistory(historyTranslation: List<TranslationHistory>) {
         val diffCallback = TranslationHistoryDiff(this.historyTranslation, historyTranslation)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 

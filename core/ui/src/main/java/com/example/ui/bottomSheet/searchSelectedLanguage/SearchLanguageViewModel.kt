@@ -16,6 +16,7 @@ class SearchLanguageViewModel
     constructor(
         private val translationUtils: TranslationUtils,
     ) : BaseViewmodel() {
+        // TODO: Remove the relationship between UI and ML kit
         private val _listAllLanguages =
             MutableStateFlow(listOf<SearchLanguageItem.LanguageItem>())
         val listAllLanguages = _listAllLanguages

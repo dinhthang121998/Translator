@@ -12,7 +12,9 @@ import androidx.viewbinding.ViewBinding
 
 abstract class BaseActivity<V : ViewBinding> : AppCompatActivity() {
     private var _binding: V? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
+
+    private var currentTag = ""
 
     abstract fun initBinding(): V?
 
@@ -55,6 +57,8 @@ abstract class BaseActivity<V : ViewBinding> : AppCompatActivity() {
         container: View,
         tag: String,
     ) {
+        if (tag == currentTag) return
+        currentTag = tag
         supportFragmentManager.beginTransaction().replace(container.id, fragment, tag).commit()
     }
 }
