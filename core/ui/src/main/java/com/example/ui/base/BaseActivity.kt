@@ -59,6 +59,8 @@ abstract class BaseActivity<V : ViewBinding> : AppCompatActivity() {
     ) {
         if (tag == currentTag) return
         currentTag = tag
-        supportFragmentManager.beginTransaction().replace(container.id, fragment, tag).commit()
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(container.id, fragment, tag)
+        transaction.commit()
     }
 }

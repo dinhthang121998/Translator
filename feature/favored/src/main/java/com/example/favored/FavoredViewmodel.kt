@@ -5,6 +5,7 @@ import com.example.common.UiState
 import com.example.domain.DeleteTranslationHistoryUseCase
 import com.example.domain.GetFavoriteTranslationHistoryUseCase
 import com.example.domain.UndoTranslationHistoryUseCase
+import com.example.domain.UpdateFavoriteTranslationHistoryUseCase
 import com.example.model.TranslationHistory
 import com.example.ui.base.BaseViewmodel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,7 @@ class FavoredViewmodel
         private val getFavoriteTranslationHistoryUseCase: GetFavoriteTranslationHistoryUseCase,
         private val deleteTranslationHistoryUseCase: DeleteTranslationHistoryUseCase,
         private val undoTranslationHistoryUseCase: UndoTranslationHistoryUseCase,
+        private val updateFavoriteTranslationHistoryUseCase: UpdateFavoriteTranslationHistoryUseCase,
     ) : BaseViewmodel() {
         private val _getFavoriteTranslationHistoryFlow = MutableStateFlow(listOf<TranslationHistory>())
         val getFavoriteTranslationHistoryFlow = _getFavoriteTranslationHistoryFlow
@@ -48,6 +50,12 @@ class FavoredViewmodel
         fun undoTranslationHistory(translationHistory: TranslationHistory) {
             viewModelScope.launch {
                 undoTranslationHistoryUseCase.invoke(translationHistory)
+            }
+        }
+
+        fun updateTranslatedFavorite(translatedWord: TranslationHistory) {
+            viewModelScope.launch {
+                updateFavoriteTranslationHistoryUseCase.invoke(translatedWord)
             }
         }
     }

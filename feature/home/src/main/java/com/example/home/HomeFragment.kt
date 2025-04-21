@@ -374,9 +374,9 @@ class HomeFragment :
         view?.let { view ->
             Snackbar.make(
                 view,
-                "Item is deleted",
+                getString(R.string.item_is_deleted),
                 Snackbar.LENGTH_LONG,
-            ).setAction("Undo") {
+            ).setAction(getString(R.string.undo)) {
                 // Undo the deletion
                 viewModel.undoTranslationHistory(
                     translatedWord,

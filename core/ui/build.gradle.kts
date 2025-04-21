@@ -44,22 +44,22 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:mlkit"))
 
-    implementation("androidx.core:core-ktx:1.15.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.activity:activity:1.10.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    implementation(libs.core.ktx)
+    implementation(libs.android.appcompat)
+    implementation(libs.android.material)
+    implementation(libs.activity)
+    implementation(libs.constraintlayout)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.espresso)
 
     // Lottie
     implementation(libs.lottie)
 
     // hilt
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     // viewmodel for Fragment
-    implementation("androidx.fragment:fragment-ktx:1.8.5")
+    implementation(libs.fragment.ktx)
 }

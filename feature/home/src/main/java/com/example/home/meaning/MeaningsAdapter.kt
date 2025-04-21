@@ -7,6 +7,7 @@ import androidx.viewbinding.ViewBinding
 import com.example.home.databinding.DefinitionItemBinding
 import com.example.home.databinding.PartOfSpeechItemBinding
 import com.example.model.MeaningItem
+import com.example.ui.R
 import com.example.ui.util.showOrGone
 
 class MeaningsAdapter(private var listMeanings: List<MeaningItem>) :
@@ -78,7 +79,7 @@ class MeaningsAdapter(private var listMeanings: List<MeaningItem>) :
 
             definitionsItem.definitions.example?.let {
                 viewBinding.tvExample.showOrGone(true)
-                viewBinding.tvExample.text = "\"$it\""
+                viewBinding.tvExample.text = itemView.context.getString(R.string.meaning_example, it)
             } ?: run {
                 viewBinding.tvExample.showOrGone(false)
                 viewBinding.tvExample.text = ""

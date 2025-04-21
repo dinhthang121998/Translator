@@ -192,9 +192,7 @@ class HomeViewmodel
 
         fun updateTranslatedFavorite(translatedWord: TranslationHistory) {
             viewModelScope.launch {
-                val updatedTranslatedWord =
-                    translatedWord.copy(isFavourite = !translatedWord.isFavourite)
-                updateFavoriteTranslationHistoryUseCase.invoke(updatedTranslatedWord)
+                updateFavoriteTranslationHistoryUseCase.invoke(translatedWord)
             }
         }
 

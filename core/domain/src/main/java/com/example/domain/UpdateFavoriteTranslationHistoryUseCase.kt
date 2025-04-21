@@ -11,6 +11,6 @@ class UpdateFavoriteTranslationHistoryUseCase
     constructor(private val translationHistoryRepository: TranslationHistoryRepository, coroutineDispatcher: CoroutineDispatcher) :
     SuspendUseCase<TranslationHistory, Unit>(coroutineDispatcher) {
         override suspend fun execute(parameter: TranslationHistory) {
-            translationHistoryRepository.updateTranslatedWordFavorite(parameter.id, parameter.isFavourite)
+            translationHistoryRepository.updateTranslatedWordFavorite(parameter.id, !parameter.isFavourite)
         }
     }

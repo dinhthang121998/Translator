@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.favored.databinding.FragmentFavoredBinding
 import com.example.model.TranslationHistory
+import com.example.ui.R
 import com.example.ui.base.BaseFragment
 import com.example.ui.translationHistory.TranslationHistoryAdapter
 import com.google.android.material.snackbar.Snackbar
@@ -66,7 +67,7 @@ class FavoredFragment :
     }
 
     override fun onClickFavorite(translatedWord: TranslationHistory) {
-        TODO("Not yet implemented")
+        viewModel.updateTranslatedFavorite(translatedWord)
     }
 
     override fun onClickItem(translatedWord: TranslationHistory) {
@@ -79,9 +80,9 @@ class FavoredFragment :
         view?.let { view ->
             Snackbar.make(
                 view,
-                "Item is deleted",
+                getString(R.string.item_is_deleted),
                 Snackbar.LENGTH_INDEFINITE,
-            ).setAction("Undo") {
+            ).setAction(getString(R.string.undo)) {
                 // Undo the deletion
                 viewModel.undoTranslationHistory(translatedWord)
             }.show()

@@ -24,4 +24,7 @@
     <string name="favored">Favored</string>
     <string name="home">Home</string>
     <string name="settings">Settings</string>
+    <string name="item_is_deleted">Item is deleted</string>
+    <string name="undo">Undo</string>
+    <string name="meaning_example">"%s"</string>
 </resources>
