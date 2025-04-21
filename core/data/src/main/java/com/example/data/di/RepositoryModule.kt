@@ -1,7 +1,9 @@
 package com.example.data.di
 
-import com.example.data.repository.HomeRepository
-import com.example.data.repository.HomeRepositoryImpl
+import com.example.data.repository.TranslationHistoryRepository
+import com.example.data.repository.TranslationHistoryRepositoryImpl
+import com.example.data.repository.WordInformationRepository
+import com.example.data.repository.WordInformationRepositoryImpl
 import com.example.database.dao.TranslatedDao
 import com.example.network.ApiService
 import dagger.Module
@@ -15,10 +17,13 @@ import javax.inject.Singleton
 class RepositoryModule {
     @Provides
     @Singleton
-    fun provideHomeRepository(
-        translatedDao: TranslatedDao,
-        apiService: ApiService,
-    ): HomeRepository {
-        return HomeRepositoryImpl(translatedDao, apiService)
+    fun provideTranslationHistoryRepository(translatedDao: TranslatedDao): TranslationHistoryRepository {
+        return TranslationHistoryRepositoryImpl(translatedDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWordInformationRepository(apiService: ApiService): WordInformationRepository {
+        return WordInformationRepositoryImpl(apiService)
     }
 }

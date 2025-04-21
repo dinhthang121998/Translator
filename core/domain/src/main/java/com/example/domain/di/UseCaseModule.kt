@@ -1,14 +1,17 @@
 package com.example.domain.di
 
-import com.example.data.repository.HomeRepository
+import com.example.data.repository.TranslationHistoryRepository
+import com.example.data.repository.WordInformationRepository
 import com.example.datastore.DatastoreProtoManager
-import com.example.domain.AddTranslatedWordUseCase
-import com.example.domain.DeleteTranslatedWordUseCase
+import com.example.domain.AddTranslationHistoryUseCase
+import com.example.domain.DeleteTranslationHistoryUseCase
+import com.example.domain.GetFavoriteTranslationHistoryUseCase
 import com.example.domain.GetPairLanguageUseCase
-import com.example.domain.GetTranslatedWordUseCase
+import com.example.domain.GetTranslationHistoryUseCase
 import com.example.domain.GetWordInformationUseCase
 import com.example.domain.StorePairLanguageUseCase
-import com.example.domain.UpdateTranslatedFavoriteUseCase
+import com.example.domain.UndoTranslationHistoryUseCase
+import com.example.domain.UpdateFavoriteTranslationHistoryUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,45 +43,63 @@ class UseCaseModule {
     @Provides
     @Singleton
     fun provideAddTranslatedWordUseCase(
-        homeRepository: HomeRepository,
+        translationHistoryRepository: TranslationHistoryRepository,
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
-    ): AddTranslatedWordUseCase {
-        return AddTranslatedWordUseCase(homeRepository, coroutineDispatcher)
+    ): AddTranslationHistoryUseCase {
+        return AddTranslationHistoryUseCase(translationHistoryRepository, coroutineDispatcher)
     }
 
     @Provides
     @Singleton
     fun provideGetWordInformationUseCase(
-        homeRepository: HomeRepository,
+        wordInformationRepository: WordInformationRepository,
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
     ): GetWordInformationUseCase {
-        return GetWordInformationUseCase(homeRepository, coroutineDispatcher)
+        return GetWordInformationUseCase(wordInformationRepository, coroutineDispatcher)
     }
 
     @Provides
     @Singleton
-    fun provideGetTranslatedWordUseCase(
-        homeRepository: HomeRepository,
+    fun provideGetTranslationHistoryUseCase(
+        translationHistoryRepository: TranslationHistoryRepository,
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
-    ): GetTranslatedWordUseCase {
-        return GetTranslatedWordUseCase(homeRepository, coroutineDispatcher)
+    ): GetTranslationHistoryUseCase {
+        return GetTranslationHistoryUseCase(translationHistoryRepository, coroutineDispatcher)
     }
 
     @Provides
     @Singleton
     fun provideUpdateTranslatedFavoriteUseCase(
-        homeRepository: HomeRepository,
+        translationHistoryRepository: TranslationHistoryRepository,
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
-    ): UpdateTranslatedFavoriteUseCase {
-        return UpdateTranslatedFavoriteUseCase(homeRepository, coroutineDispatcher)
+    ): UpdateFavoriteTranslationHistoryUseCase {
+        return UpdateFavoriteTranslationHistoryUseCase(translationHistoryRepository, coroutineDispatcher)
     }
 
     @Provides
     @Singleton
     fun provideDeleteTranslatedUseCase(
-        homeRepository: HomeRepository,
+        translationHistoryRepository: TranslationHistoryRepository,
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
-    ): DeleteTranslatedWordUseCase {
-        return DeleteTranslatedWordUseCase(homeRepository, coroutineDispatcher)
+    ): DeleteTranslationHistoryUseCase {
+        return DeleteTranslationHistoryUseCase(translationHistoryRepository, coroutineDispatcher)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetFavoriteTranslationHistoryUseCase(
+        translationHistoryRepository: TranslationHistoryRepository,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): GetFavoriteTranslationHistoryUseCase {
+        return GetFavoriteTranslationHistoryUseCase(translationHistoryRepository, coroutineDispatcher)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUndoTranslationHistoryUseCase(
+        translationHistoryRepository: TranslationHistoryRepository,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): UndoTranslationHistoryUseCase {
+        return UndoTranslationHistoryUseCase(translationHistoryRepository, coroutineDispatcher)
     }
 }

@@ -369,7 +369,7 @@ class HomeFragment :
     }
 
     override fun onDeleteHistoryItem(translatedWord: TranslationHistory) {
-        viewModel.deleteTranslationHistory(translatedWord)
+        viewModel.deleteTranslationHistory(translatedWord.id)
         // Optional: Show undo snackbar
         view?.let { view ->
             Snackbar.make(
@@ -378,9 +378,8 @@ class HomeFragment :
                 Snackbar.LENGTH_LONG,
             ).setAction("Undo") {
                 // Undo the deletion
-                viewModel.addTranslationHistory(
-                    translatedWord.originalWord,
-                    translatedWord.translatedWord,
+                viewModel.undoTranslationHistory(
+                    translatedWord,
                 )
             }.show()
         }

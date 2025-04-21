@@ -3,13 +3,14 @@ package com.example.home
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.common.UiState
-import com.example.domain.AddTranslatedWordUseCase
-import com.example.domain.DeleteTranslatedWordUseCase
+import com.example.domain.AddTranslationHistoryUseCase
+import com.example.domain.DeleteTranslationHistoryUseCase
 import com.example.domain.GetPairLanguageUseCase
-import com.example.domain.GetTranslatedWordUseCase
+import com.example.domain.GetTranslationHistoryUseCase
 import com.example.domain.GetWordInformationUseCase
 import com.example.domain.StorePairLanguageUseCase
-import com.example.domain.UpdateTranslatedFavoriteUseCase
+import com.example.domain.UndoTranslationHistoryUseCase
+import com.example.domain.UpdateFavoriteTranslationHistoryUseCase
 import com.example.mlkit.utils.TranslationUtils
 import com.example.model.SearchLanguageItem
 import com.example.model.TranslationHistory
@@ -29,11 +30,12 @@ class HomeViewmodel
     constructor(
         private val getPairLanguageUseCase: GetPairLanguageUseCase,
         private val storePairLanguageUseCase: StorePairLanguageUseCase,
-        private val addTranslatedWordUseCase: AddTranslatedWordUseCase,
-        private val deleteTranslatedWordUseCase: DeleteTranslatedWordUseCase,
+        private val addTranslationHistoryUseCase: AddTranslationHistoryUseCase,
+        private val deleteTranslationHistoryUseCase: DeleteTranslationHistoryUseCase,
         private val getWordInformationUseCase: GetWordInformationUseCase,
-        private val getTranslatedWordUseCase: GetTranslatedWordUseCase,
-        private val updateTranslatedFavoriteUseCase: UpdateTranslatedFavoriteUseCase,
+        private val getTranslationHistoryUseCase: GetTranslationHistoryUseCase,
+        private val updateFavoriteTranslationHistoryUseCase: UpdateFavoriteTranslationHistoryUseCase,
+        private val undoTranslationHistoryUseCase: UndoTranslationHistoryUseCase,
         private val textToSpeechUtils: TextToSpeechUtils,
         private val translationUtils: TranslationUtils,
     ) :
@@ -149,30 +151,21 @@ class HomeViewmodel
             translatedWord: String,
         ) {
             viewModelScope.launch {
-                val existedTranslatedWord =
-                    _getTranslatedWordsFlow.value.find {
-                        it.originalWord == originalWord && it.translatedWord == translatedWord
-                    }
-
-                Log.d("AAAA", "existedTranslatedWord = $existedTranslatedWord")
-
                 val translated =
                     TranslationHistory(
-                        id = existedTranslatedWord?.id ?: 0,
                         originalWord = originalWord,
                         translatedWord = translatedWord,
-                        isFavourite = existedTranslatedWord?.isFavourite ?: false,
-                        createdAt = existedTranslatedWord?.createdAt ?: System.currentTimeMillis(),
+                        createdAt = System.currentTimeMillis(),
                     )
 
                 Log.d("AAAA", "translated = $translated")
-                addTranslatedWordUseCase.invoke(translated)
+                addTranslationHistoryUseCase.invoke(translated)
             }
         }
 
-        fun deleteTranslationHistory(translationHistory: TranslationHistory) {
+        fun deleteTranslationHistory(id: Int) {
             viewModelScope.launch {
-                deleteTranslatedWordUseCase.invoke(translationHistory)
+                deleteTranslationHistoryUseCase.invoke(id)
             }
         }
 
@@ -184,7 +177,7 @@ class HomeViewmodel
         }
 
         fun getTranslatedWords() {
-            getTranslatedWordUseCase.invoke(Unit).onEach { result ->
+            getTranslationHistoryUseCase.invoke(Unit).onEach { result ->
                 when (result) {
                     is UiState.Error -> TODO()
                     is UiState.Loading -> TODO()
@@ -199,8 +192,15 @@ class HomeViewmodel
 
         fun updateTranslatedFavorite(translatedWord: TranslationHistory) {
             viewModelScope.launch {
-                val updatedTranslatedWord = translatedWord.copy(isFavourite = !translatedWord.isFavourite)
-                updateTranslatedFavoriteUseCase.invoke(updatedTranslatedWord)
+                val updatedTranslatedWord =
+                    translatedWord.copy(isFavourite = !translatedWord.isFavourite)
+                updateFavoriteTranslationHistoryUseCase.invoke(updatedTranslatedWord)
+            }
+        }
+
+        fun undoTranslationHistory(translationHistory: TranslationHistory) {
+            viewModelScope.launch {
+                undoTranslationHistoryUseCase.invoke(translationHistory)
             }
         }
     }

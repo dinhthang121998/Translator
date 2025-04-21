@@ -21,4 +21,7 @@
     <string name="synonyms">List of synonyms</string>
     <string name="original_word">Original word</string>
     <string name="translated_word">Translated word</string>
+    <string name="favored">Favored</string>
+    <string name="home">Home</string>
+    <string name="settings">Settings</string>
 </resources>
