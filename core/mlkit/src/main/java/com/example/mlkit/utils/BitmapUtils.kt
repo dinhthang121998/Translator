@@ -9,10 +9,8 @@ import android.graphics.Rect
 import android.graphics.YuvImage
 import android.media.Image.Plane
 import android.net.Uri
-import android.os.Build.VERSION_CODES
 import android.provider.MediaStore
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
 import androidx.exifinterface.media.ExifInterface
@@ -56,7 +54,6 @@ object BitmapUtils {
     }
 
     /** Converts a YUV_420_888 image from CameraX API to a bitmap.  */
-    @RequiresApi(VERSION_CODES.LOLLIPOP)
     @ExperimentalGetImage
     fun getBitmap(image: ImageProxy): Bitmap? {
         val frameMetadata: FrameMetadata =

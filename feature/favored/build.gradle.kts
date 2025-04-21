@@ -1,12 +1,12 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.hilt)
 }
 
 android {
-    namespace = "com.example.ui"
+    namespace = "com.example.favored"
     compileSdk = 35
 
     defaultConfig {
@@ -32,7 +32,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-
     buildFeatures {
         viewBinding = true
     }
@@ -40,26 +39,22 @@ android {
 
 dependencies {
 
+    implementation(project(":core:domain"))
     implementation(project(":core:model"))
     implementation(project(":core:common"))
-    implementation(project(":core:mlkit"))
+    implementation(project(":core:ui"))
 
     implementation(libs.core.ktx)
     implementation(libs.android.appcompat)
     implementation(libs.android.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.test.junit)
     androidTestImplementation(libs.espresso)
 
-    // Lottie
-    implementation(libs.lottie)
+    // viewmodel for Fragment
+    implementation(libs.fragment.ktx)
 
     // hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-
-    // viewmodel for Fragment
-    implementation(libs.fragment.ktx)
 }

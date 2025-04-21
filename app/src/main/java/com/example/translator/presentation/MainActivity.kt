@@ -1,6 +1,7 @@
 package com.example.translator.presentation
 
 import android.os.Bundle
+import com.example.favored.FavoredFragment
 import com.example.home.HomeFragment
 import com.example.translator.R
 import com.example.translator.databinding.ActivityMainBinding
@@ -12,6 +13,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun initBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
 
     override fun showFragment() {
+        // Should I add fragment for main activity?
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,12 +30,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     replaceFragment(HomeFragment.newInstance(), binding.flContent, HomeFragment.TAG)
                     true
                 }
+
                 R.id.nav_favored -> {
+                    replaceFragment(
+                        FavoredFragment.newInstance(),
+                        binding.flContent,
+                        FavoredFragment.TAG,
+                    )
                     true
                 }
+
                 R.id.nav_settings -> {
                     true
                 }
+
                 else -> true
             }
         }

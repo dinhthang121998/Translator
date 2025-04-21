@@ -4,27 +4,21 @@ import com.example.database.dao.TranslatedDao
 import com.example.database.mapper.toDomain
 import com.example.database.mapper.toEntity
 import com.example.model.TranslationHistory
-import com.example.model.WordInformation
-import com.example.network.ApiService
 import com.example.network.mapper.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class HomeRepositoryImpl
+class TranslationHistoryRepositoryImpl
     @Inject
-    constructor(private val translatedDao: TranslatedDao, private val apiService: ApiService) :
-    HomeRepository {
+    constructor(private val translatedDao: TranslatedDao) :
+    TranslationHistoryRepository {
         override suspend fun addTranslatedWord(translatedWord: TranslationHistory) {
             translatedDao.insertTranslationHistory(translatedWord.toEntity())
         }
 
-        override fun getAllTranslatedWord(): Flow<List<TranslationHistory>> {
+        override fun getAllTranslationHistory(): Flow<List<TranslationHistory>> {
             return translatedDao.getAllTranslationHistory().map { it.map { it.toDomain() } }
-        }
-
-        override suspend fun getWordInformation(word: String): List<WordInformation> {
-            return apiService.getWordInformation(word).map { it.toDomain() }
         }
 
         override suspend fun updateTranslatedWordFavorite(
@@ -34,7 +28,21 @@ class HomeRepositoryImpl
             return translatedDao.updateTranslationHistoryFavorite(id, isFavorite)
         }
 
-        override suspend fun deleteTranslatedWord(translatedWord: TranslationHistory) {
-            translatedDao.deleteTranslationHistory(translatedWord.toEntity())
+        override suspend fun deleteTranslatedWord(id: Int) {
+            translatedDao.deleteTranslationHistory(id)
+        }
+
+        override fun getAllFavoriteTranslationHistory(): Flow<List<TranslationHistory>> {
+            return translatedDao.getFavoredTranslationHistory().map {
+                it.map { it.toDomain() }
+            }
+        }
+
+        override fun findTranslationByOriginalAndTranslated(
+            original: String,
+            translated: String,
+            isDeleted: Boolean,
+        ): TranslationHistory? {
+            return translatedDao.findTranslationByOriginalAndTranslated(original, translated, isDeleted)?.toDomain()
         }
     }

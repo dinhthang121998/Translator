@@ -1,16 +1,16 @@
 package com.example.domain
 
-import com.example.data.repository.HomeRepository
+import com.example.data.repository.TranslationHistoryRepository
 import com.example.domain.base.SuspendUseCase
 import com.example.model.TranslationHistory
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
-class UpdateTranslatedFavoriteUseCase
+class UpdateFavoriteTranslationHistoryUseCase
     @Inject
-    constructor(private val homeRepository: HomeRepository, coroutineDispatcher: CoroutineDispatcher) :
+    constructor(private val translationHistoryRepository: TranslationHistoryRepository, coroutineDispatcher: CoroutineDispatcher) :
     SuspendUseCase<TranslationHistory, Unit>(coroutineDispatcher) {
         override suspend fun execute(parameter: TranslationHistory) {
-            homeRepository.updateTranslatedWordFavorite(parameter.id, parameter.isFavourite)
+            translationHistoryRepository.updateTranslatedWordFavorite(parameter.id, !parameter.isFavourite)
         }
     }
