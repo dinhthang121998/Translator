@@ -8,13 +8,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewmodel @Inject constructor(
-    private val deleteAllTranslationHistoryUseCase: DeleteAllTranslationHistoryUseCase) :
+class SettingsViewmodel
+    @Inject
+    constructor(
+        private val deleteAllTranslationHistoryUseCase: DeleteAllTranslationHistoryUseCase,
+    ) :
     BaseViewmodel() {
-
-    fun clearAllTranslationHistory() {
-        viewModelScope.launch {
-            deleteAllTranslationHistoryUseCase.invoke(Unit)
+        fun clearAllTranslationHistory() {
+            viewModelScope.launch {
+                deleteAllTranslationHistoryUseCase.invoke(Unit)
+            }
         }
     }
-}

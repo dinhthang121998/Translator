@@ -69,7 +69,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewmodel
             },
             onNegativeClick = { dialogInterface ->
                 dialogInterface.dismiss()
-            }
+            },
         )
     }
 

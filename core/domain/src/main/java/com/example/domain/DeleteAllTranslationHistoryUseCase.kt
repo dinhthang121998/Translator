@@ -6,8 +6,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 class DeleteAllTranslationHistoryUseCase(
     private val translationHistoryRepository: TranslationHistoryRepository,
-    coroutineDispatcher: CoroutineDispatcher
-): SuspendUseCase<Unit, Unit>(coroutineDispatcher) {
+    coroutineDispatcher: CoroutineDispatcher,
+) : SuspendUseCase<Unit, Unit>(coroutineDispatcher) {
     override suspend fun execute(parameter: Unit) {
         translationHistoryRepository.deleteAllTranslationHistory()
     }

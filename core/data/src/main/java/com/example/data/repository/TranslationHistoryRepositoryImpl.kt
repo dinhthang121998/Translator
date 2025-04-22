@@ -46,7 +46,7 @@ class TranslationHistoryRepositoryImpl
             return translatedDao.findTranslationByOriginalAndTranslated(original, translated, isDeleted)?.toDomain()
         }
 
-    override suspend fun deleteAllTranslationHistory() {
-        return translatedDao.deleteAllTranslationHistory()
+        override suspend fun deleteAllTranslationHistory() {
+            return translatedDao.deleteAllTranslationHistory()
+        }
     }
-}
