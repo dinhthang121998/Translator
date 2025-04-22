@@ -9,8 +9,7 @@ import androidx.core.content.ContextCompat
 import com.example.ui.R
 import com.example.ui.databinding.LabeledIconViewBinding
 
-class LabeledIconView(context: Context, attrs: AttributeSet): FrameLayout(context, attrs) {
-
+class LabeledIconView(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
     private val binding = LabeledIconViewBinding.inflate(LayoutInflater.from(context), this, true)
     private val defaultBackgroundColor = R.color.white
     private val defaultLabelColor = R.color.black

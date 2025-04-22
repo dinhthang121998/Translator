@@ -43,7 +43,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
                 R.id.nav_settings -> {
                     replaceFragment(
-                        SettingsFragment.newInstance(), binding.flContent, SettingsFragment.TAG
+                        SettingsFragment.newInstance(),
+                        binding.flContent,
+                        SettingsFragment.TAG,
                     )
                     true
                 }
