@@ -28,7 +28,7 @@ class TranslationHistoryRepositoryImpl
             return translatedDao.updateTranslationHistoryFavorite(id, isFavorite)
         }
 
-        override suspend fun deleteTranslatedWord(id: Int) {
+        override suspend fun deleteTranslationHistory(id: Int) {
             translatedDao.deleteTranslationHistory(id)
         }
 
@@ -44,5 +44,9 @@ class TranslationHistoryRepositoryImpl
             isDeleted: Boolean,
         ): TranslationHistory? {
             return translatedDao.findTranslationByOriginalAndTranslated(original, translated, isDeleted)?.toDomain()
+        }
+
+        override suspend fun deleteAllTranslationHistory() {
+            return translatedDao.deleteAllTranslationHistory()
         }
     }

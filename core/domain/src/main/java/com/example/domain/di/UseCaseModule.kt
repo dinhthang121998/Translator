@@ -4,6 +4,7 @@ import com.example.data.repository.TranslationHistoryRepository
 import com.example.data.repository.WordInformationRepository
 import com.example.datastore.DatastoreProtoManager
 import com.example.domain.AddTranslationHistoryUseCase
+import com.example.domain.DeleteAllTranslationHistoryUseCase
 import com.example.domain.DeleteTranslationHistoryUseCase
 import com.example.domain.GetFavoriteTranslationHistoryUseCase
 import com.example.domain.GetPairLanguageUseCase
@@ -101,5 +102,14 @@ class UseCaseModule {
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
     ): UndoTranslationHistoryUseCase {
         return UndoTranslationHistoryUseCase(translationHistoryRepository, coroutineDispatcher)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteAllTranslationHistoryUseCase(
+        translationHistoryRepository: TranslationHistoryRepository,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): DeleteAllTranslationHistoryUseCase {
+        return DeleteAllTranslationHistoryUseCase(translationHistoryRepository, coroutineDispatcher)
     }
 }

@@ -36,4 +36,7 @@ interface TranslatedDao {
         translatedWord: String,
         isDeleted: Boolean,
     ): TranslationHistoryEntity?
+
+    @Query("UPDATE translationhistoryentity SET isDeleted = 1 WHERE isDeleted = 0")
+    suspend fun deleteAllTranslationHistory()
 }

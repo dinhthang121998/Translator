@@ -12,6 +12,6 @@ class DeleteTranslationHistoryUseCase
         coroutineDispatcher: CoroutineDispatcher,
     ) : SuspendUseCase<Int, Unit>(coroutineDispatcher) {
         override suspend fun execute(parameter: Int) {
-            translationHistoryRepository.deleteTranslatedWord(parameter)
+            translationHistoryRepository.deleteTranslationHistory(parameter)
         }
     }

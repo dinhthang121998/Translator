@@ -1,5 +1,22 @@
 package com.example.settings
 
+import androidx.lifecycle.viewModelScope
+import com.example.domain.DeleteAllTranslationHistoryUseCase
 import com.example.ui.base.BaseViewmodel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SettingsViewmodel : BaseViewmodel()
+@HiltViewModel
+class SettingsViewmodel
+    @Inject
+    constructor(
+        private val deleteAllTranslationHistoryUseCase: DeleteAllTranslationHistoryUseCase,
+    ) :
+    BaseViewmodel() {
+        fun clearAllTranslationHistory() {
+            viewModelScope.launch {
+                deleteAllTranslationHistoryUseCase.invoke(Unit)
+            }
+        }
+    }
