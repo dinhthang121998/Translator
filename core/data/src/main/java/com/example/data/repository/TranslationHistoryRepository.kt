@@ -13,7 +13,7 @@ interface TranslationHistoryRepository {
         isFavorite: Boolean,
     )
 
-    suspend fun deleteTranslatedWord(id: Int)
+    suspend fun deleteTranslationHistory(id: Int)
 
     fun getAllFavoriteTranslationHistory(): Flow<List<TranslationHistory>>
 
@@ -22,4 +22,6 @@ interface TranslationHistoryRepository {
         translated: String,
         isDeleted: Boolean,
     ): TranslationHistory?
+
+    suspend fun deleteAllTranslationHistory()
 }

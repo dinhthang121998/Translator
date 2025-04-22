@@ -6,8 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.settings.databinding.FragmentSettingsBinding
+import com.example.ui.R
 import com.example.ui.base.BaseFragment
+import com.example.ui.util.AlertDialogUtils
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewmodel>() {
     override fun initBinding(
         inflater: LayoutInflater,
@@ -51,7 +55,22 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewmodel
         }
 
         binding.clearTranslationHistory.onItemClick = {
+            showDeleteTranslationHistoryConfirmationDialog()
         }
+    }
+
+    private fun showDeleteTranslationHistoryConfirmationDialog() {
+        AlertDialogUtils.showAlertDialog(
+            requireContext(),
+            getString(R.string.clear_translation_history),
+            getString(R.string.clear_translation_history_message),
+            onPositiveClick = {
+                viewModel.clearAllTranslationHistory()
+            },
+            onNegativeClick = { dialogInterface ->
+                dialogInterface.dismiss()
+            }
+        )
     }
 
     companion object {
