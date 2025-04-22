@@ -27,4 +27,16 @@
     <string name="item_is_deleted">Item is deleted</string>
     <string name="undo">Undo</string>
     <string name="meaning_example">"%s"</string>
+    <string name="feedback">Feedback</string>
+    <string name="support">SUPPORT</string>
+    <string name="about">About</string>
+    <string name="help">Help</string>
+    <string name="voice">VOICE</string>
+    <string name="speech_input">Speech input</string>
+    <string name="pronunciation_speed">Pronunciation speed</string>
+    <string name="keyboard">Keyboard</string>
+    <string name="send_crash_reports">Send crash reports</string>
+    <string name="clear_translation_history">Clear translation history</string>
+    <string name="off">Off</string>
+    <string name="on">On</string>
 </resources>

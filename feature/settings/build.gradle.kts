@@ -1,24 +1,19 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.detekt)
-    alias(libs.plugins.serialization)
 }
 
 android {
-    namespace = "com.example.translator"
+    namespace = "com.example.settings"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.translator"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -31,38 +26,32 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
-
     buildFeatures {
         viewBinding = true
     }
 }
 
 dependencies {
+
     implementation(project(":core:ui"))
-    implementation(project(":core:common"))
-    implementation(project(":feature:home"))
-    implementation(project(":feature:favored"))
-    implementation(project(":feature:settings"))
 
     implementation(libs.core.ktx)
     implementation(libs.android.appcompat)
     implementation(libs.android.material)
-    implementation(libs.constraintlayout)
-    implementation(libs.activity)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.espresso)
+
+    // viewmodel for Fragment
+    implementation(libs.fragment.ktx)
 
     // hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-
-    // Detekt
-    detektPlugins(libs.detekt.formatting)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.bundles.test.android)
 }

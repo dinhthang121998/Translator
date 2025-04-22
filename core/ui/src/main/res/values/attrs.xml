@@ -11,4 +11,12 @@
         <attr name="middleDrawable" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="LabeledIconView">
+        <attr name="labelText" format="string"/>
+        <attr name="trailingText" format="string"/>
+        <attr name="trailingIcon" format="integer"/>
+        <attr name="customBackgroundColor" format="integer"/>
+        <attr name="customLabelColor" format="integer"/>
+    </declare-styleable>
+
 </resources>

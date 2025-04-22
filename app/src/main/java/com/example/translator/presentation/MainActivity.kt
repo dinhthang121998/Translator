@@ -3,6 +3,7 @@ package com.example.translator.presentation
 import android.os.Bundle
 import com.example.favored.FavoredFragment
 import com.example.home.HomeFragment
+import com.example.settings.SettingsFragment
 import com.example.translator.R
 import com.example.translator.databinding.ActivityMainBinding
 import com.example.ui.base.BaseActivity
@@ -41,6 +42,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 }
 
                 R.id.nav_settings -> {
+                    replaceFragment(
+                        SettingsFragment.newInstance(),
+                        binding.flContent,
+                        SettingsFragment.TAG,
+                    )
                     true
                 }
 
