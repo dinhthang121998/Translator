@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_3"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".SettingsFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/settings"
+            android:textSize="@dimen/text_20" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/support"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/size_24"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.example.ui.labeldIcon.LabeledIconView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelText="@string/support"
+            app:customBackgroundColor="@color/gray_3" />
+
+        <com.example.ui.labeldIcon.LabeledIconView
+            android:id="@+id/feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelText="@string/feedback"
+            app:trailingIcon="@drawable/ic_right_chevron"/>
+
+        <com.example.ui.labeldIcon.LabeledIconView
+            android:id="@+id/about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelText="@string/about"
+            app:trailingIcon="@drawable/ic_right_chevron"/>
+
+        <com.example.ui.labeldIcon.LabeledIconView
+            android:id="@+id/help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelText="@string/help"
+            app:customLabelColor="@color/blue_1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/voice"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/size_24"
+        app:layout_constraintTop_toBottomOf="@id/support"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.example.ui.labeldIcon.LabeledIconView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelText="@string/voice"
+            app:customBackgroundColor="@color/gray_3" />
+
+        <com.example.ui.labeldIcon.LabeledIconView
+            android:id="@+id/speechInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelText="@string/speech_input"
+            app:trailingIcon="@drawable/ic_right_chevron"/>
+
+        <com.example.ui.labeldIcon.LabeledIconView
+            android:id="@+id/pronunciationSpeed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelText="@string/pronunciation_speed"
+            app:trailingIcon="@drawable/ic_right_chevron"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/other"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/size_36"
+        app:layout_constraintTop_toBottomOf="@id/voice"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.example.ui.labeldIcon.LabeledIconView
+            android:id="@+id/keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelText="@string/keyboard"
+            app:trailingIcon="@drawable/ic_right_chevron"/>
+
+        <com.example.ui.labeldIcon.LabeledIconView
+            android:id="@+id/sendCrash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelText="@string/send_crash_reports"
+            app:trailingIcon="@drawable/ic_right_chevron"
+            app:trailingText="@string/off"/>
+
+    </LinearLayout>
+
+    <com.example.ui.labeldIcon.LabeledIconView
+        android:id="@+id/clearTranslationHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_36"
+        app:layout_constraintTop_toBottomOf="@id/other"
+        app:labelText="@string/clear_translation_history"
+        app:customLabelColor="@color/red"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

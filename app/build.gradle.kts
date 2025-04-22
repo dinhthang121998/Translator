@@ -48,6 +48,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":feature:home"))
     implementation(project(":feature:favored"))
+    implementation(project(":feature:settings"))
 
     implementation(libs.core.ktx)
     implementation(libs.android.appcompat)
