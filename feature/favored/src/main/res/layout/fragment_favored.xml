@@ -6,21 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".FavoredFragment">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.example.ui.toolbar.CustomToolbarView
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/favored"
-            android:textSize="@dimen/text_20" />
-    </androidx.appcompat.widget.Toolbar>
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/favored"/>
 
     <com.example.ui.translationHistory.TranslationHistoryView
         android:id="@+id/favoredTranslationHistory"

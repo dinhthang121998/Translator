@@ -19,7 +19,7 @@ class CustomToolbarView(context: Context, attributes: AttributeSet) : FrameLayou
             val title = typedArray.getString(R.styleable.CustomToolbarView_title)
 
             val headerIcon = typedArray.getResourceId(R.styleable.CustomToolbarView_headerIcon, 0)
-            val headerDrawable = ContextCompat.getDrawable(context, headerIcon)
+            val headerDrawable = if (headerIcon != 0) ContextCompat.getDrawable(context, headerIcon) else null
             val headerText = typedArray.getString(R.styleable.CustomToolbarView_headerText)
 
             binding.backArea.text = headerText
