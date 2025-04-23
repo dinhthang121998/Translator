@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.settings"
+    namespace = "com.example.feedback"
     compileSdk = 35
 
     defaultConfig {
@@ -40,13 +40,12 @@ android {
 dependencies {
 
     implementation(project(":core:ui"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:common"))
-    implementation(project(":feature:feedback"))
 
     implementation(libs.core.ktx)
     implementation(libs.android.appcompat)
     implementation(libs.android.material)
+    implementation(libs.activity)
+    implementation(libs.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.test.junit)
     androidTestImplementation(libs.espresso)
