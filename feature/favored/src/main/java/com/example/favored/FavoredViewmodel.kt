@@ -2,10 +2,10 @@ package com.example.favored
 
 import androidx.lifecycle.viewModelScope
 import com.example.common.UiState
-import com.example.domain.DeleteTranslationHistoryUseCase
-import com.example.domain.GetFavoriteTranslationHistoryUseCase
-import com.example.domain.UndoTranslationHistoryUseCase
-import com.example.domain.UpdateFavoriteTranslationHistoryUseCase
+import com.example.domain.translationHistory.DeleteTranslationHistoryUseCase
+import com.example.domain.translationHistory.GetFavoriteTranslationHistoryUseCase
+import com.example.domain.translationHistory.UndoTranslationHistoryUseCase
+import com.example.domain.translationHistory.UpdateFavoriteTranslationHistoryUseCase
 import com.example.model.TranslationHistory
 import com.example.ui.base.BaseViewmodel
 import dagger.hilt.android.lifecycle.HiltViewModel

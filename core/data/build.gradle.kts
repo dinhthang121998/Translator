@@ -39,6 +39,7 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:database"))
     implementation(project(":core:network"))
+    implementation(project(":core:datastore"))
 
     // hilt
     implementation(libs.hilt.android)

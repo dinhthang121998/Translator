@@ -1,18 +1,21 @@
 package com.example.domain.di
 
+import com.example.data.repository.PronunciationSpeedRepository
 import com.example.data.repository.TranslationHistoryRepository
 import com.example.data.repository.WordInformationRepository
 import com.example.datastore.DatastoreProtoManager
-import com.example.domain.AddTranslationHistoryUseCase
-import com.example.domain.DeleteAllTranslationHistoryUseCase
-import com.example.domain.DeleteTranslationHistoryUseCase
-import com.example.domain.GetFavoriteTranslationHistoryUseCase
-import com.example.domain.GetPairLanguageUseCase
-import com.example.domain.GetTranslationHistoryUseCase
 import com.example.domain.GetWordInformationUseCase
-import com.example.domain.StorePairLanguageUseCase
-import com.example.domain.UndoTranslationHistoryUseCase
-import com.example.domain.UpdateFavoriteTranslationHistoryUseCase
+import com.example.domain.pairLanguage.GetPairLanguageUseCase
+import com.example.domain.pairLanguage.StorePairLanguageUseCase
+import com.example.domain.pronunciationSpeed.GetPronunciationSpeedUseCase
+import com.example.domain.pronunciationSpeed.SavePronunciationSpeedUseCase
+import com.example.domain.translationHistory.AddTranslationHistoryUseCase
+import com.example.domain.translationHistory.DeleteAllTranslationHistoryUseCase
+import com.example.domain.translationHistory.DeleteTranslationHistoryUseCase
+import com.example.domain.translationHistory.GetFavoriteTranslationHistoryUseCase
+import com.example.domain.translationHistory.GetTranslationHistoryUseCase
+import com.example.domain.translationHistory.UndoTranslationHistoryUseCase
+import com.example.domain.translationHistory.UpdateFavoriteTranslationHistoryUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -111,5 +114,23 @@ class UseCaseModule {
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
     ): DeleteAllTranslationHistoryUseCase {
         return DeleteAllTranslationHistoryUseCase(translationHistoryRepository, coroutineDispatcher)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSavePronunciationSpeedUseCase(
+        pronunciationSpeedRepository: PronunciationSpeedRepository,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): SavePronunciationSpeedUseCase {
+        return SavePronunciationSpeedUseCase(pronunciationSpeedRepository, coroutineDispatcher)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetPronunciationSpeedUseCase(
+        pronunciationSpeedRepository: PronunciationSpeedRepository,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): GetPronunciationSpeedUseCase {
+        return GetPronunciationSpeedUseCase(pronunciationSpeedRepository, coroutineDispatcher)
     }
 }

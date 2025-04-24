@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import com.example.ui.R
 import com.example.ui.databinding.LabeledIconViewBinding
+import com.example.ui.util.showOrGone
 
 class LabeledIconView(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
     private val binding = LabeledIconViewBinding.inflate(LayoutInflater.from(context), this, true)
@@ -15,6 +16,7 @@ class LabeledIconView(context: Context, attrs: AttributeSet) : FrameLayout(conte
     private val defaultLabelColor = R.color.black
 
     var onItemClick: () -> Unit = {}
+    var onHeaderIconClick: () -> Unit = {}
 
     init {
         val typedArray =
@@ -38,16 +40,31 @@ class LabeledIconView(context: Context, attrs: AttributeSet) : FrameLayout(conte
     private fun handleAttributeSets(typedArray: TypedArray) {
         typedArray.apply {
             val labelText = getString(R.styleable.LabeledIconView_labelText)
+            val labelTextIcon = getResourceId(R.styleable.LabeledIconView_headerIcon, 0)
             val trailingText = getString(R.styleable.LabeledIconView_trailingText)
             val resourceId = getResourceId(R.styleable.LabeledIconView_trailingIcon, 0)
-            val backgroundColor = getResourceId(R.styleable.LabeledIconView_customBackgroundColor, defaultBackgroundColor)
-            val labelColor = getResourceId(R.styleable.LabeledIconView_customLabelColor, defaultLabelColor)
+            val backgroundColor =
+                getResourceId(
+                    R.styleable.LabeledIconView_customBackgroundColor,
+                    defaultBackgroundColor,
+                )
+            val labelColor =
+                getResourceId(R.styleable.LabeledIconView_customLabelColor, defaultLabelColor)
 
             binding.labelText.text = labelText
+            binding.headerIcon.setImageResource(labelTextIcon)
             binding.trailingText.text = trailingText
             binding.labelText.setTextColor(ContextCompat.getColor(context, labelColor))
             binding.trailingIcon.setImageResource(resourceId)
             binding.root.setBackgroundResource(backgroundColor)
         }
+    }
+
+    fun setTrailingIconVisibility(isShowed: Boolean) {
+        binding.trailingIcon.showOrGone(isShowed)
+    }
+
+    fun setLabelText(text: String) {
+        binding.labelText.text = text
     }
 }

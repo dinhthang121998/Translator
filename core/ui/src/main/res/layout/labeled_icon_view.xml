@@ -6,12 +6,22 @@
     android:padding="@dimen/size_8"
     android:id="@+id/root">
 
+    <ImageView
+        android:id="@+id/headerIcon"
+        android:layout_width="@dimen/size_20"
+        android:layout_height="@dimen/size_30"
+        android:src="@drawable/ic_sound"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/labelText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/feedback"
-        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/size_8"
+        app:layout_constraintStart_toEndOf="@+id/headerIcon"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

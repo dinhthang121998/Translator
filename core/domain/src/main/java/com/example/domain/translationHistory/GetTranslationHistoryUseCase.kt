@@ -1,4 +1,4 @@
-package com.example.domain
+package com.example.domain.translationHistory
 
 import com.example.common.UiState
 import com.example.data.repository.TranslationHistoryRepository

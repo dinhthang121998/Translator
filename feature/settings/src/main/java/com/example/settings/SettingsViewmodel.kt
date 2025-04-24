@@ -1,7 +1,7 @@
 package com.example.settings
 
 import androidx.lifecycle.viewModelScope
-import com.example.domain.DeleteAllTranslationHistoryUseCase
+import com.example.domain.translationHistory.DeleteAllTranslationHistoryUseCase
 import com.example.ui.base.BaseViewmodel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

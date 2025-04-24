@@ -1,4 +1,4 @@
-package com.example.domain
+package com.example.domain.translationHistory
 
 import android.util.Log
 import com.example.data.repository.TranslationHistoryRepository

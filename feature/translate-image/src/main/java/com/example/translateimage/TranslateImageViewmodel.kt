@@ -3,8 +3,8 @@ package com.example.translateimage
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.example.common.UiState
-import com.example.domain.GetPairLanguageUseCase
-import com.example.domain.StorePairLanguageUseCase
+import com.example.domain.pairLanguage.GetPairLanguageUseCase
+import com.example.domain.pairLanguage.StorePairLanguageUseCase
 import com.example.mlkit.ImageProcessor
 import com.example.mlkit.TextRecognition
 import com.example.mlkit.utils.TranslationUtils

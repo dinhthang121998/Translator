@@ -18,7 +18,7 @@ class CustomToolbarView(context: Context, attributes: AttributeSet) : FrameLayou
         try {
             val title = typedArray.getString(R.styleable.CustomToolbarView_title)
 
-            val headerIcon = typedArray.getResourceId(R.styleable.CustomToolbarView_headerIcon, 0)
+            val headerIcon = typedArray.getResourceId(R.styleable.CustomToolbarView_headerToolbarIcon, 0)
             val headerDrawable = if (headerIcon != 0) ContextCompat.getDrawable(context, headerIcon) else null
             val headerText = typedArray.getString(R.styleable.CustomToolbarView_headerText)
 

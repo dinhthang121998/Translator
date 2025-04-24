@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.feedback.FeedbackActivity
+import com.example.pronunciationspeed.PronunciationSpeedActivity
 import com.example.settings.databinding.FragmentSettingsBinding
 import com.example.ui.R
 import com.example.ui.base.BaseFragment
@@ -50,6 +51,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewmodel
         }
 
         binding.pronunciationSpeed.onItemClick = {
+            val intent = Intent(requireActivity(), PronunciationSpeedActivity::class.java)
+            requireActivity().startActivity(intent)
         }
 
         binding.keyboard.onItemClick = {

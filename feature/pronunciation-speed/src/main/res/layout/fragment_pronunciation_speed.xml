@@ -5,39 +5,33 @@
     android:layout_height="match_parent"
     android:background="@color/gray_3"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FeedbackFragment">
+    tools:context=".PronunciationSpeedFragment">
 
     <com.example.ui.toolbar.CustomToolbarView
-        android:id="@+id/customToolbar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:title="@string/feedback"
+        app:title="@string/pronunciation_speed"
         app:headerToolbarIcon="@drawable/ic_left_chevron"
         app:headerText="@string/settings"/>
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvPronunciationSpeed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="@dimen/size_36"
-        app:layout_constraintTop_toBottomOf="@+id/customToolbar"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-        <com.example.ui.labeldIcon.LabeledIconView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:labelText="Review on the App Store"
-            app:customLabelColor="@color/blue_1"/>
-
-        <com.example.ui.labeldIcon.LabeledIconView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:labelText="Send feedback"
-            app:customLabelColor="@color/blue_1"/>
-    </LinearLayout>
-
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pronunciation_speed_note"
+        android:layout_marginStart="@dimen/size_8"
+        android:layout_marginTop="@dimen/size_24"
+        app:layout_constraintTop_toBottomOf="@+id/rcvPronunciationSpeed"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

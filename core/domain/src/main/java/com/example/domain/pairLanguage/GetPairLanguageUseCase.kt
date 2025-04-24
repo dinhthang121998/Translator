@@ -1,4 +1,4 @@
-package com.example.domain
+package com.example.domain.pairLanguage
 
 import com.example.common.UiState
 import com.example.datastore.DatastoreProtoManager
