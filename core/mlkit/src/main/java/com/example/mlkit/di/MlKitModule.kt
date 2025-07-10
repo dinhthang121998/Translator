@@ -26,10 +26,8 @@ class MlKitModule {
     }
 
     @Provides
-    @IntoMap
-    @TextRecognitionKey(TextRecognition.LATIN_RECOGNITION)
-    fun provideTextRecognitionProcessorBase(): ImageProcessor {
-        val options = TextRecognizerOptions.DEFAULT_OPTIONS
-        return TextRecognitionProcessor(options)
+    @Singleton
+    fun provideImageProcessor(): ImageProcessor {
+        return TextRecognitionProcessor()
     }
 }

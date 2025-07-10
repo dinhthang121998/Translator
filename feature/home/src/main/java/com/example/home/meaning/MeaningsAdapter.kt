@@ -95,10 +95,10 @@ class MeaningsAdapter(private var listMeanings: List<MeaningItem>) :
 
             if (definitionsItem.definitions.synonyms.size != 0) {
                 viewBinding.cSynonym.showOrGone(true)
-                viewBinding.tvsynonyms.text = definitionsItem.definitions.synonyms.joinToString(", ")
+                viewBinding.tvSynonyms.text = definitionsItem.definitions.synonyms.joinToString(", ")
             } else {
                 viewBinding.cSynonym.showOrGone(false)
-                viewBinding.tvsynonyms.text = ""
+                viewBinding.tvSynonyms.text = ""
             }
         }
     }

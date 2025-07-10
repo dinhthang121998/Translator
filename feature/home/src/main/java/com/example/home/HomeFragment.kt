@@ -112,14 +112,13 @@ class HomeFragment :
                 }
             }
 
-//            launch {
-//                viewModel.swapTextState.collect { (fromText, toText) ->
-//                    viewModel.originalText = fromText
-//                    viewModel.translatedText = toText
-//                    binding.original.setText(fromText)
-//                    binding.translated.setText(toText)
-//                }
-//            }
+            launch {
+                viewModel.failureFlow.collect { exception ->
+                    exception?.let {
+                        showAlertDialog(requireContext(), getString(R.string.error), "${exception.message}")
+                    }
+                }
+            }
         }
     }
 
@@ -181,39 +180,36 @@ class HomeFragment :
         setFromLanguage(fromLanguageItem)
         setToLanguage(toLanguageItem)
 
-        translatedIfAvailable()
+        translatedIfAvailable(fromLanguageItem, toLanguageItem)
     }
 
-    private fun translatedIfAvailable() {
-        if (viewModel.originalText.isNotEmpty() && viewModel.fromLanguageItem.languageCode.isNotEmpty() &&
-            viewModel.toLanguageItem.languageCode.isNotEmpty()
+    private fun translatedIfAvailable(
+        fromLanguageItem: SearchLanguageItem.LanguageItem,
+        toLanguageItem: SearchLanguageItem.LanguageItem,
+    ) {
+        if (viewModel.originalText.isNotEmpty() && fromLanguageItem.languageCode.isNotEmpty() &&
+            toLanguageItem.languageCode.isNotEmpty()
         ) {
             viewModel.translate(
                 viewModel.originalText,
-                viewModel.fromLanguageItem.languageCode,
-                viewModel.toLanguageItem.languageCode,
+                fromLanguageItem.languageCode,
+                toLanguageItem.languageCode,
             )
         }
     }
 
     private fun setToLanguage(toLanguageItem: SearchLanguageItem.LanguageItem) {
         val toLanguage =
-            if (toLanguageItem.languageName.isEmpty()) {
+            toLanguageItem.languageName.ifEmpty {
                 getString(R.string.search)
-            } else {
-                viewModel.toLanguageItem = toLanguageItem
-                toLanguageItem.languageName
             }
         binding.homeSelectLanguage.setToLanguage(toLanguage)
     }
 
     private fun setFromLanguage(fromLanguageItem: SearchLanguageItem.LanguageItem) {
         val fromLanguage =
-            if (fromLanguageItem.languageName.isEmpty()) {
+            fromLanguageItem.languageName.ifEmpty {
                 getString(R.string.search)
-            } else {
-                viewModel.fromLanguageItem = fromLanguageItem
-                fromLanguageItem.languageName
             }
         binding.homeSelectLanguage.setFromLanguage(fromLanguage)
     }
@@ -221,25 +217,22 @@ class HomeFragment :
     private fun setUpHomeChooseLanguageView() {
         binding.homeSelectLanguage.apply {
             onClickFromLanguage = {
-                showSearchBottomSheet { searchLanguageItem ->
+                showSearchBottomSheet(clickItem = { searchLanguageItem ->
                     val languageItem = searchLanguageItem as SearchLanguageItem.LanguageItem
                     setFromLanguage(languageItem.languageName)
                     viewModel.storeLanguageItem(true, languageItem)
-                }
+                })
             }
 
             onClickToLanguage = {
-                showSearchBottomSheet { searchLanguageItem ->
+                showSearchBottomSheet(clickItem = { searchLanguageItem ->
                     val languageItem = searchLanguageItem as SearchLanguageItem.LanguageItem
                     setToLanguage(languageItem.languageName)
                     viewModel.storeLanguageItem(false, languageItem)
-                }
+                })
             }
 
             onClickSwitch = {
-//                binding.ivSwitch.setOnClickListener {
-//                    viewModel.swapLanguageItem(viewModel.fromLanguageItem, viewModel.toLanguageItem)
-//                }
             }
         }
     }
@@ -261,24 +254,21 @@ class HomeFragment :
             viewModel.translatedText = translatedText
         }
         binding.translated.onClickTranslation = {
-            if (viewModel.fromLanguageItem.languageCode == "en") {
-                viewModel.getWordDefinition(viewModel.originalText)
-            }
+            viewModel.getWordDefinition(viewModel.originalText)
             viewModel.addTranslationHistory(viewModel.originalText, viewModel.translatedText)
         }
         binding.translated.onClickSpeak = { text ->
-            viewModel.speak(text, viewModel.toLanguageItem.languageCode)
+            val pairLanguageItem = viewModel.pairLanguageFlow.value
+            viewModel.speak(text, pairLanguageItem.second.languageCode)
         }
     }
 
     private fun setupOriginalView() {
         binding.original.showMic(true)
         binding.original.onClickMic = {
-            // TODO Implements Mic
-            val intent = speechIntent(viewModel.fromLanguageItem.languageCode)
+            val pairLanguageItem = viewModel.pairLanguageFlow.value
+            val intent = speechIntent(pairLanguageItem.first.languageCode)
             speechResultLauncher.launch(intent)
-
-            // TODO: Not tested, will test later
         }
 
         binding.original.onFocusListener = { hasFocus ->
@@ -286,11 +276,12 @@ class HomeFragment :
             binding.cTranslated.visibility = visibility
         }
         binding.original.onTextChanged = { originalText ->
+            val pairLanguageItem = viewModel.pairLanguageFlow.value
             viewModel.originalText = originalText
             viewModel.translate(
                 originalText,
-                viewModel.fromLanguageItem.languageCode,
-                viewModel.toLanguageItem.languageCode,
+                pairLanguageItem.first.languageCode,
+                pairLanguageItem.second.languageCode,
             )
             val isShowed = originalText.isNotEmpty()
             binding.original.showClearIcon(isShowed)
@@ -304,8 +295,8 @@ class HomeFragment :
         }
 
         binding.original.onClickSpeak = { text ->
-            Log.d("AAAA", "onClick speak")
-            viewModel.speak(text, viewModel.fromLanguageItem.languageCode)
+            val pairLanguageItem = viewModel.pairLanguageFlow.value
+            viewModel.speak(text, pairLanguageItem.first.languageCode)
         }
     }
 
@@ -370,7 +361,6 @@ class HomeFragment :
 
     override fun onDeleteHistoryItem(translatedWord: TranslationHistory) {
         viewModel.deleteTranslationHistory(translatedWord.id)
-        // Optional: Show undo snackbar
         view?.let { view ->
             Snackbar.make(
                 view,

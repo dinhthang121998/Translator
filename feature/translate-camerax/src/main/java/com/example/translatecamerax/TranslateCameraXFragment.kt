@@ -3,7 +3,6 @@ package com.example.translatecamerax
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +26,7 @@ import com.example.translatecamerax.databinding.FragmentTranslateCameraXBinding
 import com.example.ui.base.BaseFragment
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.mlkit.common.MlKitException
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
@@ -137,8 +137,6 @@ class TranslateCameraXFragment :
                 if (needUpdateGraphicOverlayImageSourceInfo) {
                     val isImageFlipped = lensFacing == CameraSelector.LENS_FACING_FRONT
                     val rotationDegrees = imageProxy.imageInfo.rotationDegrees
-                    Log.d("AAAA", "rotationDegrees = $rotationDegrees")
-                    Log.d("AAAA", "imageProxy height = ${imageProxy.height}, width = ${imageProxy.width}")
                     if (rotationDegrees == 0 || rotationDegrees == 180) {
                         binding.graphicOverlay.setImageSourceInfo(
                             imageProxy.width,
@@ -155,9 +153,8 @@ class TranslateCameraXFragment :
                     needUpdateGraphicOverlayImageSourceInfo = false
                 }
                 try {
-                    viewModel.processImageProxy(imageProxy, TextRecognition.LATIN_RECOGNITION)
+                    viewModel.processImageProxy(imageProxy, TextRecognizerOptions.DEFAULT_OPTIONS)
                 } catch (e: MlKitException) {
-                    Log.e("AAAA", "Failed to process image. Error: " + e.localizedMessage)
                     Toast.makeText(this.requireContext(), e.localizedMessage, Toast.LENGTH_SHORT)
                         .show()
                 }
@@ -228,43 +225,9 @@ class TranslateCameraXFragment :
         requestPermissionLauncher.launch(Manifest.permission.CAMERA)
     }
 
-// TODO: Update later
-
-//    private fun takePhoto() {
-//        val imageCapture = imageCapture ?: return
-//        val file =
-//            File(requireActivity().externalMediaDirs.first(), "${System.currentTimeMillis()}.jpg")
-//
-//        val outputOptions = ImageCapture.OutputFileOptions.Builder(file).build()
-//        Log.d("AAAA", "take photo")
-//        imageCapture.takePicture(
-//            outputOptions,
-//            ContextCompat.getMainExecutor(this.requireContext()),
-//            object : ImageCapture.OnImageSavedCallback {
-//                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-//                    Log.d("AAAA", "save done 11")
-//                    val savedUri = outputFileResults.savedUri ?: return
-//                    // TODO: handle capture here
-// //                    imageView.setImageURI(savedUri)
-//                    Log.d("AAAA", "save done")
-//                    Toast.makeText(
-//                        this@TranslateCameraXFragment.requireContext(),
-//                        "Photo saved!",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//
-//                override fun onError(exception: ImageCaptureException) {
-//                    Log.e("AAAA", "Photo capture failed: ${exception.message}", exception)
-//                }
-//            }
-//        )
-//    }
-
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
-        Log.d("AAAA", "Destroy")
     }
 
     companion object {

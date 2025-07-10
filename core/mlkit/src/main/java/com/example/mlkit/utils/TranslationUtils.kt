@@ -90,9 +90,8 @@ class TranslationUtils {
             var updateLanguageItem = languageItem
             if (downloadModel(languageItem.languageCode)) {
                 updateLanguageItem = updateLanguageItem.copy(downloadable = Downloadable.IS_DOWNLOADED)
-            } else {
-                // TODO
             }
+
             updateLanguageItem
         }
 
@@ -117,16 +116,7 @@ class TranslationUtils {
         originalText: String,
         fromLanguageCode: String,
         toLanguageCode: String,
-    ): String =
-        withContext(Dispatchers.IO) {
-            getTextTranslated(originalText, fromLanguageCode, toLanguageCode)
-        }
-
-    private suspend fun getTextTranslated(
-        originalText: String,
-        fromLanguageCode: String,
-        toLanguageCode: String,
-    ) = suspendCoroutine<String> { continuation ->
+    ): String = suspendCoroutine { continuation ->
         val options = initTranslatorOptions(fromLanguageCode, toLanguageCode)
 
         val translator = Translation.getClient(options)
@@ -144,9 +134,4 @@ class TranslationUtils {
         return TranslatorOptions.Builder().setSourceLanguage(fromLanguageCode)
             .setTargetLanguage(toLanguageCode).build()
     }
-
-    fun swapText(
-        fromText: String,
-        toText: String,
-    ): Pair<String, String> = Pair(toText, fromText)
 }

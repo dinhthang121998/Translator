@@ -26,7 +26,7 @@
     <string name="settings">Settings</string>
     <string name="item_is_deleted">Item is deleted</string>
     <string name="undo">Undo</string>
-    <string name="meaning_example">"%s"</string>
+    <string name="meaning_example">\"%s\"</string>
     <string name="feedback">Feedback</string>
     <string name="support">SUPPORT</string>
     <string name="about">About</string>
@@ -40,4 +40,5 @@
     <string name="clear_translation_history_message">All translation history will be cleared from this application</string>
     <string name="off">Off</string>
     <string name="on">On</string>
+    <string name="error">Error</string>
 </resources>

@@ -43,8 +43,12 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:model"))
     implementation(project(":core:network"))
+    implementation(project(":core:mlkit"))
+    implementation(project(":core:voice"))
 
     implementation(libs.core.ktx)
+    implementation(libs.bundles.text.recognition)
+    implementation(libs.camera.core)
 
     // hilt
     implementation(libs.hilt.android)

@@ -22,6 +22,8 @@ import com.example.ui.base.BaseFragment
 import com.google.mlkit.vision.common.InputImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import androidx.core.graphics.scale
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 @AndroidEntryPoint
 class TranslateImageFragment :
@@ -72,11 +74,6 @@ class TranslateImageFragment :
                         ),
                     )
                     binding.graphicOverlay.invalidate()
-
-//                    onFailure = {
-//                        binding.graphicOverlay.clear()
-//                        binding.graphicOverlay.postInvalidate()
-//                    }
                 }
             }
 
@@ -85,23 +82,30 @@ class TranslateImageFragment :
                     if (fromLanguageItem.languageName.isEmpty()) {
                         binding.imageChooseLanguageView.setFromLanguage(getString(R.string.search))
                     } else {
-                        viewModel.fromLanguageItem = fromLanguageItem
                         binding.imageChooseLanguageView.setFromLanguage(fromLanguageItem.languageName)
                     }
 
                     if (fromLanguageItem.languageName.isEmpty()) {
                         binding.imageChooseLanguageView.setToLanguage(getString(R.string.search))
                     } else {
-                        viewModel.toLanguageItem = toLanguageItem
                         binding.imageChooseLanguageView.setToLanguage(toLanguageItem.languageName)
                     }
 
-                    if (viewModel.fromLanguageItem.languageCode.isNotEmpty() &&
-                        viewModel.toLanguageItem.languageCode.isNotEmpty()
+                    val pairLanguageItem = viewModel.pairLanguageFlow.value
+                    if (pairLanguageItem.first.languageCode.isNotEmpty() &&
+                        pairLanguageItem.second.languageCode.isNotEmpty()
                     ) {
                         viewModel.uri?.let { uri ->
                             detectTextInImage(uri)
                         }
+                    }
+                }
+            }
+
+            launch {
+                viewModel.failureFlow.collect { exception ->
+                    exception?.let {
+                        showAlertDialog(requireContext(), getString(R.string.error), "${exception.message}")
                     }
                 }
             }
@@ -128,15 +132,13 @@ class TranslateImageFragment :
             )
 
         val resizedBitmap: Bitmap =
-            Bitmap.createScaledBitmap(
-                imageBitmap,
+            imageBitmap.scale(
                 (imageBitmap.width / scaleFactor).toInt(),
                 (imageBitmap.height / scaleFactor).toInt(),
-                true,
             )
 
         binding.ivSelectedImage.setImageBitmap(resizedBitmap)
-        viewModel.processImage(InputImage.fromBitmap(resizedBitmap, 0), TextRecognition.LATIN_RECOGNITION)
+        viewModel.processImage(InputImage.fromBitmap(resizedBitmap, 0), TextRecognizerOptions.DEFAULT_OPTIONS)
     }
 
     private fun setUpOnClick() {

@@ -41,6 +41,7 @@ class TextGraphic
                 val rect = RectF(textDrawing.rect)
                 Log.d("AAAA", "text = ${textDrawing.textLine}")
                 // If the image is flipped, the left will be translated to right, and the right to left.
+                // translateX and translateY seem for cameraX only
                 val x0 = translateX(rect.left)
                 val x1 = translateX(rect.right)
                 rect.left = min(x0, x1)
