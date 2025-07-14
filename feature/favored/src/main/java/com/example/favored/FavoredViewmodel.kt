@@ -10,6 +10,8 @@ import com.example.model.TranslationHistory
 import com.example.ui.base.BaseViewmodel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -25,12 +27,12 @@ class FavoredViewmodel
         private val updateFavoriteTranslationHistoryUseCase: UpdateFavoriteTranslationHistoryUseCase,
     ) : BaseViewmodel() {
         private val _getFavoriteTranslationHistoryFlow = MutableStateFlow(listOf<TranslationHistory>())
-        val getFavoriteTranslationHistoryFlow = _getFavoriteTranslationHistoryFlow
+        val getFavoriteTranslationHistoryFlow: StateFlow<List<TranslationHistory>> = _getFavoriteTranslationHistoryFlow.asStateFlow()
 
         fun getFavoriteTranslationHistory() {
             getFavoriteTranslationHistoryUseCase.invoke(Unit).onEach { result ->
                 when (result) {
-                    is UiState.Error -> TODO()
+                    is UiState.Error -> failureState.value = result.error
                     is UiState.Loading -> TODO()
                     is UiState.Success -> {
                         result.data.let { translatedWords ->

@@ -18,14 +18,21 @@ object AlertDialogUtils {
         onNegativeClick: ((DialogInterface) -> Unit)? = null,
     ) {
         hideAlertDialog()
-        alertDialog =
-            AlertDialog.Builder(context).setTitle(title).setMessage(message)
+        val builder =
+            AlertDialog.Builder(context)
+                .setTitle(title).setMessage(message)
                 .setPositiveButton(positiveText) { dialog, _ ->
+                    dialog.dismiss()
                     onPositiveClick?.invoke(dialog)
-                }.setNegativeButton(negativeText) { dialog, _ ->
-                    onNegativeClick?.invoke(dialog)
-                }.create()
+                }
 
+        onNegativeClick?.let {
+            builder.setNegativeButton(negativeText) { dialog, _ ->
+                dialog.dismiss()
+                onNegativeClick.invoke(dialog)
+            }
+        }
+        alertDialog = builder.create()
         alertDialog?.show()
     }
 

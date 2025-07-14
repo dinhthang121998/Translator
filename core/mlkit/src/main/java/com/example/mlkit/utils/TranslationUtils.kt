@@ -90,9 +90,8 @@ class TranslationUtils {
             var updateLanguageItem = languageItem
             if (downloadModel(languageItem.languageCode)) {
                 updateLanguageItem = updateLanguageItem.copy(downloadable = Downloadable.IS_DOWNLOADED)
-            } else {
-                // TODO
             }
+
             updateLanguageItem
         }
 
@@ -118,24 +117,16 @@ class TranslationUtils {
         fromLanguageCode: String,
         toLanguageCode: String,
     ): String =
-        withContext(Dispatchers.IO) {
-            getTextTranslated(originalText, fromLanguageCode, toLanguageCode)
-        }
+        suspendCoroutine { continuation ->
+            val options = initTranslatorOptions(fromLanguageCode, toLanguageCode)
 
-    private suspend fun getTextTranslated(
-        originalText: String,
-        fromLanguageCode: String,
-        toLanguageCode: String,
-    ) = suspendCoroutine<String> { continuation ->
-        val options = initTranslatorOptions(fromLanguageCode, toLanguageCode)
-
-        val translator = Translation.getClient(options)
-        translator.translate(originalText).addOnSuccessListener { textTranslated ->
-            continuation.resume(textTranslated)
-        }.addOnFailureListener { exception ->
-            continuation.resumeWithException(exception)
+            val translator = Translation.getClient(options)
+            translator.translate(originalText).addOnSuccessListener { textTranslated ->
+                continuation.resume(textTranslated)
+            }.addOnFailureListener { exception ->
+                continuation.resumeWithException(exception)
+            }
         }
-    }
 
     private fun initTranslatorOptions(
         fromLanguageCode: String,
@@ -144,9 +135,4 @@ class TranslationUtils {
         return TranslatorOptions.Builder().setSourceLanguage(fromLanguageCode)
             .setTargetLanguage(toLanguageCode).build()
     }
-
-    fun swapText(
-        fromText: String,
-        toText: String,
-    ): Pair<String, String> = Pair(toText, fromText)
 }

@@ -10,9 +10,16 @@ import com.example.domain.GetFavoriteTranslationHistoryUseCase
 import com.example.domain.GetPairLanguageUseCase
 import com.example.domain.GetTranslationHistoryUseCase
 import com.example.domain.GetWordInformationUseCase
+import com.example.domain.SpeakUseCase
 import com.example.domain.StorePairLanguageUseCase
+import com.example.domain.TranslateTextFromCameraUseCase
+import com.example.domain.TranslateTextFromImageUseCase
+import com.example.domain.TranslateUseCase
 import com.example.domain.UndoTranslationHistoryUseCase
 import com.example.domain.UpdateFavoriteTranslationHistoryUseCase
+import com.example.mlkit.ImageProcessor
+import com.example.mlkit.utils.TranslationUtils
+import com.example.voice.TextToSpeechUtils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -74,7 +81,10 @@ class UseCaseModule {
         translationHistoryRepository: TranslationHistoryRepository,
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
     ): UpdateFavoriteTranslationHistoryUseCase {
-        return UpdateFavoriteTranslationHistoryUseCase(translationHistoryRepository, coroutineDispatcher)
+        return UpdateFavoriteTranslationHistoryUseCase(
+            translationHistoryRepository,
+            coroutineDispatcher,
+        )
     }
 
     @Provides
@@ -92,7 +102,10 @@ class UseCaseModule {
         translationHistoryRepository: TranslationHistoryRepository,
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
     ): GetFavoriteTranslationHistoryUseCase {
-        return GetFavoriteTranslationHistoryUseCase(translationHistoryRepository, coroutineDispatcher)
+        return GetFavoriteTranslationHistoryUseCase(
+            translationHistoryRepository,
+            coroutineDispatcher,
+        )
     }
 
     @Provides
@@ -111,5 +124,44 @@ class UseCaseModule {
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
     ): DeleteAllTranslationHistoryUseCase {
         return DeleteAllTranslationHistoryUseCase(translationHistoryRepository, coroutineDispatcher)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTranslateTextFromImageUseCase(
+        imageProcessor: ImageProcessor,
+        translationUtils: TranslationUtils,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): TranslateTextFromImageUseCase {
+        return TranslateTextFromImageUseCase(imageProcessor, translationUtils, coroutineDispatcher)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTranslateUseCase(
+        translationUtils: TranslationUtils,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): TranslateUseCase {
+        return TranslateUseCase(translationUtils, coroutineDispatcher)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSpeakUseCase(textToSpeechUtils: TextToSpeechUtils): SpeakUseCase {
+        return SpeakUseCase(textToSpeechUtils)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTranslateTextFromCameraUseCase(
+        imageProcessor: ImageProcessor,
+        translationUtils: TranslationUtils,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): TranslateTextFromCameraUseCase {
+        return TranslateTextFromCameraUseCase(
+            imageProcessor,
+            translationUtils,
+            coroutineDispatcher,
+        )
     }
 }

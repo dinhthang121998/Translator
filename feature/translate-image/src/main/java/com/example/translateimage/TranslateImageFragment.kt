@@ -10,9 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.graphics.scale
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.mlkit.TextRecognition
 import com.example.mlkit.overlay.TextGraphic
 import com.example.mlkit.utils.BitmapUtils
 import com.example.model.SearchLanguageItem
@@ -20,6 +20,7 @@ import com.example.translateimage.databinding.FragmentTranslateImageBinding
 import com.example.ui.R
 import com.example.ui.base.BaseFragment
 import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -72,11 +73,6 @@ class TranslateImageFragment :
                         ),
                     )
                     binding.graphicOverlay.invalidate()
-
-//                    onFailure = {
-//                        binding.graphicOverlay.clear()
-//                        binding.graphicOverlay.postInvalidate()
-//                    }
                 }
             }
 
@@ -85,23 +81,30 @@ class TranslateImageFragment :
                     if (fromLanguageItem.languageName.isEmpty()) {
                         binding.imageChooseLanguageView.setFromLanguage(getString(R.string.search))
                     } else {
-                        viewModel.fromLanguageItem = fromLanguageItem
                         binding.imageChooseLanguageView.setFromLanguage(fromLanguageItem.languageName)
                     }
 
                     if (fromLanguageItem.languageName.isEmpty()) {
                         binding.imageChooseLanguageView.setToLanguage(getString(R.string.search))
                     } else {
-                        viewModel.toLanguageItem = toLanguageItem
                         binding.imageChooseLanguageView.setToLanguage(toLanguageItem.languageName)
                     }
 
-                    if (viewModel.fromLanguageItem.languageCode.isNotEmpty() &&
-                        viewModel.toLanguageItem.languageCode.isNotEmpty()
+                    val pairLanguageItem = viewModel.pairLanguageFlow.value
+                    if (pairLanguageItem.first.languageCode.isNotEmpty() &&
+                        pairLanguageItem.second.languageCode.isNotEmpty()
                     ) {
                         viewModel.uri?.let { uri ->
                             detectTextInImage(uri)
                         }
+                    }
+                }
+            }
+
+            launch {
+                viewModel.failureFlow.collect { exception ->
+                    exception?.let {
+                        showAlertDialog(requireContext(), getString(R.string.error), "${exception.message}")
                     }
                 }
             }
@@ -128,15 +131,13 @@ class TranslateImageFragment :
             )
 
         val resizedBitmap: Bitmap =
-            Bitmap.createScaledBitmap(
-                imageBitmap,
+            imageBitmap.scale(
                 (imageBitmap.width / scaleFactor).toInt(),
                 (imageBitmap.height / scaleFactor).toInt(),
-                true,
             )
 
         binding.ivSelectedImage.setImageBitmap(resizedBitmap)
-        viewModel.processImage(InputImage.fromBitmap(resizedBitmap, 0), TextRecognition.LATIN_RECOGNITION)
+        viewModel.processImage(InputImage.fromBitmap(resizedBitmap, 0), TextRecognizerOptions.DEFAULT_OPTIONS)
     }
 
     private fun setUpOnClick() {

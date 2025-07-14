@@ -1,7 +1,6 @@
 package com.example.favored
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,8 +40,15 @@ class FavoredFragment :
         lifecycleScope.launch {
             launch {
                 viewModel.getFavoriteTranslationHistoryFlow.collect {
-                    Log.d("AAAA", "it = $it")
                     binding.favoredTranslationHistory.updateTranslationHistory(it)
+                }
+            }
+
+            launch {
+                viewModel.failureFlow.collect { exception ->
+                    exception?.let {
+                        showAlertDialog(requireContext(), getString(R.string.error), "${exception.message}")
+                    }
                 }
             }
         }
@@ -76,7 +82,6 @@ class FavoredFragment :
 
     override fun onDeleteHistoryItem(translatedWord: TranslationHistory) {
         viewModel.deleteTranslationHistory(translatedWord.id)
-        // Optional: Show undo snackbar
         view?.let { view ->
             Snackbar.make(
                 view,

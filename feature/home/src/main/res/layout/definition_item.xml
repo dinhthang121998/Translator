@@ -73,7 +73,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvsynonyms"
+            android:id="@+id/tvSynonyms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/synonyms"

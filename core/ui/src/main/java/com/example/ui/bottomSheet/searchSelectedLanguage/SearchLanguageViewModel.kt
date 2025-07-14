@@ -1,6 +1,5 @@
 package com.example.ui.bottomSheet.searchSelectedLanguage
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.mlkit.utils.TranslationUtils
 import com.example.model.SearchLanguageItem
@@ -38,14 +37,19 @@ class SearchLanguageViewModel
 
         fun filterLanguageItem(textFilter: String) {
             viewModelScope.launch {
-                val listFilter = translationUtils.filterLanguageItems(textFilter, _listAllLanguages.value)
+                val listFilter =
+                    translationUtils.filterLanguageItems(textFilter, _listAllLanguages.value)
                 _listFilterLanguages.value = listFilter
             }
         }
 
         fun updateAllLanguages(downloadedLanguageItem: SearchLanguageItem.LanguageItem) {
             viewModelScope.launch {
-                val updatedListLanguageItem = translationUtils.updateDownloadedLanguage(downloadedLanguageItem, _listAllLanguages.value)
+                val updatedListLanguageItem =
+                    translationUtils.updateDownloadedLanguage(
+                        downloadedLanguageItem,
+                        _listAllLanguages.value,
+                    )
                 _listAllLanguages.value = updatedListLanguageItem
             }
         }
@@ -53,11 +57,9 @@ class SearchLanguageViewModel
         // TODO Implement loading when downloading language. Handle error
         fun downloadLanguage(languageItem: SearchLanguageItem.LanguageItem) {
             viewModelScope.launch {
-                Log.d("AAAA", "download model")
-                loadingFlow.value = true
+                loadingState.value = true
                 _downloadLanguageItem.value = translationUtils.downloadLanguageModel(languageItem)
-                loadingFlow.value = false
-                Log.d("AAAA", "download done")
+                loadingState.value = false
             }
         }
     }

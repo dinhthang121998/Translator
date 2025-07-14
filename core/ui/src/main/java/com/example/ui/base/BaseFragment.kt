@@ -1,5 +1,7 @@
 package com.example.ui.base
 
+import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.example.model.SearchLanguageItem
+import com.example.ui.R
 import com.example.ui.bottomSheet.searchSelectedLanguage.SearchSelectedLanguageSheet
+import com.example.ui.util.AlertDialogUtils
 
 abstract class BaseFragment<V : ViewBinding, M : ViewModel> : Fragment() {
     private var _binding: V? = null
@@ -50,5 +54,25 @@ abstract class BaseFragment<V : ViewBinding, M : ViewModel> : Fragment() {
                 }
             }
         bottomSheetLanguage.show(childFragmentManager, SearchSelectedLanguageSheet.TAG)
+    }
+
+    fun showAlertDialog(
+        context: Context,
+        title: String,
+        message: String,
+        positiveText: String = context.getString(R.string.ok),
+        negativeText: String = context.getString(R.string.cancel),
+        onPositiveClick: ((DialogInterface) -> Unit)? = null,
+        onNegativeClick: ((DialogInterface) -> Unit)? = null,
+    ) {
+        AlertDialogUtils.showAlertDialog(
+            context,
+            title,
+            message,
+            positiveText,
+            negativeText,
+            onPositiveClick,
+            onNegativeClick,
+        )
     }
 }
