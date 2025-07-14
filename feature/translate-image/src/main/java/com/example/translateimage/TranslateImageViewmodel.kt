@@ -2,18 +2,14 @@ package com.example.translateimage
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
-import com.example.domain.TranslateTextFromImageUseCase
 import com.example.common.UiState
 import com.example.domain.GetPairLanguageUseCase
 import com.example.domain.StorePairLanguageUseCase
-import com.example.mlkit.ImageProcessor
-import com.example.mlkit.TextRecognition
-import com.example.mlkit.utils.TranslationUtils
+import com.example.domain.TranslateTextFromImageUseCase
 import com.example.model.SearchLanguageItem
 import com.example.model.TextDrawing
 import com.example.ui.base.BaseViewmodel
 import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,9 +46,13 @@ class TranslateImageViewmodel
             option: TextRecognizerOptions,
         ) {
             viewModelScope.launch {
-                val input = TranslateTextFromImageUseCase.TranslateTextFromImageInput(inputImage,
-                    option,
-                    _pairLanguageFlow.value.first,  _pairLanguageFlow.value.second)
+                val input =
+                    TranslateTextFromImageUseCase.TranslateTextFromImageInput(
+                        inputImage,
+                        option,
+                        _pairLanguageFlow.value.first,
+                        _pairLanguageFlow.value.second,
+                    )
                 when (val result = translateTextFromImageUseCase.invoke(input)) {
                     is UiState.Error -> failureState.value = result.error
                     is UiState.Loading -> TODO()

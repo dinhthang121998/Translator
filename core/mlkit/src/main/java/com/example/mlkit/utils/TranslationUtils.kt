@@ -116,16 +116,17 @@ class TranslationUtils {
         originalText: String,
         fromLanguageCode: String,
         toLanguageCode: String,
-    ): String = suspendCoroutine { continuation ->
-        val options = initTranslatorOptions(fromLanguageCode, toLanguageCode)
+    ): String =
+        suspendCoroutine { continuation ->
+            val options = initTranslatorOptions(fromLanguageCode, toLanguageCode)
 
-        val translator = Translation.getClient(options)
-        translator.translate(originalText).addOnSuccessListener { textTranslated ->
-            continuation.resume(textTranslated)
-        }.addOnFailureListener { exception ->
-            continuation.resumeWithException(exception)
+            val translator = Translation.getClient(options)
+            translator.translate(originalText).addOnSuccessListener { textTranslated ->
+                continuation.resume(textTranslated)
+            }.addOnFailureListener { exception ->
+                continuation.resumeWithException(exception)
+            }
         }
-    }
 
     private fun initTranslatorOptions(
         fromLanguageCode: String,

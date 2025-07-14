@@ -20,7 +20,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.mlkit.TextRecognition
 import com.example.mlkit.overlay.TextGraphic
 import com.example.translatecamerax.databinding.FragmentTranslateCameraXBinding
 import com.example.ui.base.BaseFragment

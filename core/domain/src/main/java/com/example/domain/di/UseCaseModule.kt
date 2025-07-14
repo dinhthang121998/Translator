@@ -83,7 +83,7 @@ class UseCaseModule {
     ): UpdateFavoriteTranslationHistoryUseCase {
         return UpdateFavoriteTranslationHistoryUseCase(
             translationHistoryRepository,
-            coroutineDispatcher
+            coroutineDispatcher,
         )
     }
 
@@ -104,7 +104,7 @@ class UseCaseModule {
     ): GetFavoriteTranslationHistoryUseCase {
         return GetFavoriteTranslationHistoryUseCase(
             translationHistoryRepository,
-            coroutineDispatcher
+            coroutineDispatcher,
         )
     }
 
@@ -147,9 +147,7 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideSpeakUseCase(
-        textToSpeechUtils: TextToSpeechUtils
-    ): SpeakUseCase {
+    fun provideSpeakUseCase(textToSpeechUtils: TextToSpeechUtils): SpeakUseCase {
         return SpeakUseCase(textToSpeechUtils)
     }
 
@@ -163,7 +161,7 @@ class UseCaseModule {
         return TranslateTextFromCameraUseCase(
             imageProcessor,
             translationUtils,
-            coroutineDispatcher
+            coroutineDispatcher,
         )
     }
 }

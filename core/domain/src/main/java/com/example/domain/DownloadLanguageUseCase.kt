@@ -1,4 +1,3 @@
 package com.example.domain
 
-class DownloadLanguageUseCase {
-}
+class DownloadLanguageUseCase

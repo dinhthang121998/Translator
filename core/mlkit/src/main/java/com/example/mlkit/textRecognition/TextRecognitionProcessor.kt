@@ -7,9 +7,7 @@ import com.example.mlkit.ImageProcessorBase
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
-import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.text.TextRecognizerOptionsInterface
-import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -17,7 +15,7 @@ import kotlin.coroutines.suspendCoroutine
 class TextRecognitionProcessor : ImageProcessorBase() {
     override suspend fun processImage(
         optionsInterface: TextRecognizerOptionsInterface,
-        inputImage: InputImage
+        inputImage: InputImage,
     ): Text? =
         suspendCoroutine { continuation ->
             val textRecognizer = TextRecognition.getClient(optionsInterface)
@@ -31,7 +29,7 @@ class TextRecognitionProcessor : ImageProcessorBase() {
     @OptIn(ExperimentalGetImage::class)
     override suspend fun processImageProxy(
         optionsInterface: TextRecognizerOptionsInterface,
-        imageProxy: ImageProxy
+        imageProxy: ImageProxy,
     ): Text? =
         suspendCoroutine { continuation ->
             val textRecognizer = TextRecognition.getClient(optionsInterface)

@@ -41,9 +41,7 @@ abstract class BaseFragment<V : ViewBinding, M : ViewModel> : Fragment() {
         _binding = null
     }
 
-    fun showSearchBottomSheet(
-        clickItem: ((SearchLanguageItem) -> Unit)? = null,
-    ) {
+    fun showSearchBottomSheet(clickItem: ((SearchLanguageItem) -> Unit)? = null) {
         val bottomSheetLanguage =
             SearchSelectedLanguageSheet.newInstance().apply {
                 clickCloseButton = {
@@ -74,7 +72,7 @@ abstract class BaseFragment<V : ViewBinding, M : ViewModel> : Fragment() {
             positiveText,
             negativeText,
             onPositiveClick,
-            onNegativeClick
+            onNegativeClick,
         )
     }
 }

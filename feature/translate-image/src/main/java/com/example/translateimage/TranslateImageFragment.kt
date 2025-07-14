@@ -10,9 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.graphics.scale
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.mlkit.TextRecognition
 import com.example.mlkit.overlay.TextGraphic
 import com.example.mlkit.utils.BitmapUtils
 import com.example.model.SearchLanguageItem
@@ -20,10 +20,9 @@ import com.example.translateimage.databinding.FragmentTranslateImageBinding
 import com.example.ui.R
 import com.example.ui.base.BaseFragment
 import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import androidx.core.graphics.scale
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 @AndroidEntryPoint
 class TranslateImageFragment :
