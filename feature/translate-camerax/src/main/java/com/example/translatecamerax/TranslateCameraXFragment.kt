@@ -21,7 +21,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.mlkit.overlay.TextGraphic
+import com.example.model.SearchLanguageItem
 import com.example.translatecamerax.databinding.FragmentTranslateCameraXBinding
+import com.example.ui.R
 import com.example.ui.base.BaseFragment
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.mlkit.common.MlKitException
@@ -75,6 +77,9 @@ class TranslateCameraXFragment :
         }, ContextCompat.getMainExecutor(this.requireContext()))
 
         checkCameraPermission()
+        viewModel.observePairLanguageItemChange()
+        setUpOnClick()
+        setUpMediaChooseLanguageView()
 
         lifecycleScope.launch {
             launch {
@@ -99,6 +104,69 @@ class TranslateCameraXFragment :
                         ),
                     )
                     binding.graphicOverlay.invalidate()
+                }
+            }
+
+            launch {
+                viewModel.pairLanguageFlow.collect { (fromLanguageItem, toLanguageItem) ->
+                    binding.imageChooseLanguageView.setFromLanguage(
+                        fromLanguageItem.languageName.ifEmpty {
+                            getString(
+                                R.string.search,
+                            )
+                        },
+                    )
+
+                    binding.imageChooseLanguageView.setToLanguage(
+                        toLanguageItem.languageName.ifEmpty {
+                            getString(R.string.search)
+                        },
+                    )
+
+                    val pairLanguageItem = viewModel.pairLanguageFlow.value
+                    if (pairLanguageItem.first.languageCode.isNotEmpty() &&
+                        pairLanguageItem.second.languageCode.isNotEmpty()
+                    ) {
+                        bindAllCameraUseCases()
+                    }
+                }
+            }
+
+            launch {
+                viewModel.failureFlow.collect { exception ->
+                    exception?.let {
+                        showAlertDialog(
+                            requireContext(),
+                            getString(R.string.error),
+                            "${exception.message}",
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setUpOnClick() {
+        binding.ivBack.setOnClickListener {
+            requireActivity().finish()
+        }
+    }
+
+    private fun setUpMediaChooseLanguageView() {
+        binding.imageChooseLanguageView.apply {
+            onClickFromLanguage = {
+                showSearchBottomSheet { searchLanguageItem ->
+                    val languageItem = searchLanguageItem as SearchLanguageItem.LanguageItem
+                    setFromLanguage(languageItem.languageName)
+                    viewModel.storeLanguageItem(true, languageItem)
+                }
+            }
+
+            onClickToLanguage = {
+                showSearchBottomSheet { searchLanguageItem ->
+                    val languageItem = searchLanguageItem as SearchLanguageItem.LanguageItem
+                    setToLanguage(languageItem.languageName)
+                    viewModel.storeLanguageItem(false, languageItem)
                 }
             }
         }

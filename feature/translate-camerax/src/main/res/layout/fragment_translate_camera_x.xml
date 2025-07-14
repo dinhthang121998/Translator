@@ -30,4 +30,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <ImageView
+        android:id="@+id/ivBack"
+        android:src="@drawable/ic_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_16"
+        android:layout_marginStart="@dimen/size_16"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.example.ui.chooseLanguage.MediaChooseLanguageView
+        android:id="@+id/imageChooseLanguageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivBack"
+        android:layout_marginTop="@dimen/size_8"
+        app:fromLanguageText="@string/select"
+        app:toLanguageText="@string/select"
+        app:middleDrawable="@drawable/ic_right"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

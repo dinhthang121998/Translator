@@ -78,17 +78,19 @@ class TranslateImageFragment :
 
             launch {
                 viewModel.pairLanguageFlow.collect { (fromLanguageItem, toLanguageItem) ->
-                    if (fromLanguageItem.languageName.isEmpty()) {
-                        binding.imageChooseLanguageView.setFromLanguage(getString(R.string.search))
-                    } else {
-                        binding.imageChooseLanguageView.setFromLanguage(fromLanguageItem.languageName)
-                    }
+                    binding.imageChooseLanguageView.setFromLanguage(
+                        fromLanguageItem.languageName.ifEmpty {
+                            getString(
+                                R.string.search,
+                            )
+                        },
+                    )
 
-                    if (fromLanguageItem.languageName.isEmpty()) {
-                        binding.imageChooseLanguageView.setToLanguage(getString(R.string.search))
-                    } else {
-                        binding.imageChooseLanguageView.setToLanguage(toLanguageItem.languageName)
-                    }
+                    binding.imageChooseLanguageView.setToLanguage(
+                        toLanguageItem.languageName.ifEmpty {
+                            getString(R.string.search)
+                        },
+                    )
 
                     val pairLanguageItem = viewModel.pairLanguageFlow.value
                     if (pairLanguageItem.first.languageCode.isNotEmpty() &&
@@ -104,7 +106,11 @@ class TranslateImageFragment :
             launch {
                 viewModel.failureFlow.collect { exception ->
                     exception?.let {
-                        showAlertDialog(requireContext(), getString(R.string.error), "${exception.message}")
+                        showAlertDialog(
+                            requireContext(),
+                            getString(R.string.error),
+                            "${exception.message}",
+                        )
                     }
                 }
             }
@@ -119,7 +125,9 @@ class TranslateImageFragment :
     }
 
     private fun detectTextInImage(imageUri: Uri) {
-        val imageBitmap = BitmapUtils.getBitmapFromContentUri(requireActivity().contentResolver, imageUri) ?: return
+        val imageBitmap =
+            BitmapUtils.getBitmapFromContentUri(requireActivity().contentResolver, imageUri)
+                ?: return
 
         val targetedSize: Pair<Int, Int> = Pair(binding.root.width, binding.root.height)
 
@@ -137,7 +145,10 @@ class TranslateImageFragment :
             )
 
         binding.ivSelectedImage.setImageBitmap(resizedBitmap)
-        viewModel.processImage(InputImage.fromBitmap(resizedBitmap, 0), TextRecognizerOptions.DEFAULT_OPTIONS)
+        viewModel.processImage(
+            InputImage.fromBitmap(resizedBitmap, 0),
+            TextRecognizerOptions.DEFAULT_OPTIONS,
+        )
     }
 
     private fun setUpOnClick() {
