@@ -356,7 +356,7 @@ class HomeFragment :
     }
 
     override fun onClickItem(translatedWord: TranslationHistory) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onDeleteHistoryItem(translatedWord: TranslationHistory) {
