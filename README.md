@@ -11,7 +11,8 @@ A powerful and modular Android application that allows users to translate text b
   <img width="200" height="444" alt="Screenshot_20250715_144423" src="https://github.com/user-attachments/assets/b5b9164d-cb88-4a09-858a-fea5c05b7816" />
 - 📷 **Image Translation** — Extract and translate text from static images using ML Kit OCR.
 
-  <img width="200" height="444" alt="Screenshot_20250715_144630" src="https://github.com/user-attachments/assets/48796ba8-7c24-440d-86c9-57d9d643b332" />
+  <img width="200" height="444" alt="Screenshot_20250715_152140" src="https://github.com/user-attachments/assets/612bd367-0c24-4d07-b6f0-6b6d3f75bc1d" />
+
 - 📹 **Real-Time Camera Translation** — Use CameraX and ML Kit to detect and translate text live.
 
   [Screen_recording_20250715_144841.webm](https://github.com/user-attachments/assets/e33172b4-2d38-4bfc-a1b8-88df0dfb2224)
