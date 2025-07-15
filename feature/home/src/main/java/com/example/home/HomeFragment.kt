@@ -356,7 +356,6 @@ class HomeFragment :
     }
 
     override fun onClickItem(translatedWord: TranslationHistory) {
-
     }
 
     override fun onDeleteHistoryItem(translatedWord: TranslationHistory) {
