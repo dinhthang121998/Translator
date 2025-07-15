@@ -101,7 +101,6 @@ class TranslationUtils {
             val model = TranslateRemoteModel.Builder(languageCode).build()
             val conditions =
                 DownloadConditions.Builder()
-                    .requireWifi()
                     .build()
             modelManager.download(model, conditions)
                 .addOnSuccessListener {
