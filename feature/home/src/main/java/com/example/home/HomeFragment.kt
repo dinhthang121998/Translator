@@ -20,22 +20,29 @@ import com.example.model.Meanings
 import com.example.model.SearchLanguageItem
 import com.example.model.TranslationHistory
 import com.example.model.WordInformation
-import com.example.translatecamerax.TranslateCameraXActivity
-import com.example.translateimage.TranslateImageActivity
+import com.example.navigation.NavigateTranslateCamera
+import com.example.navigation.NavigateTranslateImage
 import com.example.ui.R
 import com.example.ui.base.BaseFragment
 import com.example.ui.translationHistory.TranslationHistoryAdapter
-import com.example.ui.util.navigateToActivity
 import com.example.ui.util.showOrGone
 import com.example.ui.util.speechIntent
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment :
     BaseFragment<FragmentHomeBinding, HomeViewmodel>(),
     TranslationHistoryAdapter.IHistoryTranslationAdapterListener {
+
+    @Inject
+    lateinit var navigateTranslateCamera: NavigateTranslateCamera
+
+    @Inject
+    lateinit var navigateTranslateImage: NavigateTranslateImage
+
     override fun initBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -115,7 +122,11 @@ class HomeFragment :
             launch {
                 viewModel.failureFlow.collect { exception ->
                     exception?.let {
-                        showAlertDialog(requireContext(), getString(R.string.error), "${exception.message}")
+                        showAlertDialog(
+                            requireContext(),
+                            getString(R.string.error),
+                            "${exception.message}"
+                        )
                     }
                 }
             }
@@ -337,11 +348,11 @@ class HomeFragment :
 
     private fun setupOnClickView() {
         binding.ivImage.setOnClickListener {
-            navigateToActivity(TranslateImageActivity::class.java)
+            navigateTranslateImage.navigateToTranslateImage(requireContext())
         }
 
         binding.ivCamera.setOnClickListener {
-            navigateToActivity(TranslateCameraXActivity::class.java)
+            navigateTranslateCamera.navigateToTranslateCamera(requireContext())
         }
     }
 

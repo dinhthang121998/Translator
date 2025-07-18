@@ -46,8 +46,7 @@ dependencies {
     implementation(project(":core:voice"))
     implementation(project(":core:mlkit"))
     implementation(project(":core:common"))
-    implementation(project(":feature:translate-image"))
-    implementation(project(":feature:translate-camerax"))
+    implementation(project(":core:navigation"))
 
     implementation(libs.core.ktx)
     implementation(libs.android.appcompat)

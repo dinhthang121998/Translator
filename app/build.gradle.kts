@@ -53,6 +53,8 @@ dependencies {
     implementation(project(":feature:settings"))
     implementation(project(":feature:feedback"))
     implementation(project(":feature:theme"))
+    implementation(project(":feature:translate-image"))
+    implementation(project(":feature:translate-camerax"))
 
     implementation(libs.core.ktx)
     implementation(libs.android.appcompat)
