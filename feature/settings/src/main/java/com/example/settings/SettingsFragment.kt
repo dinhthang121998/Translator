@@ -1,21 +1,28 @@
 package com.example.settings
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.example.feedback.FeedbackActivity
+import com.example.navigation.NavigateFeedback
+import com.example.navigation.NavigateTheme
 import com.example.settings.databinding.FragmentSettingsBinding
-import com.example.theme.ThemeActivity
 import com.example.ui.R
 import com.example.ui.base.BaseFragment
 import com.example.ui.util.AlertDialogUtils
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewmodel>() {
+
+    @Inject
+    lateinit var navigateFeedback: NavigateFeedback
+
+    @Inject
+    lateinit var navigateTheme: NavigateTheme
+
     override fun initBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,8 +43,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewmodel
 
     private fun handleClickItem() {
         binding.feedback.onItemClick = {
-            val intent = Intent(requireActivity(), FeedbackActivity::class.java)
-            requireActivity().startActivity(intent)
+            navigateFeedback.navigateToFeedback(requireContext())
         }
 
         binding.about.onItemClick = {
@@ -59,8 +65,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewmodel
         }
 
         binding.darkTheme.onItemClick = {
-            val intent = Intent(requireActivity(), ThemeActivity::class.java)
-            requireActivity().startActivity(intent)
+            navigateTheme.navigateToTheme(requireContext())
         }
 
         binding.clearTranslationHistory.onItemClick = {

@@ -1,12 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.hilt)
 }
 
 android {
-    namespace = "com.example.settings"
+    namespace = "com.example.navigation"
     compileSdk = 35
 
     defaultConfig {
@@ -21,7 +19,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
         }
     }
@@ -32,17 +30,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 dependencies {
-
-    implementation(project(":core:ui"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:common"))
-    implementation(project(":core:navigation"))
 
     implementation(libs.core.ktx)
     implementation(libs.android.appcompat)
@@ -51,10 +41,4 @@ dependencies {
     androidTestImplementation(libs.test.junit)
     androidTestImplementation(libs.espresso)
 
-    // viewmodel for Fragment
-    implementation(libs.fragment.ktx)
-
-    // hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
 }
