@@ -1,12 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.hilt)
 }
 
 android {
-    namespace = "com.example.home"
+    namespace = "com.example.navigation"
     compileSdk = 35
 
     defaultConfig {
@@ -32,35 +30,14 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 dependencies {
 
-    implementation(project(":core:ui"))
-    implementation(project(":core:model"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:voice"))
-    implementation(project(":core:mlkit"))
-    implementation(project(":core:common"))
-    implementation(project(":core:navigation"))
-
     implementation(libs.core.ktx)
     implementation(libs.android.appcompat)
     implementation(libs.android.material)
-    implementation(libs.constraintlayout)
-    implementation(libs.activity)
-
-    // viewmodel for Fragment
-    implementation(libs.fragment.ktx)
-
-    // hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-
     testImplementation(libs.junit)
-    androidTestImplementation(libs.bundles.test.android)
+    androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.espresso)
 }

@@ -42,8 +42,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:domain"))
     implementation(project(":core:common"))
-    implementation(project(":feature:feedback"))
-    implementation(project(":feature:theme"))
+    implementation(project(":core:navigation"))
 
     implementation(libs.core.ktx)
     implementation(libs.android.appcompat)
