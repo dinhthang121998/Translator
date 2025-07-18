@@ -2,14 +2,17 @@ package com.example.domain.di
 
 import com.example.data.repository.TranslationHistoryRepository
 import com.example.data.repository.WordInformationRepository
+import com.example.datastore.DatastorePrefManager
 import com.example.datastore.DatastoreProtoManager
 import com.example.domain.AddTranslationHistoryUseCase
 import com.example.domain.DeleteAllTranslationHistoryUseCase
 import com.example.domain.DeleteTranslationHistoryUseCase
 import com.example.domain.GetFavoriteTranslationHistoryUseCase
 import com.example.domain.GetPairLanguageUseCase
+import com.example.domain.GetThemeUseCase
 import com.example.domain.GetTranslationHistoryUseCase
 import com.example.domain.GetWordInformationUseCase
+import com.example.domain.SetThemeUseCase
 import com.example.domain.SpeakUseCase
 import com.example.domain.StorePairLanguageUseCase
 import com.example.domain.TranslateTextFromCameraUseCase
@@ -163,5 +166,23 @@ class UseCaseModule {
             translationUtils,
             coroutineDispatcher,
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetThemeUseCase(
+        datastorePrefManager: DatastorePrefManager,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): GetThemeUseCase {
+        return GetThemeUseCase(datastorePrefManager, coroutineDispatcher)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSetThemeUseCase(
+        datastorePrefManager: DatastorePrefManager,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): SetThemeUseCase {
+        return SetThemeUseCase(datastorePrefManager, coroutineDispatcher)
     }
 }

@@ -6,7 +6,7 @@ import com.example.database.AppDatabase
 import com.example.database.BuildConfig
 import com.example.database.dao.TranslatedDao
 import com.example.database.util.SQLCipherUtils
-import com.example.datastore.DatastorePrefManager
+import com.example.datastore.DatastorePrefManagerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,11 +23,11 @@ import javax.inject.Singleton
 class RoomModule {
     @Provides
     @Singleton
-    fun provideByteArray(datastorePreManager: DatastorePrefManager): ByteArray {
+    fun provideByteArray(datastorePreManager: DatastorePrefManagerImpl): ByteArray {
         val key =
             runBlocking {
-                datastorePreManager.keyFlow.firstOrNull() ?: generateKey().also {
-                    datastorePreManager.saveKey(it)
+                datastorePreManager.getDBKey().firstOrNull() ?: generateKey().also {
+                    datastorePreManager.saveDBKey(it)
                 }
             }
         return SQLiteDatabase.getBytes(key.toCharArray())

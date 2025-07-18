@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FFFFFFFF</color>
+    <color name="white">#FF000000</color>
+    <color name="gray_1">#4E4E4E</color>
+    <color name="gray_2">#D5D4D4</color>
+    <color name="blue_1">#0FD7C9</color>
+
+    <color name="colorBackground">#121212</color>
+    <color name="textColor">#FFFFFF</color>
+
+    <color name="favorite_selected">#000FFF</color>
+    <color name="favorite_unselected">#555555</color>
+</resources>

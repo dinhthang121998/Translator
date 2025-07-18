@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.feedback.FeedbackActivity
 import com.example.settings.databinding.FragmentSettingsBinding
+import com.example.theme.ThemeActivity
 import com.example.ui.R
 import com.example.ui.base.BaseFragment
 import com.example.ui.util.AlertDialogUtils
@@ -30,7 +31,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewmodel
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-
         handleClickItem()
     }
 
@@ -56,6 +56,11 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewmodel
         }
 
         binding.sendCrash.onItemClick = {
+        }
+
+        binding.darkTheme.onItemClick = {
+            val intent = Intent(requireActivity(), ThemeActivity::class.java)
+            requireActivity().startActivity(intent)
         }
 
         binding.clearTranslationHistory.onItemClick = {

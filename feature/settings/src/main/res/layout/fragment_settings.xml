@@ -3,15 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_3"
+    android:background="@color/gray_1"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SettingsFragment">
 
     <com.example.ui.toolbar.CustomToolbarView
-        android:id="@+id/toolbar"
+        android:id="@+id/customToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/settings"/>
@@ -22,14 +21,14 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:paddingTop="@dimen/size_24"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/customToolbar"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.example.ui.labeldIcon.LabeledIconView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:labelText="@string/support"
-            app:customBackgroundColor="@color/gray_3" />
+            app:customBackgroundColor="@color/gray_1" />
 
         <com.example.ui.labeldIcon.LabeledIconView
             android:id="@+id/feedback"
@@ -67,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:labelText="@string/voice"
-            app:customBackgroundColor="@color/gray_3" />
+            app:customBackgroundColor="@color/gray_1" />
 
         <com.example.ui.labeldIcon.LabeledIconView
             android:id="@+id/speechInput"
@@ -106,8 +105,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:labelText="@string/send_crash_reports"
-            app:trailingIcon="@drawable/ic_right_chevron"
             app:trailingText="@string/off"/>
+
+        <com.example.ui.labeldIcon.LabeledIconView
+            android:id="@+id/darkTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelText="@string/theme" />
 
     </LinearLayout>
 

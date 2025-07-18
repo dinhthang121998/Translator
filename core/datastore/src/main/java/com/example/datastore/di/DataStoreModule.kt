@@ -3,6 +3,7 @@ package com.example.datastore.di
 import android.content.Context
 import com.example.cipher.CryptoManager
 import com.example.datastore.DatastorePrefManager
+import com.example.datastore.DatastorePrefManagerImpl
 import com.example.datastore.DatastoreProtoManager
 import dagger.Module
 import dagger.Provides
@@ -28,6 +29,6 @@ class DataStoreModule {
         @ApplicationContext context: Context,
         cryptoManager: CryptoManager,
     ): DatastorePrefManager {
-        return DatastorePrefManager(context, cryptoManager)
+        return DatastorePrefManagerImpl(context, cryptoManager)
     }
 }

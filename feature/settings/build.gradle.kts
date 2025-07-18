@@ -43,6 +43,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:common"))
     implementation(project(":feature:feedback"))
+    implementation(project(":feature:theme"))
 
     implementation(libs.core.ktx)
     implementation(libs.android.appcompat)
