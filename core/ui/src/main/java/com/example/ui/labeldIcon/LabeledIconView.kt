@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import com.example.ui.R
 import com.example.ui.databinding.LabeledIconViewBinding
+import com.example.ui.util.showOrGone
 
 class LabeledIconView(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
     private val binding = LabeledIconViewBinding.inflate(LayoutInflater.from(context), this, true)
@@ -15,6 +16,7 @@ class LabeledIconView(context: Context, attrs: AttributeSet) : FrameLayout(conte
     private val defaultLabelColor = R.color.black
 
     var onItemClick: () -> Unit = {}
+    var onClickSwitch: (Boolean) -> Unit = {}
 
     init {
         val typedArray =
@@ -42,12 +44,23 @@ class LabeledIconView(context: Context, attrs: AttributeSet) : FrameLayout(conte
             val resourceId = getResourceId(R.styleable.LabeledIconView_trailingIcon, 0)
             val backgroundColor = getResourceId(R.styleable.LabeledIconView_customBackgroundColor, defaultBackgroundColor)
             val labelColor = getResourceId(R.styleable.LabeledIconView_customLabelColor, defaultLabelColor)
+            val isShowSwitch = getBoolean(R.styleable.LabeledIconView_isShowSwitch, false)
 
             binding.labelText.text = labelText
             binding.trailingText.text = trailingText
             binding.labelText.setTextColor(ContextCompat.getColor(context, labelColor))
             binding.trailingIcon.setImageResource(resourceId)
             binding.root.setBackgroundResource(backgroundColor)
+            binding.switchView.showOrGone(isShowSwitch)
+            if (isShowSwitch) {
+                binding.switchView.setOnCheckedChangeListener { _, isChecked ->
+                    onClickSwitch(isChecked)
+                }
+            }
         }
+    }
+
+    fun updateSwitchState(isChecked: Boolean) {
+        binding.switchView.isChecked = isChecked
     }
 }

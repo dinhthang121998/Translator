@@ -46,6 +46,7 @@ android {
 dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:common"))
+    implementation(project(":core:domain"))
     implementation(project(":feature:home"))
     implementation(project(":feature:favored"))
     implementation(project(":feature:settings"))
@@ -55,6 +56,9 @@ dependencies {
     implementation(libs.android.material)
     implementation(libs.constraintlayout)
     implementation(libs.activity)
+
+    // viewmodel for Fragment
+    implementation(libs.fragment.ktx)
 
     // hilt
     implementation(libs.hilt.android)

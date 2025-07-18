@@ -2,7 +2,15 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Translator" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-<!--        <item name="colorPrimary">@color/white</item>-->
+<!--        custom textColor-->
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+<!--        custom toolbarStyle-->
+        <item name="toolbarStyle">@style/MyToolbarStyle</item>
+    </style>
+
+    <style name="MyToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@color/colorBackground</item>
     </style>
 
     <style name="Theme.Translator" parent="Base.Theme.Translator" />

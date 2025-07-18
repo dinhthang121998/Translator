@@ -18,7 +18,7 @@ abstract class BaseActivity<V : ViewBinding> : AppCompatActivity() {
 
     abstract fun initBinding(): V?
 
-    abstract fun showFragment()
+    abstract fun showFragment(savedInstanceState: Bundle?)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,7 @@ abstract class BaseActivity<V : ViewBinding> : AppCompatActivity() {
         _binding = initBinding()
         setContentView(binding.root)
         handleEdgeToEdge(binding.root)
-        showFragment()
+        showFragment(savedInstanceState)
     }
 
     // for system bar and cutout

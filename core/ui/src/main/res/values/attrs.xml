@@ -17,6 +17,7 @@
         <attr name="trailingIcon" format="integer"/>
         <attr name="customBackgroundColor" format="integer"/>
         <attr name="customLabelColor" format="integer"/>
+        <attr name="isShowSwitch" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="CustomToolbarView">

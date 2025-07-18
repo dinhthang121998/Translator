@@ -1,5 +1,6 @@
 package com.example.translateimage
 
+import android.os.Bundle
 import com.example.translateimage.databinding.ActivityTranslateImageBinding
 import com.example.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -8,7 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class TranslateImageActivity : BaseActivity<ActivityTranslateImageBinding>() {
     override fun initBinding(): ActivityTranslateImageBinding = ActivityTranslateImageBinding.inflate(layoutInflater)
 
-    override fun showFragment() {
+    override fun showFragment(savedInstanceState: Bundle?) {
         replaceFragment(TranslateImageFragment.newInstance(), initBinding().frameLayout, TAG)
     }
 

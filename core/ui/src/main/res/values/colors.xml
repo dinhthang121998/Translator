@@ -8,4 +8,10 @@
     <color name="blue">#B2D7D7</color>
     <color name="blue_1">#000FFF</color>
     <color name="red">#FF0000</color>
+
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="textColor">#000000</color>
+
+    <color name="favorite_selected">#000FFF</color>
+    <color name="favorite_unselected">#CCCCCC</color>
 </resources>

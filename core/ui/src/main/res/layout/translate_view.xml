@@ -25,7 +25,8 @@
         android:padding="@dimen/size_8"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"/>
 
     <EditText
         android:id="@+id/editText"
@@ -52,7 +53,8 @@
         android:src="@drawable/ic_close"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"/>
 
     <ImageView
         android:id="@+id/ivMic"
@@ -61,7 +63,8 @@
         android:src="@drawable/ic_mic"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black"/>
 
     <ImageView
         android:id="@+id/ivTranslate"
@@ -71,7 +74,8 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieLoading"

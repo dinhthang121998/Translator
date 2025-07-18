@@ -18,6 +18,8 @@ abstract class BaseFragment<V : ViewBinding, M : ViewModel> : Fragment() {
     private var _binding: V? = null
     val binding get() = _binding!!
 
+    private var currentTag = ""
+
     abstract fun initBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -74,5 +76,17 @@ abstract class BaseFragment<V : ViewBinding, M : ViewModel> : Fragment() {
             onPositiveClick,
             onNegativeClick,
         )
+    }
+
+    fun replaceFragment(
+        fragment: Fragment,
+        container: View,
+        tag: String,
+    ) {
+        if (tag == currentTag) return
+        currentTag = tag
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(container.id, fragment, tag)
+        transaction.commit()
     }
 }

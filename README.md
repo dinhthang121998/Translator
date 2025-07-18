@@ -20,6 +20,11 @@ A powerful and modular Android application that allows users to translate text b
 - 💾 **Favorites** — Save frequently used translations.
 
   <img width="200" height="444" alt="Screenshot_20250715_145002" src="https://github.com/user-attachments/assets/c03566fa-9aba-4215-a9f9-9d1bafcd93a1" />
+- 🌙 Dark/Light Mode Support — Seamlessly switch between light and dark themes based on system settings or user preference.
+
+  <img width="200" height="444" alt="Screenshot_20250718_101351" src="https://github.com/user-attachments/assets/560420ab-8743-410f-b088-5ca8edfadc1e" />
+  <img width="200" height="444" alt="Screenshot_20250718_101410" src="https://github.com/user-attachments/assets/409e2e2e-0f64-45bb-9e97-4cb150c9403a" />
+
 - 🔒 **Encrypted Storage** — Securely store user data using Cipher and Jetpack Datastore.
 - 📡 **Remote API Support** — Connect to translation services using Retrofit. Reference: https://dictionaryapi.dev/
 
