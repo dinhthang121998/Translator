@@ -25,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_capture"
+        android:visibility="gone"
         android:layout_marginBottom="@dimen/size_36"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +39,8 @@
         android:layout_marginTop="@dimen/size_16"
         android:layout_marginStart="@dimen/size_16"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/black"/>
 
     <com.example.ui.chooseLanguage.MediaChooseLanguageView
         android:id="@+id/imageChooseLanguageView"
