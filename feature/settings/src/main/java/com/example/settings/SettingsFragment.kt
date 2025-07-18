@@ -16,7 +16,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewmodel>() {
-
     @Inject
     lateinit var navigateFeedback: NavigateFeedback
 

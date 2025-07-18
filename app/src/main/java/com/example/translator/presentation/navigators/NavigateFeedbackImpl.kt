@@ -8,9 +8,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NavigateFeedbackImpl @Inject constructor(): NavigateFeedback {
-    override fun navigateToFeedback(context: Context) {
-        val intent = Intent(context, FeedbackActivity::class.java)
-        context.startActivity(intent)
+class NavigateFeedbackImpl
+    @Inject
+    constructor() : NavigateFeedback {
+        override fun navigateToFeedback(context: Context) {
+            val intent = Intent(context, FeedbackActivity::class.java)
+            context.startActivity(intent)
+        }
     }
-}

@@ -8,9 +8,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NavigateTranslateCameraImpl @Inject constructor(): NavigateTranslateCamera {
-    override fun navigateToTranslateCamera(context: Context) {
-        val intent = Intent(context, TranslateCameraXActivity::class.java)
-        context.startActivity(intent)
+class NavigateTranslateCameraImpl
+    @Inject
+    constructor() : NavigateTranslateCamera {
+        override fun navigateToTranslateCamera(context: Context) {
+            val intent = Intent(context, TranslateCameraXActivity::class.java)
+            context.startActivity(intent)
+        }
     }
-}

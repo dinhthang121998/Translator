@@ -17,28 +17,19 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class NavigatorsModule {
+    @Binds
+    @Singleton
+    abstract fun bindNavigateFeedback(navigateFeedbackImpl: NavigateFeedbackImpl): NavigateFeedback
 
     @Binds
     @Singleton
-    abstract fun bindNavigateFeedback(
-        navigateFeedbackImpl: NavigateFeedbackImpl
-    ): NavigateFeedback
+    abstract fun bindNavigateTheme(navigateThemeImpl: NavigateThemeImpl): NavigateTheme
 
     @Binds
     @Singleton
-    abstract fun bindNavigateTheme(
-        navigateThemeImpl: NavigateThemeImpl
-    ): NavigateTheme
+    abstract fun bindNavigateTranslateCamera(navigateTranslateCameraImpl: NavigateTranslateCameraImpl): NavigateTranslateCamera
 
     @Binds
     @Singleton
-    abstract fun bindNavigateTranslateCamera(
-        navigateTranslateCameraImpl: NavigateTranslateCameraImpl
-    ): NavigateTranslateCamera
-
-    @Binds
-    @Singleton
-    abstract fun bindNavigateTranslateImage(
-        navigateTranslateImageImpl: NavigateTranslateImageImpl
-    ): NavigateTranslateImage
+    abstract fun bindNavigateTranslateImage(navigateTranslateImageImpl: NavigateTranslateImageImpl): NavigateTranslateImage
 }

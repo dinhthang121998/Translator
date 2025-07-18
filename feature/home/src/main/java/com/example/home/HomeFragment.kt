@@ -36,7 +36,6 @@ import javax.inject.Inject
 class HomeFragment :
     BaseFragment<FragmentHomeBinding, HomeViewmodel>(),
     TranslationHistoryAdapter.IHistoryTranslationAdapterListener {
-
     @Inject
     lateinit var navigateTranslateCamera: NavigateTranslateCamera
 
@@ -125,7 +124,7 @@ class HomeFragment :
                         showAlertDialog(
                             requireContext(),
                             getString(R.string.error),
-                            "${exception.message}"
+                            "${exception.message}",
                         )
                     }
                 }

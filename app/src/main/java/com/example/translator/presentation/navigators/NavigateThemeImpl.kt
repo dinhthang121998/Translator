@@ -8,9 +8,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NavigateThemeImpl @Inject constructor(): NavigateTheme {
-    override fun navigateToTheme(context: Context) {
-        val intent = Intent(context, ThemeActivity::class.java)
-        context.startActivity(intent)
+class NavigateThemeImpl
+    @Inject
+    constructor() : NavigateTheme {
+        override fun navigateToTheme(context: Context) {
+            val intent = Intent(context, ThemeActivity::class.java)
+            context.startActivity(intent)
+        }
     }
-}
