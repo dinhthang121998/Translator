@@ -11,7 +11,7 @@ import com.example.translator.R
 import com.example.translator.databinding.ActivityMainBinding
 import com.example.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -33,8 +33,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         viewmodel.observeTheme()
         lifecycleScope.launch {
             launch {
-                val isDarkMode = viewmodel.themeFlow.first { it != null }
-                isDarkMode?.let {
+                viewmodel.themeSharedFlow.collect { isDarkMode ->
                     val mode =
                         if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
                     AppCompatDelegate.setDefaultNightMode(mode)
