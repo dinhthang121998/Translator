@@ -32,13 +32,10 @@ class ThemeFragment : BaseFragment<FragmentThemeBinding, ThemeViewmodel>() {
         viewModel.observeTheme()
         lifecycleScope.launch {
             launch {
-                viewModel.themeFlow.collect { isDarkMode ->
-                    if (isDarkMode == null) return@collect
-
+                viewModel.themeSharedFlow.collect { isDarkMode ->
                     binding.darkTheme.updateSwitchState(isDarkMode)
                     val mode =
                         if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-                    // TODO: Investigate why onCreate() of Fragment calls twice but once with onCreate() of Activity
                     AppCompatDelegate.setDefaultNightMode(mode)
                 }
             }
