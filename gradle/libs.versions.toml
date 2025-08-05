@@ -32,6 +32,8 @@ android-library = "8.2.1"
 modulegraph = "0.12.0"
 ktlint = "12.1.2"
 protobuf-plugin = "0.9.3"
+navigation-fragment-ktx = "2.9.3"
+navigation-ui-ktx = "2.9.3"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -90,6 +92,9 @@ camera-extension = { group = "androidx.camera", name = "camera-extensions", vers
 # retrofit2
 retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-json = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+
+navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
+navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
 
 # test
 junit = { group = "junit", name = "junit", version.ref = "junit" }

@@ -4,9 +4,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
-import com.example.favored.FavoredFragment
-import com.example.home.HomeFragment
-import com.example.settings.SettingsFragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.translator.R
 import com.example.translator.databinding.ActivityMainBinding
 import com.example.ui.base.BaseActivity
@@ -21,15 +20,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun initBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
 
     override fun showFragment(savedInstanceState: Bundle?) {
-        // Keep the setting screen when changing dark/ light theme
-        if (savedInstanceState == null) {
-            replaceFragment(HomeFragment.newInstance(), binding.flContent, HomeFragment.TAG)
-        }
+        handleBottomNavigation()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        handleBottomNavigation()
         viewmodel.observeTheme()
         lifecycleScope.launch {
             launch {
@@ -44,37 +39,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun handleBottomNavigation() {
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> {
-                    replaceFragment(
-                        HomeFragment.newInstance(),
-                        binding.flContent,
-                        HomeFragment.TAG,
-                    )
-                    true
-                }
+        // Get the NavController from the NavHostFragment
+        val navHostFragment =
+            supportFragmentManager
+                .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
-                R.id.nav_favored -> {
-                    replaceFragment(
-                        FavoredFragment.newInstance(),
-                        binding.flContent,
-                        FavoredFragment.TAG,
-                    )
-                    true
-                }
-
-                R.id.nav_settings -> {
-                    replaceFragment(
-                        SettingsFragment.newInstance(),
-                        binding.flContent,
-                        SettingsFragment.TAG,
-                    )
-                    true
-                }
-
-                else -> true
-            }
-        }
+        // Connect the BottomNavigationView to the NavController
+        binding.bottomNavigationView.setupWithNavController(navController)
     }
 }

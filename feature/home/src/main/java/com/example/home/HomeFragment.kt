@@ -65,7 +65,7 @@ class HomeFragment :
         viewModel.getTranslatedWords()
 
         setupOnClickView()
-        setUpHomeChooseLanguageView()
+        setupHomeChooseLanguageView()
         setupOriginalView()
         setupTranslatedView()
         setupMeaningAdapter(listOf())
@@ -84,52 +84,13 @@ class HomeFragment :
                 }
             }
 
-        lifecycleScope.launch {
-            launch {
-                // save to proto datastore
-                viewModel.pairLanguageFlow.collect { (fromLanguageItem, toLanguageItem) ->
-                    handlePairLanguage(fromLanguageItem, toLanguageItem)
-                }
-            }
-
-            launch {
-                viewModel.translatedTextFlow.collect { translatedText ->
-                    binding.translated.setText(translatedText)
-                }
-            }
-
-            launch {
-                viewModel.textDefinitionFlow.collect { wordDefinition ->
-                    // api response
-                    handleWordDefinition(wordDefinition)
-                }
-            }
-
-            launch {
-                viewModel.getTranslatedWordsFlow.collect { translatedWords ->
-                    // local db response
-                    binding.historyTranslation.updateTranslationHistory(translatedWords)
-                }
-            }
-
-            launch {
-                viewModel.loadingFlow.collect { isLoading ->
-                    binding.loadingOverlay.showOrGone(isLoading)
-                }
-            }
-
-            launch {
-                viewModel.failureFlow.collect { exception ->
-                    exception?.let {
-                        showAlertDialog(
-                            requireContext(),
-                            getString(R.string.error),
-                            "${exception.message}",
-                        )
-                    }
-                }
-            }
-        }
+        // Launch coroutine collectors as separate setup functions for clarity
+        setupPairLanguageCollector()
+        setupTranslatedTextCollector()
+        setupWordDefinitionCollector()
+        setupTranslatedWordsCollector()
+        setupLoadingCollector()
+        setupFailureCollector()
     }
 
     private fun setupHistoryTranslation() {
@@ -224,7 +185,7 @@ class HomeFragment :
         binding.homeSelectLanguage.setFromLanguage(fromLanguage)
     }
 
-    private fun setUpHomeChooseLanguageView() {
+    private fun setupHomeChooseLanguageView() {
         binding.homeSelectLanguage.apply {
             onClickFromLanguage = {
                 showSearchBottomSheet(clickItem = { searchLanguageItem ->
@@ -352,6 +313,66 @@ class HomeFragment :
 
         binding.ivCamera.setOnClickListener {
             navigateTranslateCamera.navigateToTranslateCamera(requireContext())
+        }
+    }
+
+    /** Collects pairLanguageFlow and handles language pair selection UI and logic. */
+    private fun setupPairLanguageCollector() {
+        lifecycleScope.launch {
+            viewModel.pairLanguageFlow.collect { (fromLanguageItem, toLanguageItem) ->
+                handlePairLanguage(fromLanguageItem, toLanguageItem)
+            }
+        }
+    }
+
+    /** Collects translatedTextFlow and updates the translated UI field. */
+    private fun setupTranslatedTextCollector() {
+        lifecycleScope.launch {
+            viewModel.translatedTextFlow.collect { translatedText ->
+                binding.translated.setText(translatedText)
+            }
+        }
+    }
+
+    /** Collects textDefinitionFlow and updates word definition UI. */
+    private fun setupWordDefinitionCollector() {
+        lifecycleScope.launch {
+            viewModel.textDefinitionFlow.collect { wordDefinition ->
+                handleWordDefinition(wordDefinition)
+            }
+        }
+    }
+
+    /** Collects getTranslatedWordsFlow and updates translation history. */
+    private fun setupTranslatedWordsCollector() {
+        lifecycleScope.launch {
+            viewModel.getTranslatedWordsFlow.collect { translatedWords ->
+                binding.historyTranslation.updateTranslationHistory(translatedWords)
+            }
+        }
+    }
+
+    /** Collects loadingFlow and shows/hides loading overlay. */
+    private fun setupLoadingCollector() {
+        lifecycleScope.launch {
+            viewModel.loadingFlow.collect { isLoading ->
+                binding.loadingOverlay.showOrGone(isLoading)
+            }
+        }
+    }
+
+    /** Collects failureFlow and shows errors via AlertDialog. */
+    private fun setupFailureCollector() {
+        lifecycleScope.launch {
+            viewModel.failureFlow.collect { exception ->
+                exception?.let {
+                    showAlertDialog(
+                        requireContext(),
+                        getString(R.string.error),
+                        "${exception.message}",
+                    )
+                }
+            }
         }
     }
 

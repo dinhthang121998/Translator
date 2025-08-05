@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+<!--    Don't need provide action for bottom navigation -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.home.HomeFragment"
+        android:label="Home">
+    </fragment>
+
+    <fragment
+        android:id="@+id/favoredFragment"
+        android:name="com.example.favored.FavoredFragment"
+        android:label="Favored" />
+
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.settings.SettingsFragment"
+        android:label="Settings" />
+</navigation>

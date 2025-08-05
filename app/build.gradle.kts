@@ -72,6 +72,9 @@ dependencies {
     // Detekt
     detektPlugins(libs.detekt.formatting)
 
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.bundles.test.android)
 }
