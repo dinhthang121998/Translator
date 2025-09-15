@@ -3,6 +3,8 @@ package com.example.ui.bottomSheet.searchSelectedLanguage
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.model.Downloadable
@@ -15,9 +17,12 @@ class SearchLanguageAdapter(
     private var listSearchLanguageItem: List<SearchLanguageItem>,
     val onClickItem: ((SearchLanguageItem.LanguageItem) -> Unit)? = null,
 ) :
-    RecyclerView.Adapter<SearchLanguageAdapter.SearchLanguageViewHolder>() {
+    RecyclerView.Adapter<SearchLanguageAdapter.SearchLanguageViewHolder>(), Filterable {
+    private var fullLanguageItem: List<SearchLanguageItem> = arrayListOf()
+
     fun updateListLanguage(listSearchLanguageItem: List<SearchLanguageItem>) {
         this.listSearchLanguageItem = listSearchLanguageItem
+        fullLanguageItem = listSearchLanguageItem
         notifyDataSetChanged()
     }
 
@@ -92,5 +97,33 @@ class SearchLanguageAdapter(
     companion object {
         const val TITLE_TYPE = 0
         const val LANGUAGE_TYPE = 1
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val query = constraint.toString()
+                val filteredList =
+                    if (query.isEmpty()) {
+                        fullLanguageItem
+                    } else {
+                        fullLanguageItem.filter {
+                            when (it) {
+                                is SearchLanguageItem.LanguageItem -> it.languageName.startsWith(query, true)
+                                is SearchLanguageItem.TitleItem -> false
+                            }
+                        }
+                    }
+                return FilterResults().apply { values = filteredList }
+            }
+
+            override fun publishResults(
+                constraint: CharSequence?,
+                results: FilterResults?,
+            ) {
+                listSearchLanguageItem = results?.values as List<SearchLanguageItem>
+                notifyDataSetChanged()
+            }
+        }
     }
 }

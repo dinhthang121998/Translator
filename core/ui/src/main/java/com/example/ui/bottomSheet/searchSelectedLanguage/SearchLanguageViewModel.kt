@@ -20,10 +20,6 @@ class SearchLanguageViewModel
             MutableStateFlow(listOf<SearchLanguageItem.LanguageItem>())
         val listAllLanguages = _listAllLanguages
 
-        private val _listFilterLanguages =
-            MutableStateFlow(listOf<SearchLanguageItem.LanguageItem>())
-        val listFilterLanguages = _listFilterLanguages
-
         private val _downloadLanguageItem =
             MutableStateFlow(SearchLanguageItem.LanguageItem())
         val downloadLanguageItem = _downloadLanguageItem
@@ -32,14 +28,6 @@ class SearchLanguageViewModel
         fun getSearchLanguageItems() {
             viewModelScope.launch {
                 _listAllLanguages.value = translationUtils.getAllLanguageItems()
-            }
-        }
-
-        fun filterLanguageItem(textFilter: String) {
-            viewModelScope.launch {
-                val listFilter =
-                    translationUtils.filterLanguageItems(textFilter, _listAllLanguages.value)
-                _listFilterLanguages.value = listFilter
             }
         }
 

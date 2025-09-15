@@ -1,6 +1,5 @@
 package com.example.domain
 
-import android.util.Log
 import com.example.data.repository.TranslationHistoryRepository
 import com.example.domain.base.SuspendUseCase
 import com.example.model.TranslationHistory
@@ -18,8 +17,6 @@ class UndoTranslationHistoryUseCase(
                 translated = parameter.translatedWord,
                 isDeleted = true,
             )
-
-        Log.d("AAAA", "existedButDeleted: $existedButDeleted")
 
         val translated =
             TranslationHistory(

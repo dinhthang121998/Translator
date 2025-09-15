@@ -53,12 +53,6 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
             }
 
             launch {
-                viewModel.listFilterLanguages.collect { listLanguageItemFilter ->
-                    handleListFilterLanguageItem(listLanguageItemFilter)
-                }
-            }
-
-            launch {
                 viewModel.downloadLanguageItem.collect { downloadedLanguageItem ->
                     viewModel.updateAllLanguages(downloadedLanguageItem)
                 }
@@ -76,19 +70,8 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
         }
 
         viewBinding.edtSearchLanguage.addTextChangedListener { text: Editable? ->
-            viewModel.filterLanguageItem(text.toString())
+            languageAdapter?.filter?.filter(text.toString())
         }
-    }
-
-    private fun handleListFilterLanguageItem(listLanguageItemFilter: List<SearchLanguageItem.LanguageItem>) {
-        val listSearchLanguageItemFilter = mutableListOf<SearchLanguageItem>()
-        if (listLanguageItemFilter.size != viewModel.listAllLanguages.value.size) {
-            listSearchLanguageItemFilter.addTitle("")
-        } else {
-            listSearchLanguageItemFilter.addTitle(getString(R.string.all_language))
-        }
-        listSearchLanguageItemFilter.addAll(listLanguageItemFilter)
-        updateLanguage(listSearchLanguageItemFilter)
     }
 
     private fun handleListLanguageItem(listLanguageItem: List<SearchLanguageItem.LanguageItem>) {
@@ -103,8 +86,8 @@ class SearchSelectedLanguageSheet : BaseBottomSheetFragment() {
         return this
     }
 
-    private fun updateLanguage(listLanguageFilter: List<SearchLanguageItem>) {
-        languageAdapter?.updateListLanguage(listLanguageFilter)
+    private fun updateLanguage(listLanguage: List<SearchLanguageItem>) {
+        languageAdapter?.updateListLanguage(listLanguage)
     }
 
     private fun initRecyclerView(listSearchLanguageItem: List<SearchLanguageItem>) {
