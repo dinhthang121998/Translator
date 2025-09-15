@@ -37,7 +37,6 @@ class TextToSpeechUtils
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e("AAAA", "Language not supported: $languageCode")
             } else {
-                Log.d("AAAA", "Language supported: $languageCode")
                 textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
             }
         }

@@ -1,6 +1,5 @@
 package com.example.domain
 
-import android.util.Log
 import com.example.data.repository.TranslationHistoryRepository
 import com.example.domain.base.SuspendUseCase
 import com.example.model.TranslationHistory
@@ -21,7 +20,6 @@ class AddTranslationHistoryUseCase
                     translated = parameter.translatedWord,
                     isDeleted = false,
                 )
-            Log.d("AAAA", "existedTranslatedWord = $existedTranslatedWord")
 
             val translated =
                 TranslationHistory(

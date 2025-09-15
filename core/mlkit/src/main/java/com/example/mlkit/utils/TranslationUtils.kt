@@ -52,23 +52,6 @@ class TranslationUtils {
                 }
         }
 
-    suspend fun filterLanguageItems(
-        textFilter: String,
-        listAllSearchLanguageItem: List<SearchLanguageItem.LanguageItem>,
-    ): List<SearchLanguageItem.LanguageItem> =
-        withContext(Dispatchers.Default) {
-            if (textFilter.isNotEmpty()) {
-                listAllSearchLanguageItem.filter { languageItem ->
-                    languageItem.languageName.startsWith(
-                        textFilter,
-                        true,
-                    )
-                }
-            } else {
-                listAllSearchLanguageItem
-            }
-        }
-
     suspend fun updateDownloadedLanguage(
         downloadedLanguageItem: SearchLanguageItem.LanguageItem,
         listAllLanguageItem: List<SearchLanguageItem.LanguageItem>,
